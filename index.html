@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Birat Saha – Senior Full-Stack Java Developer with 8+ years experience in Spring Boot, React, Microservices, AWS, Kafka, and AI/RAG systems." />
+  <title>Birat Saha | Senior Java &amp; Full-Stack Developer</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet" />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand" href="#hero">
+        <span class="brand-bracket">&lt;</span>Birat<span class="brand-slash">/</span><span
+          class="brand-bracket">&gt;</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto gap-1">
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item ms-2">
+            <a class="btn btn-primary btn-sm px-3" href="#contact">Hire Me</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section id="hero" class="hero-section d-flex align-items-center">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="container position-relative">
+      <div class="row align-items-center gy-5">
+        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
+          <div class="hero-badge mb-3">
+            <span class="badge-dot"></span>
+            <span>Open to opportunities · SME Java Developer</span>
+          </div>
+          <h1 class="hero-title">
+            Hi, I'm <span class="gradient-text">Birat Saha</span>
+          </h1>
+          <div class="typewriter-wrapper mb-4">
+            <span class="typewriter-prefix">I build </span>
+            <span class="typewriter" id="typewriter"></span>
+          </div>
+          <p class="hero-desc mb-5">
+            Senior Full-Stack Java Developer with <strong>8+ years</strong> of experience designing and deploying
+            enterprise-grade microservices, REST APIs, and AI-powered applications using
+            Spring Boot, React, Kafka, and AWS.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#experience" class="btn btn-primary btn-lg px-4">View Experience <i
+                class="bi bi-arrow-right ms-1"></i></a>
+            <a href="#contact" class="btn btn-outline-light btn-lg px-4">Get In Touch</a>
+          </div>
+          <div class="hero-socials mt-5 d-flex gap-3">
+            <a href="https://github.com/roy0111" target="_blank" class="social-icon" title="GitHub"><i
+                class="bi bi-github"></i></a>
+            <a href="https://www.linkedin.com/in/birat-saha-4b1632151/" target="_blank" class="social-icon"
+              title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="mailto:biratewu0111@gmail.com" class="social-icon" title="Email"><i
+                class="bi bi-envelope-fill"></i></a>
+            <a href="tel:+14095190333" class="social-icon" title="Phone"><i class="bi bi-telephone-fill"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-duration="900">
+          <div class="hero-img-wrapper mx-auto">
+            <div class="hero-img-glow"></div>
+            <img src="img/profile.png" alt="Birat Saha - Senior Java Full-Stack Developer" class="hero-img" />
+            <div class="floating-card card-java" data-aos="zoom-in" data-aos-delay="400">
+              <i class="bi bi-cup-hot-fill"></i> Spring Boot
+            </div>
+            <div class="floating-card card-react" data-aos="zoom-in" data-aos-delay="600">
+              <i class="bi bi-stars"></i> React / Angular
+            </div>
+            <div class="floating-card card-spring" data-aos="zoom-in" data-aos-delay="800">
+              <i class="bi bi-robot"></i> AI / RAG
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="#about" class="scroll-down">
+      <i class="bi bi-chevron-double-down"></i>
+    </a>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
+  <section id="about" class="section-pad">
+    <div class="container">
+      <div class="section-header text-center mb-5" data-aos="fade-up">
+        <span class="section-tag">Who I Am</span>
+        <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
+      </div>
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-5" data-aos="fade-right">
+          <div class="about-img-wrap">
+            <img src="img/profile.png" alt="Birat Saha" class="about-img" />
+            <div class="about-badge">
+              <span class="about-badge-num">8+</span>
+              <span class="about-badge-label">Years<br />Experience</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7" data-aos="fade-left">
+          <p class="about-greeting">Hello! I'm Birat 👋</p>
+          <p class="about-desc">
+            I'm a seasoned <strong>Senior Java / Full-Stack Developer</strong> with 8+ years of hands-on experience
+            in designing, developing, and deploying scalable enterprise applications. I specialize in
+            <strong>Spring Boot microservices</strong>, <strong>React/Angular front-ends</strong>, and
+            <strong>cloud-native architectures</strong> on AWS, Azure, and OpenShift.
+          </p>
+          <p class="about-desc">
+            Most recently, I've been working as a <strong>Subject Matter Expert (SME)</strong> on a major
+            enterprise platform at Citi, migrating TIBCO EMS workflows to Apache Kafka and building
+            RAG-based AI services using Spring AI + Elasticsearch for intelligent document search
+            with LLM-powered response generation.
+          </p>
+          <div class="row about-stats gy-3 my-3">
+            <div class="col-6 col-md-3">
+              <div class="stat-box text-center">
+                <div class="stat-num counter" data-target="8">0</div>
+                <div class="stat-label">Years Exp.</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-box text-center">
+                <div class="stat-num counter" data-target="4">0</div>
+                <div class="stat-label">Companies</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-box text-center">
+                <div class="stat-num counter" data-target="20">0</div>
+                <div class="stat-label">Technologies</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-box text-center">
+                <div class="stat-num counter" data-target="100">0</div>
+                <div class="stat-label">% Passion</div>
+              </div>
+            </div>
+          </div>
+          <div class="about-info-grid mt-4">
+            <div class="info-item"><i class="bi bi-geo-alt-fill"></i> <strong>Location:</strong> Tampa, FL, USA</div>
+            <div class="info-item"><i class="bi bi-mortarboard-fill"></i> <strong>Degree:</strong> M.S Computer Science
+            </div>
+            <div class="info-item"><i class="bi bi-envelope-fill"></i> <strong>Email:</strong> biratewu0111@gmail.com
+            </div>
+            <div class="info-item"><i class="bi bi-telephone-fill"></i> <strong>Phone:</strong> +1 (409) 519-0333</div>
+          </div>
+          <div class="d-flex flex-wrap gap-3 mt-4">
+            <a href="mailto:biratewu0111@gmail.com" class="btn btn-primary px-4"><i
+                class="bi bi-envelope me-2"></i>Email Me</a>
+            <a href="https://www.linkedin.com/in/birat-saha-4b1632151/" target="_blank"
+              class="btn btn-outline-light px-4"><i class="bi bi-linkedin me-2"></i>LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SKILLS ========== -->
+  <section id="skills" class="section-pad skills-section">
+    <div class="container">
+      <div class="section-header text-center mb-5" data-aos="fade-up">
+        <span class="section-tag">What I Know</span>
+        <h2 class="section-title">Technical <span class="gradient-text">Skills</span></h2>
+      </div>
+      <div class="row gy-4">
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-code-slash"></i></div>
+            <h5 class="skill-card-title">Languages</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">Java</span>
+              <span class="skill-pill">Python</span>
+              <span class="skill-pill">C++</span>
+              <span class="skill-pill">JavaScript</span>
+              <span class="skill-pill">TypeScript</span>
+              <span class="skill-pill">Perl / Shell</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-layers-fill"></i></div>
+            <h5 class="skill-card-title">Frameworks &amp; Backend</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">Spring Boot</span>
+              <span class="skill-pill">Spring MVC</span>
+              <span class="skill-pill">Spring WebFlux</span>
+              <span class="skill-pill">Spring Cloud</span>
+              <span class="skill-pill">Spring AI</span>
+              <span class="skill-pill">Spring Security</span>
+              <span class="skill-pill">Hibernate / JPA</span>
+              <span class="skill-pill">REST / SOAP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-layout-text-window"></i></div>
+            <h5 class="skill-card-title">Frontend</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">React.js</span>
+              <span class="skill-pill">Redux / Thunk / Saga</span>
+              <span class="skill-pill">Angular</span>
+              <span class="skill-pill">HTML5 / CSS3</span>
+              <span class="skill-pill">Bootstrap</span>
+              <span class="skill-pill">jQuery</span>
+              <span class="skill-pill">Chart.js</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-database-fill"></i></div>
+            <h5 class="skill-card-title">Databases</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">Oracle 10g/11g</span>
+              <span class="skill-pill">MySQL</span>
+              <span class="skill-pill">MongoDB</span>
+              <span class="skill-pill">PostgreSQL</span>
+              <span class="skill-pill">Elasticsearch</span>
+              <span class="skill-pill">Amazon RDS</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-cloud-fill"></i></div>
+            <h5 class="skill-card-title">Cloud &amp; DevOps</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">AWS (EC2, S3, RDS)</span>
+              <span class="skill-pill">Azure</span>
+              <span class="skill-pill">OpenShift</span>
+              <span class="skill-pill">Kubernetes</span>
+              <span class="skill-pill">Docker</span>
+              <span class="skill-pill">Jenkins</span>
+              <span class="skill-pill">Harness</span>
+              <span class="skill-pill">Helm</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-robot"></i></div>
+            <h5 class="skill-card-title">AI &amp; Messaging</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">OpenAI APIs</span>
+              <span class="skill-pill">RAG Pipelines</span>
+              <span class="skill-pill">Prompt Engineering</span>
+              <span class="skill-pill">GitHub Copilot</span>
+              <span class="skill-pill">Apache Kafka</span>
+              <span class="skill-pill">RabbitMQ</span>
+              <span class="skill-pill">TIBCO EMS</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-tools"></i></div>
+            <h5 class="skill-card-title">Build &amp; Monitoring</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">Maven / Gradle</span>
+              <span class="skill-pill">Git / Bitbucket</span>
+              <span class="skill-pill">JIRA</span>
+              <span class="skill-pill">SonarQube</span>
+              <span class="skill-pill">Grafana</span>
+              <span class="skill-pill">ELK Stack</span>
+              <span class="skill-pill">Splunk</span>
+              <span class="skill-pill">Log4J2</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-check2-circle"></i></div>
+            <h5 class="skill-card-title">Testing &amp; Methodology</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">JUnit</span>
+              <span class="skill-pill">Mockito</span>
+              <span class="skill-pill">TDD / BDD</span>
+              <span class="skill-pill">Agile / Scrum</span>
+              <span class="skill-pill">CI/CD</span>
+              <span class="skill-pill">DDD / MVC / OOP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="skill-card">
+            <div class="skill-card-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+            <h5 class="skill-card-title">Big Data &amp; Streaming</h5>
+            <div class="skill-pills">
+              <span class="skill-pill">Apache Spark</span>
+              <span class="skill-pill">Spark Streaming</span>
+              <span class="skill-pill">Hadoop / HDFS</span>
+              <span class="skill-pill">Reactive (Mono/Flux)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EXPERIENCE ========== -->
+  <section id="experience" class="section-pad experience-section">
+    <div class="container">
+      <div class="section-header text-center mb-5" data-aos="fade-up">
+        <span class="section-tag">My Journey</span>
+        <h2 class="section-title">Professional <span class="gradient-text">Experience</span></h2>
+      </div>
+      <div class="row gy-4 justify-content-center">
+        <div class="col-lg-10">
+          <div class="timeline">
+
+            <!-- CITI -->
+            <div class="timeline-item" data-aos="fade-right">
+              <div class="timeline-dot"><i class="bi bi-briefcase-fill"></i></div>
+              <div class="timeline-card">
+                <div class="d-flex justify-content-between flex-wrap align-items-start gap-2 mb-2">
+                  <div>
+                    <span class="timeline-period">Nov 2024 – Present</span>
+                    <h5 class="timeline-title">Java Developer (SME)</h5>
+                    <p class="timeline-place"><i class="bi bi-building me-1"></i>The Ashlar Group LLC &nbsp;·&nbsp;
+                      Client: <strong>CITI</strong> – Tampa, FL</p>
+                  </div>
+                  <span class="exp-badge">Current</span>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Designed scalable enterprise apps with Java, Spring Boot, Spring MVC, and RESTful APIs.</li>
+                  <li>Built microservices using Hibernate, Oracle DB, and Kafka; automated deployments via Lightspeed,
+                    Harness, Docker, and OpenShift.</li>
+                  <li>Migrated messaging workflows from <strong>TIBCO EMS to Apache Kafka</strong>, redesigning
+                    producers/consumers for event-driven architecture.</li>
+                  <li>Built <strong>RAG-based AI service</strong> using Spring AI + Elasticsearch for semantic search
+                    with hybrid ranking and LLM response generation.</li>
+                  <li>Integrated AI-powered features (OpenAI APIs) and used GitHub Copilot for development acceleration.
+                  </li>
+                  <li>Implemented async data pipelines using <strong>Mono/Flux (WebFlux)</strong>, reducing latency
+                    under high load.</li>
+                  <li>Served as SME – technical mentoring, solution architecture, and cross-functional Agile/Scrum
+                    leadership.</li>
+                </ul>
+                <div class="env-tags mt-3">
+                  <span class="env-tag">Spring Boot</span><span class="env-tag">Spring WebFlux</span><span
+                    class="env-tag">Kafka</span>
+                  <span class="env-tag">Spring AI</span><span class="env-tag">Elasticsearch</span><span
+                    class="env-tag">OpenAI</span>
+                  <span class="env-tag">React</span><span class="env-tag">OpenShift</span><span
+                    class="env-tag">ELK</span>
+                  <span class="env-tag">Harness</span><span class="env-tag">SonarQube</span><span
+                    class="env-tag">Snyk</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- DTCC -->
+            <div class="timeline-item right" data-aos="fade-left">
+              <div class="timeline-dot"><i class="bi bi-briefcase-fill"></i></div>
+              <div class="timeline-card">
+                <span class="timeline-period">June 2022 – Oct 2024</span>
+                <h5 class="timeline-title">Full Stack Developer</h5>
+                <p class="timeline-place"><i class="bi bi-building me-1"></i>Sapatla Software Inc &nbsp;·&nbsp; Client:
+                  <strong>DTCC</strong> – Tampa, FL
+                </p>
+                <ul class="timeline-bullets">
+                  <li>Built and maintained Java/J2EE applications in an Agile team; designed MVC solutions with Spring
+                    Framework.</li>
+                  <li>Developed reactive, non-blocking apps using Spring WebFlux (Mono/Flux) for high-concurrency use
+                    cases.</li>
+                  <li>Connected microservices via Kafka and JMS; installed on AWS EC2 with VPCs, S3, and RDS.</li>
+                  <li>Optimized React app performance, reducing load times and improving responsiveness.</li>
+                  <li>Leveraged Apache Spark for in-memory ETL processing; monitored with Log4J, Splunk, Grafana, and
+                    ELK.</li>
+                  <li>Worked with MongoDB and Oracle 11g for scalable, high-performance data models.</li>
+                </ul>
+                <div class="env-tags mt-3">
+                  <span class="env-tag">Spring Boot</span><span class="env-tag">Spring WebFlux</span><span
+                    class="env-tag">Kafka</span>
+                  <span class="env-tag">Apache Spark</span><span class="env-tag">React</span><span
+                    class="env-tag">MongoDB</span>
+                  <span class="env-tag">AWS</span><span class="env-tag">Grafana</span><span class="env-tag">ELK</span>
+                  <span class="env-tag">IBM MQ</span><span class="env-tag">Splunk</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- BJIT -->
+            <div class="timeline-item" data-aos="fade-right">
+              <div class="timeline-dot"><i class="bi bi-briefcase-fill"></i></div>
+              <div class="timeline-card">
+                <span class="timeline-period">Mar 2017 – Nov 2020</span>
+                <h5 class="timeline-title">Java / J2EE Developer</h5>
+                <p class="timeline-place"><i class="bi bi-building me-1"></i><strong>BJIT</strong> – Dhaka, Bangladesh
+                </p>
+                <ul class="timeline-bullets">
+                  <li>Followed Agile Scrum across SDLC – requirement gathering, design, development, and delivery.</li>
+                  <li>Built dynamic, responsive front-ends with Angular (components, services, reactive forms, routing).
+                  </li>
+                  <li>Designed REST APIs and implemented state management, routing, and performance optimizations.</li>
+                  <li>Used Spring Boot, Spring MVC, Hibernate, and AWS EC2 for enterprise application delivery.</li>
+                  <li>Built CI/CD pipelines with Jenkins and Maven; version-controlled in Git.</li>
+                  <li>Developed unit/integration tests with JUnit and Mockito.</li>
+                </ul>
+                <div class="env-tags mt-3">
+                  <span class="env-tag">Java</span><span class="env-tag">Spring Boot</span><span
+                    class="env-tag">Angular</span>
+                  <span class="env-tag">MongoDB</span><span class="env-tag">AWS</span><span
+                    class="env-tag">Jenkins</span>
+                  <span class="env-tag">Hibernate</span><span class="env-tag">REST APIs</span><span
+                    class="env-tag">Grafana</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- COLGIS -->
+            <div class="timeline-item right" data-aos="fade-left">
+              <div class="timeline-dot"><i class="bi bi-code-slash"></i></div>
+              <div class="timeline-card">
+                <span class="timeline-period">Apr 2016 – Mar 2017</span>
+                <h5 class="timeline-title">Application Developer</h5>
+                <p class="timeline-place"><i class="bi bi-building me-1"></i><strong>COLGIS</strong> – Dhaka, Bangladesh
+                </p>
+                <ul class="timeline-bullets">
+                  <li>Integrated C++ modules with Spring Boot microservices for high-performance backend computations.
+                  </li>
+                  <li>Developed end-to-end Spring Boot REST APIs and CRUD repositories.</li>
+                  <li>Built interactive web pages using JavaScript, AJAX, and third-party API integrations.</li>
+                  <li>Used Java 8 features (method references, functional interfaces, streams).</li>
+                  <li>Wrote SOAP/HTTP web services (JAX-WS) and optimized SQL queries for performance.</li>
+                </ul>
+                <div class="env-tags mt-3">
+                  <span class="env-tag">Java</span><span class="env-tag">C++</span><span class="env-tag">Spring
+                    Boot</span>
+                  <span class="env-tag">JavaScript</span><span class="env-tag">AJAX</span><span
+                    class="env-tag">SQL</span>
+                  <span class="env-tag">JAX-WS</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECTS ========== -->
+  <section id="projects" class="section-pad">
+    <div class="container">
+      <div class="section-header text-center mb-5" data-aos="fade-up">
+        <span class="section-tag">Notable Work</span>
+        <h2 class="section-title">Key <span class="gradient-text">Projects</span></h2>
+      </div>
+      <div class="row gy-4">
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="project-card">
+            <div class="project-card-top" style="background: linear-gradient(135deg, #7c3aed, #4f46e5);">
+              <i class="bi bi-robot project-icon"></i>
+            </div>
+            <div class="project-card-body">
+              <div class="project-tags mb-2">
+                <span class="project-tag">Spring AI</span>
+                <span class="project-tag">Elasticsearch</span>
+                <span class="project-tag">OpenAI</span>
+              </div>
+              <h5 class="project-title">RAG-Based AI Document Search</h5>
+              <p class="project-desc">Built an enterprise RAG pipeline using Spring AI + Elasticsearch, enabling
+                semantic search over documents with hybrid ranking and LLM-based context-aware response generation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="project-card">
+            <div class="project-card-top" style="background: linear-gradient(135deg, #0ea5e9, #0d9488);">
+              <i class="bi bi-lightning-charge-fill project-icon"></i>
+            </div>
+            <div class="project-card-body">
+              <div class="project-tags mb-2">
+                <span class="project-tag">Kafka</span>
+                <span class="project-tag">Spring WebFlux</span>
+                <span class="project-tag">TIBCO</span>
+              </div>
+              <h5 class="project-title">TIBCO → Kafka Migration</h5>
+              <p class="project-desc">Redesigned and migrated enterprise messaging from TIBCO EMS to Apache Kafka with
+                topic-based messaging, fault tolerance, and high-throughput streaming with minimal downtime.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="project-card">
+            <div class="project-card-top" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
+              <i class="bi bi-heart-fill project-icon"></i>
+            </div>
+            <div class="project-card-body">
+              <div class="project-tags mb-2">
+                <span class="project-tag">React</span>
+                <span class="project-tag">Spring Boot</span>
+                <span class="project-tag">MongoDB</span>
+              </div>
+              <h5 class="project-title">Connection Platform</h5>
+              <p class="project-desc">Full-stack marriage profile connection platform with bookmarks, reactions, saved
+                profiles, and admin management — built with React, Spring Boot, and MongoDB.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="project-card">
+            <div class="project-card-top" style="background: linear-gradient(135deg, #10b981, #0ea5e9);">
+              <i class="bi bi-bar-chart-fill project-icon"></i>
+            </div>
+            <div class="project-card-body">
+              <div class="project-tags mb-2">
+                <span class="project-tag">Spark</span>
+                <span class="project-tag">Kafka</span>
+                <span class="project-tag">HDFS</span>
+              </div>
+              <h5 class="project-title">Real-Time Data Pipeline</h5>
+              <p class="project-desc">Designed Spark Streaming pipelines to receive and process real-time data from
+                Kafka, storing stream output to HDFS for downstream analytics and reporting.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="project-card">
+            <div class="project-card-top" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">
+              <i class="bi bi-shield-check project-icon"></i>
+            </div>
+            <div class="project-card-body">
+              <div class="project-tags mb-2">
+                <span class="project-tag">Jenkins</span>
+                <span class="project-tag">Kubernetes</span>
+                <span class="project-tag">Harness</span>
+              </div>
+              <h5 class="project-title">CI/CD Enterprise Pipeline</h5>
+              <p class="project-desc">Developed CI/CD systems with Jenkins and Harness on Kubernetes/OpenShift,
+                integrating Snyk for security scanning and SonarQube for continuous code quality enforcement.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="project-card">
+            <div class="project-card-top" style="background: linear-gradient(135deg, #f97316, #eab308);">
+              <i class="bi bi-people-fill project-icon"></i>
+            </div>
+            <div class="project-card-body">
+              <div class="project-tags mb-2">
+                <span class="project-tag">Spring Boot</span>
+                <span class="project-tag">Angular</span>
+                <span class="project-tag">AWS</span>
+              </div>
+              <h5 class="project-title">Life Events Tracker</h5>
+              <p class="project-desc">Full-stack application with user life event management, admin dashboards,
+                demographic statistics, and reporting. Built with Spring Boot, Angular, and AWS cloud infrastructure.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EDUCATION ========== -->
+  <section id="education" class="section-pad education-section">
+    <div class="container">
+      <div class="section-header text-center mb-5" data-aos="fade-up">
+        <span class="section-tag">Academic Background</span>
+        <h2 class="section-title">My <span class="gradient-text">Education</span></h2>
+      </div>
+      <div class="row gy-4 justify-content-center">
+        <div class="col-md-6 col-lg-5" data-aos="fade-right">
+          <div class="edu-card">
+            <div class="edu-icon"><i class="bi bi-mortarboard-fill"></i></div>
+            <div>
+              <span class="edu-degree">Master of Science</span>
+              <h5 class="edu-field">Computer Science</h5>
+              <p class="edu-school"><i class="bi bi-building me-1"></i>Lamar University, USA</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-5" data-aos="fade-left">
+          <div class="edu-card">
+            <div class="edu-icon"><i class="bi bi-journal-code"></i></div>
+            <div>
+              <span class="edu-degree">Bachelor of Science</span>
+              <h5 class="edu-field">Computer Science &amp; Engineering</h5>
+              <p class="edu-school"><i class="bi bi-building me-1"></i>East West University, Bangladesh</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact" class="section-pad">
+    <div class="container">
+      <div class="section-header text-center mb-5" data-aos="fade-up">
+        <span class="section-tag">Let's Talk</span>
+        <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
+      </div>
+      <div class="row gy-4 justify-content-center">
+        <div class="col-lg-7" data-aos="fade-up">
+          <div class="contact-info-box">
+            <h4 class="mb-4">Contact Information</h4>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="bi bi-geo-alt-fill"></i></div>
+              <div>
+                <p class="contact-info-label">Location</p>
+                <p class="contact-info-value">Tampa, FL, United States</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="bi bi-envelope-fill"></i></div>
+              <div>
+                <p class="contact-info-label">Email</p>
+                <a href="mailto:biratewu0111@gmail.com" class="contact-info-value">biratewu0111@gmail.com</a>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="bi bi-telephone-fill"></i></div>
+              <div>
+                <p class="contact-info-label">Phone</p>
+                <a href="tel:+14095190333" class="contact-info-value">+1 (409) 519-0333</a>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-info-icon"><i class="bi bi-linkedin"></i></div>
+              <div>
+                <p class="contact-info-label">LinkedIn</p>
+                <a href="https://www.linkedin.com/in/birat-saha-4b1632151/" target="_blank"
+                  class="contact-info-value">linkedin.com/in/birat-saha</a>
+              </div>
+            </div>
+            <div class="contact-socials mt-4 d-flex gap-3">
+              <a href="https://github.com/roy0111" target="_blank" class="social-icon"><i class="bi bi-github"></i></a>
+              <a href="https://www.linkedin.com/in/birat-saha-4b1632151/" target="_blank" class="social-icon"><i
+                  class="bi bi-linkedin"></i></a>
+              <a href="mailto:biratewu0111@gmail.com" class="social-icon"><i class="bi bi-envelope-fill"></i></a>
+              <a href="tel:+14095190333" class="social-icon"><i class="bi bi-telephone-fill"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container text-center">
+      <div class="footer-logo mb-3">
+        <span class="brand-bracket">&lt;</span>Birat<span class="brand-slash">/</span><span
+          class="brand-bracket">&gt;</span>
+      </div>
+      <p class="footer-desc mb-4">Senior Java Full-Stack Developer · 8+ Years Experience · SME at Citi</p>
+      <div class="d-flex justify-content-center gap-3 mb-4">
+        <a href="https://github.com/roy0111" target="_blank" class="social-icon"><i class="bi bi-github"></i></a>
+        <a href="https://www.linkedin.com/in/birat-saha-4b1632151/" target="_blank" class="social-icon"><i
+            class="bi bi-linkedin"></i></a>
+        <a href="mailto:biratewu0111@gmail.com" class="social-icon"><i class="bi bi-envelope-fill"></i></a>
+        <a href="tel:+14095190333" class="social-icon"><i class="bi bi-telephone-fill"></i></a>
+      </div>
+      <div class="footer-nav d-flex justify-content-center flex-wrap gap-3 mb-4">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <p class="footer-copy">© 2026 Birat Saha. Crafted with <i class="bi bi-heart-fill text-danger"></i> &amp; lots of
+        coffee.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+</body>
+
+</html>
