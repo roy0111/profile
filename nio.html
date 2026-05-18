@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birat Saha | Biodata</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg-deep: #0a0a0f;
+            --bg-card: #12121c;
+            --bg-card2: #1a1a2e;
+            --accent1: #e85d75;
+            --accent2: #f5a623;
+            --accent3: #7c3aed;
+            --accent-gold: #f0c040;
+            --text-primary: #2d3748;
+            --text-muted: #718096;
+            --green: #22c55e;
+            --red: #ef4444;
+            --shadow-opacity: 0.06;
+            --border: rgba(255, 255, 255, 0.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ---- FLOATING PARTICLES ---- */
+        #particles-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.15;
+            }
+
+            90% {
+                opacity: 0.15;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ---- HERO SECTION ---- */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1rem;
+            overflow: hidden;
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+        }
+
+        .orb-a {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(232, 93, 117, 0.35) 0%, transparent 70%);
+            top: -150px;
+            left: -200px;
+            animation: orbPulse 8s ease-in-out infinite alternate;
+        }
+
+        .orb-b {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.3) 0%, transparent 70%);
+            bottom: -100px;
+            right: -150px;
+            animation: orbPulse 10s ease-in-out infinite alternate-reverse;
+        }
+
+        .orb-c {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(240, 192, 64, 0.2) 0%, transparent 70%);
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbPulse 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes orbPulse {
+            from {
+                transform: scale(0.9) translate(0, 0);
+            }
+
+            to {
+                transform: scale(1.15) translate(30px, -20px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(232, 93, 117, 0.12);
+            border: 1px solid rgba(232, 93, 117, 0.3);
+            border-radius: 50px;
+            padding: 6px 18px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent1);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            animation: fadeDown 0.8s ease both;
+        }
+
+        .hero-badge .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--accent1);
+            border-radius: 50%;
+            animation: blink 1.4s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.2;
+            }
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 7vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            animation: fadeDown 0.9s ease 0.1s both;
+        }
+
+        .hero-title .gradient-name {
+            background: linear-gradient(135deg, #e85d75, #f5a623, #e85d75);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: fadeDown 0.9s ease 0.2s both;
+        }
+
+        .hero-info-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 2rem;
+            animation: fadeDown 0.9s ease 0.3s both;
+        }
+
+        .hero-info-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .hero-info-chip:hover {
+            background: rgba(232, 93, 117, 0.15);
+            border-color: rgba(232, 93, 117, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .hero-info-chip i {
+            color: var(--accent1);
+        }
+
+        .scroll-hint {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2rem;
+            animation: fadeDown 1s ease 0.5s both;
+        }
+
+        .scroll-hint i {
+            font-size: 1.2rem;
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(6px);
+            }
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---- ABOUT ME SECTION ---- */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 5rem 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: rgba(124, 58, 237, 0.12);
+            border: 1px solid rgba(124, 58, 237, 0.35);
+            color: #a78bfa;
+            border-radius: 50px;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+        }
+
+        .section-title .hl {
+            background: linear-gradient(135deg, #e85d75, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ---- ABOUT CARD ---- */
+        .about-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2.5rem;
+            align-items: start;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #e85d75, #f5a623, #7c3aed);
+        }
+
+        .about-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(232, 93, 117, 0.12);
+        }
+
+        .avatar-ring {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e85d75, #f5a623, #7c3aed);
+            padding: 3px;
+            margin: 0 auto;
+        }
+
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--bg-card2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4.5rem;
+        }
+
+        .about-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .about-tagline {
+            color: var(--accent1);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+        }
+
+        .about-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+        }
+
+        .detail-item i {
+            color: var(--accent1);
+            font-size: 0.95rem;
+            min-width: 16px;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            margin-right: 4px;
+        }
+
+        @media (max-width: 600px) {
+            .about-card {
+                grid-template-columns: 1fr;
+            }
+
+            .about-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---- CRITERIA SECTION ---- */
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .crit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(.2, .8, .3, 1), box-shadow 0.35s;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardIn 0.5s ease forwards;
+        }
+
+        .crit-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .crit-card.yes {
+            border-left: 3px solid var(--green);
+        }
+
+        .crit-card.no {
+            border-left: 3px solid var(--red);
+        }
+
+        .crit-card.neutral {
+            border-left: 3px solid var(--accent2);
+        }
+
+        .crit-card .shimmer-line {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+            animation: shimmerSlide 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerSlide {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 200%;
+            }
+        }
+
+        .crit-info {
+            flex: 1;
+        }
+
+        .crit-subject {
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .crit-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .crit-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .crit-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border-radius: 50px;
+            padding: 3px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-yes {
+            background: rgba(34, 197, 94, 0.12);
+            color: var(--green);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .badge-no {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--red);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .badge-ok {
+            background: rgba(245, 166, 35, 0.12);
+            color: var(--accent2);
+            border: 1px solid rgba(245, 166, 35, 0.25);
+        }
+
+        .emoji-row {
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+
+        /* Rating bar */
+        .rating-bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .rating-bar-track {
+            width: 80px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            border-radius: 50px;
+            transition: width 1s ease;
+            width: 0;
+        }
+
+        .fill-green {
+            background: linear-gradient(90deg, #16a34a, #22c55e);
+        }
+
+        .fill-yellow {
+            background: linear-gradient(90deg, #ca8a04, #f5a623);
+        }
+
+        .fill-red {
+            background: linear-gradient(90deg, #b91c1c, #ef4444);
+        }
+
+        .rating-text {
+            font-size: 0.73rem;
+            color: var(--text-muted);
+        }
+
+        @keyframes cardIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---- SECTION DIVIDER ---- */
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(232, 93, 117, 0.4), rgba(245, 166, 35, 0.4), transparent);
+            margin: 1rem 0 2rem;
+        }
+
+        .cat-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .cat-header i {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .icon-look {
+            background: rgba(232, 93, 117, 0.15);
+            color: var(--accent1);
+        }
+
+        .icon-mind {
+            background: rgba(124, 58, 237, 0.15);
+            color: #a78bfa;
+        }
+
+        .icon-heart {
+            background: rgba(245, 166, 35, 0.15);
+            color: var(--accent2);
+        }
+
+        .icon-life {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--green);
+        }
+
+        .icon-block {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--red);
+        }
+
+        .cat-label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .cat-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ---- FOOTER ---- */
+        .page-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .page-footer .heart {
+            color: var(--accent1);
+            animation: heartbeat 1.2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.25);
+            }
+        }
+
+        /* ---- SCROLL REVEAL ---- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 768px) {
+            .criteria-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---- MY LIKINGS ---- */
+        .likings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .liking-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.4rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .liking-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+            border-color: rgba(255, 255, 255, 0.14);
+        }
+
+        .liking-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .liking-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .liking-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ---- FAMILY TREE ---- */
+        .family-tree-wrap {
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+            padding: 1rem 0 2rem;
+        }
+
+        #familyTreeSvg {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        /* pulsing glow for Birat node */
+        @keyframes nodeGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 6px #e85d75) drop-shadow(0 0 14px #e85d75);
+            }
+
+            50% {
+                filter: drop-shadow(0 0 18px #f5a623) drop-shadow(0 0 36px #f5a623);
+            }
+        }
+
+        .birat-node-group {
+            animation: nodeGlow 2.2s ease-in-out infinite;
+        }
+
+        @keyframes nodeScale {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        .birat-circle {
+            animation: nodeScale 2.2s ease-in-out infinite;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .fm-node-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.2rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .fm-node-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .fm-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .fm-name {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--text-primary);
+        }
+
+        .fm-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .fm-rel {
+            font-size: 0.7rem;
+            color: var(--accent1);
+            font-weight: 600;
+        }
+
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 1.5rem;
+        }
+
+        .birat-center {
+            grid-column: 1 / -1;
+        }
+
+        .birat-center .fm-node-card {
+            background: linear-gradient(135deg, rgba(232, 93, 117, 0.12), rgba(245, 166, 35, 0.08));
+            border-color: rgba(232, 93, 117, 0.35);
+            max-width: 340px;
+            margin: 0 auto 1rem;
+        }
+
+        /* ---- MIND & EDUCATION (Timeline Style) ---- */
+        .mind-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .mind-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(124, 58, 237, 0.5), transparent);
+        }
+
+        .mind-timeline .crit-card {
+            margin-left: 10px;
+            position: relative;
+            background: linear-gradient(to right, rgba(124, 58, 237, 0.05), transparent);
+            border-left: 4px solid #a78bfa;
+            border-radius: 0 12px 12px 0;
+            transform: translateX(30px);
+        }
+
+        .mind-timeline .crit-card::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #a78bfa;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #a78bfa;
+        }
+
+        .mind-timeline .crit-card.reveal.visible {
+            transform: translateX(0);
+        }
+
+        /* ---- HEART & VALUES (Masonry / Flex Wrapping) ---- */
+        .heart-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .heart-flex .crit-card {
+            flex: 1 1 calc(33.333% - 16px);
+            min-width: 250px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            background: rgba(236, 72, 153, 0.05);
+            border: 1px dashed rgba(236, 72, 153, 0.3);
+            border-radius: 24px;
+        }
+
+        .heart-flex .crit-indicator {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ---- LIFESTYLE & FAMILY (List View) ---- */
+        .lifestyle-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .lifestyle-list .crit-card {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0px;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border-left: 2px solid var(--border);
+        }
+
+        /* ---- HARD NO's (Danger Grid) ---- */
+        .hardnos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .hardnos-grid .crit-card {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), transparent);
+            border-color: rgba(239, 68, 68, 0.3);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.05);
+        }
+
+        .hardnos-grid .crit-info .crit-name {
+            color: #991b1b;
+            font-size: 1.1rem;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-body: #0f0f13;
+            --bg-card: #1a1a24;
+            --bg-glass: rgba(15, 15, 19, 0.85);
+            --text-primary: #f0f0f8;
+            --text-muted: #8888aa;
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow-opacity: 0.35;
+        }
+
+        :root[data-theme="blush"] {
+            --bg-body: #fff0f5;
+            --bg-card: #ffffff;
+            --bg-glass: rgba(255, 240, 245, 0.85);
+            --text-primary: #4a2c40;
+            --text-muted: #8a6a7c;
+            --border: rgba(0, 0, 0, 0.06);
+            --shadow-opacity: 0.06;
+        }
+
+        :root[data-theme="ocean"] {
+            --bg-body: #f0f8ff;
+            --bg-card: #ffffff;
+            --bg-glass: rgba(240, 248, 255, 0.85);
+            --text-primary: #1e3a8a;
+            --text-muted: #64748b;
+            --border: rgba(0, 0, 0, 0.06);
+            --shadow-opacity: 0.06;
+        }
+
+        .theme-picker-wrap {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .theme-picker {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, var(--shadow-opacity, 0.05));
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="theme-picker-wrap">
+        <select id="themeSelect" class="theme-picker" onchange="changeTheme(this.value)">
+            <option value="light">Light Theme ☀️</option>
+            <option value="dark">Dark Theme 🌙</option>
+            <option value="blush">Blush Theme 🌸</option>
+            <option value="ocean">Ocean Theme 🌊</option>
+        </select>
+    </div>
+
+
+    <!-- Floating particles -->
+    <div id="particles-bg"></div>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+        <div class="hero-orb orb-a"></div>
+        <div class="hero-orb orb-b"></div>
+        <div class="hero-orb orb-c"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Biodata
+            </div>
+
+            <h1 class="hero-title">
+                <span class="gradient-name">Birat Saha</span>
+            </h1>
+
+            <div class="hero-info-row">
+                <span class="hero-info-chip"><i class="bi bi-geo-alt-fill"></i> Laksam, Bangladesh</span>
+                <span class="hero-info-chip"><i class="bi bi-calendar3"></i> 9 Jan 1995 · Age 31</span>
+                <span class="hero-info-chip"><i class="bi bi-stars"></i> Sagittarius ♐</span>
+                <span class="hero-info-chip"><i class="bi bi-eye-fill"></i> Black Eyes</span>
+                <span class="hero-info-chip"><i class="bi bi-person-fill"></i> 5'10"</span>
+                <span class="hero-info-chip"><i class="bi bi-globe2"></i> BD &amp; USA 🇧🇩🇺🇸</span>
+                <span class="hero-info-chip"><i class="bi bi-egg-fried"></i> Omnivore 🍳🥬</span>
+            </div>
+
+            <div class="scroll-hint">
+                <span>Scroll to explore</span>
+                <i class="bi bi-chevron-double-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ABOUT ME ========== -->
+    <section class="section">
+        <div class="section-label reveal">
+            <div class="section-tag">Who I Am</div>
+            <h2 class="section-title">About <span class="hl">Me</span></h2>
+        </div>
+
+        <div class="about-card reveal">
+            <div>
+                <div class="avatar-ring">
+                    <div class="avatar-inner">🧔</div>
+                </div>
+            </div>
+            <div>
+                <div class="about-name">Birat Saha</div>
+                <div class="about-tagline">Bangladeshi - Hindu - Sagittarius ♐</div>
+                <div class="about-details">
+                    <div class="detail-item"><i class="bi bi-cake2-fill"></i><span><span class="detail-label">Birth
+                                Year:</span> 1995</span></div>
+                    <div class="detail-item"><i class="bi bi-rulers"></i><span><span class="detail-label">Height:</span>
+                            5 feet 10 inches</span></div>
+                    <div class="detail-item"><i class="bi bi-eye-fill"></i><span><span class="detail-label">Eyes:</span>
+                            Black</span></div>
+                    <div class="detail-item"><i class="bi bi-egg-fried"></i><span><span
+                                class="detail-label">Food:</span> Omnivore 🍳🥬</span></div>
+                    <div class="detail-item"><i class="bi bi-stars"></i><span><span class="detail-label">Zodiac:</span>
+                            Sagittarius ♐</span></div>
+                    <div class="detail-item"><i class="bi bi-house-heart-fill"></i><span><span
+                                class="detail-label">Hometown:</span> Laksam, BD</span></div>
+                    <div class="detail-item"><i class="bi bi-globe2"></i><span><span class="detail-label">Based:</span>
+                            USA 🇺🇸 (On Work Visa)</span></div>
+                    <div class="detail-item"><i class="bi bi-flag-fill"></i><span><span
+                                class="detail-label">Citizenship:</span>
+                            Bangladesh 🇧🇩</span></div>
+                    <div class="detail-item"><i class="bi bi-mortarboard-fill"></i><span><span
+                                class="detail-label">Degree:</span> M.S Computer Science</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== EDUCATION & WORK ========== -->
+    <section class="section">
+        <div class="section-label reveal">
+            <div class="section-tag">Career &amp; Studies</div>
+            <h2 class="section-title">Education &amp; <span class="hl">Work</span></h2>
+        </div>
+
+        <div class="heart-flex reveal">
+
+            <div class="crit-card"
+                style="text-align:left; background:rgba(124,58,237,0.05); border-color:rgba(124,58,237,0.3); padding:1.5rem; justify-content:flex-start;">
+                <div class="crit-indicator" style="align-items:flex-start;">
+                    <span class="status-badge" style="background:rgba(124,58,237,0.2); color:#6d28d9;"><i
+                            class="bi bi-mortarboard-fill"></i> Education</span>
+                </div>
+                <div class="crit-info" style="margin-top:1rem;">
+                    <div class="crit-name">Education</div>
+                    <div class="crit-sub" style="margin-top:8px;">
+                        <strong>Lamar University</strong> — Texas, USA (2022)<br />
+                        <strong>East West University</strong> — BD (2018)
+                    </div>
+                </div>
+            </div>
+
+            <div class="crit-card"
+                style="text-align:left; background:rgba(96,165,250,0.05); border-color:rgba(96,165,250,0.3); padding:1.5rem; justify-content:flex-start;">
+                <div class="crit-indicator" style="align-items:flex-start;">
+                    <span class="status-badge" style="background:rgba(96,165,250,0.2); color:#1d4ed8;"><i
+                            class="bi bi-briefcase-fill"></i> Work Experience</span>
+                </div>
+                <div class="crit-info" style="margin-top:1rem;">
+                    <div class="crit-name">Software Developer</div>
+                    <div class="crit-sub" style="margin-top:8px;">Currently working in the United States on a work visa.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========== FAMILY ========== -->
+    <section class="section">
+        <div class="section-label reveal">
+            <div class="section-tag">My Roots</div>
+            <h2 class="section-title">My <span class="hl">Family</span></h2>
+        </div>
+
+        <!-- ANIMATED FAMILY TREE SVG -->
+        <div class="family-tree-wrap reveal" style="margin-bottom:2rem;">
+            <svg id="familyTreeSvg" viewBox="0 0 980 400" xmlns="http://www.w3.org/2000/svg"
+                style="font-family:'Outfit',sans-serif;">
+
+                <!--
+                Layout:
+                ROW 1 (y=44):  [Parents: Anjan+Rita]  --dashed--  [Uncle/Aunt: Gour+Gita]
+                ROW 2 (y=240): [Amit+Shiva ♥]  [Akash]  [Birat✨]  [Sarat]
+
+                Parents  → Amit+Shiva (rose, fork at y=175)
+                Parents  → Birat      (rose, fork at y=175)
+                Uncle    → Akash      (gold, fork at y=195)
+                Uncle    → Sarat      (gold, fork at y=195)
+              -->
+
+                <!-- Sibling connector between parent families (dashed) -->
+                <line x1="490" y1="84" x2="580" y2="84" stroke="rgba(0,0,0,0.1)" stroke-width="1.5"
+                    stroke-dasharray="5,4" />
+
+                <!-- ── PARENTS BRANCH (rose) ── -->
+                <!-- Vertical drop from Parents centre (x=380) -->
+                <line x1="380" y1="124" x2="380" y2="175" stroke="rgba(232,93,117,0.45)" stroke-width="1.8" />
+                <!-- Horizontal fork: Amit+Shiva centre(x=118) → Birat centre(x=538) -->
+                <line x1="118" y1="175" x2="538" y2="175" stroke="rgba(232,93,117,0.35)" stroke-width="1.8" />
+                <!-- Down to Amit+Shiva -->
+                <line x1="118" y1="175" x2="118" y2="240" stroke="rgba(232,93,117,0.35)" stroke-width="1.8" />
+                <!-- Down to Birat (brighter) -->
+                <line x1="538" y1="175" x2="538" y2="240" stroke="rgba(232,93,117,0.6)" stroke-width="2.2" />
+
+                <!-- ── UNCLE/AUNT BRANCH (gold) ── -->
+                <!-- Vertical drop from Uncle centre (x=715) -->
+                <line x1="715" y1="124" x2="715" y2="195" stroke="rgba(245,166,35,0.4)" stroke-width="1.8" />
+                <!-- Horizontal fork: Akash centre(x=325) → Sarat centre(x=833) -->
+                <line x1="325" y1="195" x2="833" y2="195" stroke="rgba(245,166,35,0.3)" stroke-width="1.8" />
+                <!-- Down to Akash -->
+                <line x1="325" y1="195" x2="325" y2="240" stroke="rgba(245,166,35,0.35)" stroke-width="1.8" />
+                <!-- Down to Sarat -->
+                <line x1="833" y1="195" x2="833" y2="240" stroke="rgba(245,166,35,0.35)" stroke-width="1.8" />
+
+                <!-- ══ ROW 1: PARENTS (left-centre) ══ -->
+                <!-- x=270, w=220, centre-x=380 -->
+                <g transform="translate(270,44)">
+                    <rect rx="13" ry="13" width="220" height="80" fill="var(--bg-card)" stroke="rgba(232,93,117,0.38)"
+                        stroke-width="1.8" />
+                    <text x="110" y="26" text-anchor="middle" font-size="9" fill="#e85d75" font-weight="700"
+                        letter-spacing="1.5">PARENTS</text>
+                    <text x="110" y="48" text-anchor="middle" font-size="13" fill="var(--text-primary)"
+                        font-weight="700">Anjan
+                        &amp; Rita Saha</text>
+                    <text x="110" y="66" text-anchor="middle" font-size="9.5" fill="var(--text-muted)">Business ·
+                        Housewife</text>
+                </g>
+
+                <!-- ══ ROW 1: UNCLE & AUNT (right) ══ -->
+                <!-- x=580, w=270, centre-x=715 -->
+                <g transform="translate(580,44)">
+                    <rect rx="13" ry="13" width="270" height="80" fill="var(--bg-card)" stroke="rgba(245,166,35,0.3)"
+                        stroke-width="1.4" />
+                    <text x="135" y="26" text-anchor="middle" font-size="9" fill="#f5a623" font-weight="700"
+                        letter-spacing="1.5">PATERNAL UNCLE &amp; AUNT</text>
+                    <text x="135" y="48" text-anchor="middle" font-size="13" fill="var(--text-primary)"
+                        font-weight="700">Gour &amp;
+                        Gita Saha</text>
+                    <text x="135" y="66" text-anchor="middle" font-size="9.5" fill="var(--text-muted)">Business ·
+                        Housewife</text>
+                </g>
+
+                <!-- ══ ROW 2 ══ -->
+
+                <!-- 1. AMIT + SHIVA (couple) — x=18, w=200, centre-x=118 -->
+                <g transform="translate(18,240)">
+                    <rect rx="12" ry="12" width="200" height="80" fill="var(--bg-card)" stroke="rgba(96,165,250,0.3)"
+                        stroke-width="1.4" />
+                    <!-- heart connector between names -->
+                    <text x="100" y="24" text-anchor="middle" font-size="9" fill="#60a5fa" font-weight="700"
+                        letter-spacing="1.2">ELDER BROTHER + WIFE</text>
+                    <text x="100" y="46" text-anchor="middle" font-size="12" fill="var(--text-primary)"
+                        font-weight="700">Amit
+                        Saha</text>
+                    <text x="100" y="60" text-anchor="middle" font-size="11" fill="#c084fc">♥ Shiva</text>
+                    <text x="100" y="74" text-anchor="middle" font-size="8.5" fill="var(--text-muted)"> 🇺🇸 ·
+                        🇧🇩</text>
+                </g>
+
+                <!-- 2. AKASH — x=250, w=130, centre-x=315  (shifted to ≈325) -->
+                <g transform="translate(260,240)">
+                    <rect rx="11" ry="11" width="130" height="80" fill="var(--bg-card)" stroke="rgba(245,166,35,0.25)"
+                        stroke-width="1.2" />
+                    <text x="65" y="24" text-anchor="middle" font-size="9" fill="#f5a623" font-weight="600">1ST
+                        COUSIN</text>
+                    <text x="65" y="46" text-anchor="middle" font-size="12" fill="var(--text-primary)"
+                        font-weight="700">🇧🇩 Akash</text>
+                    <text x="65" y="62" text-anchor="middle" font-size="11" fill="var(--text-primary)">Saha</text>
+                </g>
+
+                <!-- 3. BIRAT — x=438, w=200, centre-x=538 (animated) -->
+                <g class="birat-node-group" transform="translate(438,230)">
+                    <rect class="birat-circle" rx="14" ry="14" width="200" height="92" fill="rgba(232,93,117,0.12)"
+                        stroke="#e85d75" stroke-width="2.5" />
+                    <text x="100" y="24" text-anchor="middle" font-size="9" fill="#e85d75" font-weight="700"
+                        letter-spacing="1.8">ME ✨</text>
+                    <text x="100" y="47" text-anchor="middle" font-size="15" fill="var(--text-primary)"
+                        font-weight="800">Birat
+                        Saha</text>
+                    <text x="100" y="65" text-anchor="middle" font-size="8.5" fill="var(--text-muted)"> BD /
+                        USA</text>
+                </g>
+
+                <!-- 4. SARAT — x=768, w=130, centre-x=833 -->
+                <g transform="translate(768,240)">
+                    <rect rx="11" ry="11" width="130" height="80" fill="var(--bg-card)" stroke="rgba(245,166,35,0.2)"
+                        stroke-width="1.2" />
+                    <text x="65" y="24" text-anchor="middle" font-size="9" fill="#f5a623" font-weight="600">2ND
+                        COUSIN</text>
+                    <text x="65" y="46" text-anchor="middle" font-size="12" fill="var(--text-primary)"
+                        font-weight="700">🇧🇩 Sarat</text>
+                    <text x="65" y="62" text-anchor="middle" font-size="11" fill="var(--text-primary)">Saha</text>
+                </g>
+
+                <!-- ── LEGEND ── -->
+                <g transform="translate(18,365)">
+                    <rect rx="6" ry="6" width="8" height="8" x="0" y="2" fill="#e85d75" opacity="0.85" />
+                    <text x="14" y="10" font-size="9" fill="var(--text-muted)">= You</text>
+                    <rect rx="6" ry="6" width="8" height="8" x="65" y="2" fill="#60a5fa" opacity="0.75" />
+                    <text x="79" y="10" font-size="9" fill="var(--text-muted)">= Siblings / Couple</text>
+                    <rect rx="6" ry="6" width="8" height="8" x="185" y="2" fill="#f5a623" opacity="0.75" />
+                    <text x="199" y="10" font-size="9" fill="var(--text-muted)">= Extended Family</text>
+                    <line x1="320" y1="6" x2="346" y2="6" stroke="rgba(0,0,0,0.2)" stroke-width="1.5"
+                        stroke-dasharray="4,4" />
+                    <text x="352" y="10" font-size="9" fill="var(--text-muted)">= Family connection</text>
+                </g>
+
+            </svg>
+        </div>
+
+        <!-- Family member cards -->
+        <div class="family-grid reveal">
+
+            <div class="birat-center">
+                <div class="fm-node-card"
+                    style="border-color:rgba(232,93,117,0.4);background:linear-gradient(135deg,rgba(232,93,117,0.1),rgba(245,166,35,0.06));">
+                    <div class="fm-avatar" style="background:rgba(232,93,117,0.15);color:#e85d75;">🧔</div>
+                    <div>
+                        <div class="fm-rel">YOU</div>
+                        <div class="fm-name">Birat Saha</div>
+                        <div class="fm-role">Senior Developer · BD / USA 🌏</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fm-node-card">
+                <div class="fm-avatar" style="background:rgba(232,93,117,0.1);color:#e85d75;">👩</div>
+                <div>
+                    <div class="fm-rel">Mother</div>
+                    <div class="fm-name">Rita Saha</div>
+                    <div class="fm-role">Housewife 🏠</div>
+                </div>
+            </div>
+
+            <div class="fm-node-card">
+                <div class="fm-avatar" style="background:rgba(245,166,35,0.1);color:#f5a623;">👨‍💼</div>
+                <div>
+                    <div class="fm-rel">Father</div>
+                    <div class="fm-name">Anjan Saha</div>
+                    <div class="fm-role">Business 💼</div>
+                </div>
+            </div>
+
+            <div class="fm-node-card">
+                <div class="fm-avatar" style="background:rgba(96,165,250,0.1);color:#60a5fa;">👨‍💻</div>
+                <div>
+                    <div class="fm-rel">Elder Brother</div>
+                    <div class="fm-name">Amit Saha</div>
+                    <div class="fm-role">IT · United States 🇺🇸</div>
+                </div>
+            </div>
+
+            <div class="fm-node-card">
+                <div class="fm-avatar" style="background:rgba(167,139,250,0.1);color:#a78bfa;">👩</div>
+                <div>
+                    <div class="fm-rel">Sister-in-law</div>
+                    <div class="fm-name">Shiva</div>
+                    <div class="fm-role">Working · Dhaka 🇧🇩</div>
+                </div>
+            </div>
+
+            <div class="fm-node-card">
+                <div class="fm-avatar" style="background:rgba(245,166,35,0.1);color:#f5a623;">👵</div>
+                <div>
+                    <div class="fm-rel">Aunt (Paternal)</div>
+                    <div class="fm-name">Gita Saha</div>
+                    <div class="fm-role">Housewife 🏠</div>
+                </div>
+            </div>
+
+            <div class="fm-node-card">
+                <div class="fm-avatar" style="background:rgba(245,166,35,0.1);color:#f5a623;">👴</div>
+                <div>
+                    <div class="fm-rel">Uncle (Paternal)</div>
+                    <div class="fm-name">Gour Saha</div>
+                    <div class="fm-role">Business 💼</div>
+                </div>
+            </div>
+
+            <div class="fm-node-card">
+                <div class="fm-avatar" style="background:rgba(34,197,94,0.1);color:#22c55e;">🧑</div>
+                <div>
+                    <div class="fm-rel">1st Cousin</div>
+                    <div class="fm-name">Akash Saha</div>
+                    <div class="fm-role">Son of Gour &amp; Gita</div>
+                </div>
+            </div>
+
+            <div class="fm-node-card">
+                <div class="fm-avatar" style="background:rgba(34,197,94,0.08);color:#22c55e;">🧑</div>
+                <div>
+                    <div class="fm-rel">2nd Cousin</div>
+                    <div class="fm-name">Sarat Saha</div>
+                    <div class="fm-role">Son of Gour &amp; Gita</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========== MY LIKINGS ========== -->
+    <section class="section">
+        <div class="section-label reveal">
+            <div class="section-tag">Who I Am</div>
+            <h2 class="section-title">My <span class="hl">Likings</span></h2>
+        </div>
+
+        <div class="likings-grid">
+
+            <div class="liking-card reveal" style="animation-delay:0.05s">
+                <div class="liking-icon" style="background:rgba(34,197,94,0.12);color:#22c55e;">�‍♂️</div>
+                <div>
+                    <div class="liking-title">Exercise &amp; Fitness</div>
+                    <div class="liking-desc">I make time for exercise to stay healthy and active.</div>
+                </div>
+            </div>
+
+            <div class="liking-card reveal" style="animation-delay:0.08s">
+                <div class="liking-icon" style="background:rgba(56,189,248,0.12);color:#38bdf8;">⚽</div>
+                <div>
+                    <div class="liking-title">Sports</div>
+                    <div class="liking-desc">Passionate about sports — love to play and keep up with games.</div>
+                </div>
+            </div>
+
+            <div class="liking-card reveal" style="animation-delay:0.1s">
+                <div class="liking-icon" style="background:rgba(124,58,237,0.12);color:#a78bfa;">📖</div>
+                <div>
+                    <div class="liking-title">Religious Books &amp; History</div>
+                    <div class="liking-desc">Deep interest in religious texts, spiritual wisdom, and world history.
+                    </div>
+                </div>
+            </div>
+
+            <div class="liking-card reveal" style="animation-delay:0.15s">
+                <div class="liking-icon" style="background:rgba(239,68,68,0.04);color:#ef4444;">🚭</div>
+                <div>
+                    <div class="liking-title">No Smoking</div>
+                    <div class="liking-desc">Non-smoker. A smoke-free life is a priority.</div>
+                </div>
+            </div>
+
+            <div class="liking-card reveal" style="animation-delay:0.2s">
+                <div class="liking-icon" style="background:rgba(96,165,250,0.12);color:#60a5fa;">🧘</div>
+                <div>
+                    <div class="liking-title">Calm Minded</div>
+                    <div class="liking-desc">Even-tempered, patient, and composed in all situations.</div>
+                </div>
+            </div>
+
+            <div class="liking-card reveal" style="animation-delay:0.25s">
+                <div class="liking-icon" style="background:rgba(245,166,35,0.12);color:#f5a623;">🙏</div>
+                <div>
+                    <div class="liking-title">Simple &amp; Grounded</div>
+                    <div class="liking-desc">Don't own much — values experience &amp; relationships over possessions.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========== WHAT I'M LOOKING FOR ========== -->
+    <section class="section">
+        <div class="section-label reveal">
+            <div class="section-tag">My Preferences</div>
+            <h2 class="section-title">What I'm <span class="hl">Looking For</span></h2>
+        </div>
+
+        <!-- MIND & EDUCATION -->
+        <div class="section-divider"></div>
+        <div class="cat-header reveal">
+            <i class="bi bi-lightbulb-fill"
+                style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(124,58,237,0.15);color:#a78bfa;flex-shrink:0;"></i>
+            <div>
+                <div class="cat-label">🧠 Mind &amp; Education</div>
+                <div class="cat-desc">Intellectual compatibility matters deeply</div>
+            </div>
+        </div>
+
+        <div class="mind-timeline">
+
+            <div class="crit-card yes reveal" style="animation-delay:0.05s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Education</div>
+                    <div class="crit-name">Graduate</div>
+                    <div class="crit-sub">Minimum educational qualification</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">MUST</span>
+                    <div class="emoji-row">✅✅✅</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.1s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Ambition</div>
+                    <div class="crit-name">Working Mindset</div>
+                    <div class="crit-sub">Has a drive and goal-oriented approach to life</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">MUST</span>
+                    <div class="emoji-row">✅✅✅</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.15s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Creative Soul</div>
+                    <div class="crit-name">Passion for Arts</div>
+                    <div class="crit-sub">Love for arts, culture, or any creative outlet</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">YES</span>
+                    <div class="emoji-row">✅</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.2s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Culture</div>
+                    <div class="crit-name">Arts / Cultural Activity</div>
+                    <div class="crit-sub">Actively engaged in cultural pursuits</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">YES</span>
+                    <div class="emoji-row">✅</div>
+                </div>
+            </div>
+
+            <div class="crit-card neutral reveal" style="animation-delay:0.25s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Humor</div>
+                    <div class="crit-name">Witty</div>
+                    <div class="crit-sub">Sense of playfulness — nice to have!</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-ok">Flexible</span>
+                    <div class="emoji-row">🫰</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.3s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Humor</div>
+                    <div class="crit-name">Sense of Humor</div>
+                    <div class="crit-sub">Life's better with laughter 😄</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">YES</span>
+                    <div class="emoji-row">✅</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- HEART & VALUES -->
+        <div class="section-divider"></div>
+        <div class="cat-header reveal">
+            <i class="bi bi-heart-fill"
+                style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(245,166,35,0.15);color:var(--accent2);flex-shrink:0;"></i>
+            <div>
+                <div class="cat-label">💛 Heart &amp; Values</div>
+                <div class="cat-desc">Character, kindness, and genuine spirit</div>
+            </div>
+        </div>
+
+        <div class="heart-flex">
+
+            <div class="crit-card yes reveal" style="animation-delay:0.05s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Spirit</div>
+                    <div class="crit-name">Welcoming</div>
+                    <div class="crit-sub">Warm, open-hearted personality</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">MUST</span>
+                    <div class="emoji-row">✅✅✅</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.1s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Gratitude</div>
+                    <div class="crit-name">Grateful</div>
+                    <div class="crit-sub">Appreciates the small things in life</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">MUST</span>
+                    <div class="emoji-row">✅✅✅</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.15s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Class</div>
+                    <div class="crit-name">Classy / Dignified</div>
+                    <div class="crit-sub">Carries herself with grace</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">YES</span>
+                    <div class="emoji-row">✅✅</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.2s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Faith</div>
+                    <div class="crit-name">Religious Belief</div>
+                    <div class="crit-sub">Hindu / Jain / Buddhist background</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">MUST</span>
+                    <div class="emoji-row">✅✅✅</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LIFESTYLE -->
+        <div class="section-divider"></div>
+        <div class="cat-header reveal">
+            <i class="bi bi-house-heart-fill"
+                style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(34,197,94,0.15);color:var(--green);flex-shrink:0;"></i>
+            <div>
+                <div class="cat-label">🏠 Lifestyle &amp; Family</div>
+                <div class="cat-desc">Home, roots, and how we'll live together</div>
+            </div>
+        </div>
+
+        <div class="criteria-grid">
+
+            <div class="crit-card yes reveal" style="animation-delay:0.05s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Diet</div>
+                    <div class="crit-name">Food Habit</div>
+                    <div class="crit-sub">Omnivore preferred</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">YES</span>
+                    <div class="emoji-row">🍗</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.1s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Location</div>
+                    <div class="crit-name">Based In</div>
+                    <div class="crit-sub">Bangladesh or USA preferred</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-ok">BD or USA</span>
+                    <div class="emoji-row">🇧🇩🇺🇸</div>
+                </div>
+            </div>
+
+            <div class="crit-card yes reveal" style="animation-delay:0.15s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Cooking</div>
+                    <div class="crit-name">Can Cook</div>
+                    <div class="crit-sub">A home-cooked meal is love in a bowl 🍲</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-yes">MUST</span>
+                    <div class="emoji-row">✅✅✅</div>
+                </div>
+            </div>
+
+            <div class="crit-card neutral reveal" style="animation-delay:0.2s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Home</div>
+                    <div class="crit-name">Home Oriented</div>
+                    <div class="crit-sub">Values home life and family time</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-ok">Flexible</span>
+                    <div class="emoji-row">🫰</div>
+                </div>
+            </div>
+
+            <div class="crit-card neutral reveal" style="animation-delay:0.25s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Fitness</div>
+                    <div class="crit-name">Do Exercise</div>
+                    <div class="crit-sub">A healthy lifestyle is a plus</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-ok">Doesn't Matter</span>
+                    <div class="emoji-row">🫰</div>
+                </div>
+            </div>
+
+            <div class="crit-card neutral reveal" style="animation-delay:0.3s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Wealth</div>
+                    <div class="crit-name">Family Wealth</div>
+                    <div class="crit-sub">Not a criterion — love over luxury</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-ok">Doesn't Matter</span>
+                    <div class="emoji-row">🫰</div>
+                </div>
+            </div>
+
+            <div class="crit-card neutral reveal" style="animation-delay:0.35s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Compatibility</div>
+                    <div class="crit-name">Zodiac Sign</div>
+                    <div class="crit-sub">Stars are just stories — not dealbreakers</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-ok">Doesn't Matter</span>
+                    <div class="emoji-row">🫰</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- DEALBREAKERS -->
+        <div class="section-divider"></div>
+        <div class="cat-header reveal">
+            <i class="bi bi-x-octagon-fill"
+                style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(239,68,68,0.15);color:var(--red);flex-shrink:0;"></i>
+            <div>
+                <div class="cat-label">🚫 Hard No's — Dealbreakers</div>
+                <div class="cat-desc">These are absolute non-negotiables</div>
+            </div>
+        </div>
+
+        <div class="criteria-grid">
+
+            <div class="crit-card no reveal" style="animation-delay:0.05s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Personality</div>
+                    <div class="crit-name">Arrogant</div>
+                    <div class="crit-sub">Ego before empathy is a hard pass</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-no">NO</span>
+                    <div class="emoji-row">⛔</div>
+                </div>
+            </div>
+
+            <div class="crit-card no reveal" style="animation-delay:0.1s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Personality</div>
+                    <div class="crit-name">Greed</div>
+                    <div class="crit-sub">Materialistic mindset — absolute dealbreaker</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-no">HARD NO</span>
+                    <div class="emoji-row">⛔⛔⛔</div>
+                </div>
+            </div>
+
+            <div class="crit-card no reveal" style="animation-delay:0.15s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Personality</div>
+                    <div class="crit-name">Narcissist</div>
+                    <div class="crit-sub">Self-obsession destroys relationships</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-no">HARD NO</span>
+                    <div class="emoji-row">⛔⛔⛔</div>
+                </div>
+            </div>
+
+            <div class="crit-card no reveal" style="animation-delay:0.2s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Behavior</div>
+                    <div class="crit-name">Loud / Aggressive</div>
+                    <div class="crit-sub">Loud behavior and verbal aggression are a no</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-no">ABSOLUTE NO</span>
+                    <div class="emoji-row">⛔⛔⛔⛔</div>
+                </div>
+            </div>
+
+            <div class="crit-card no reveal" style="animation-delay:0.25s">
+                <div class="shimmer-line"></div>
+                <div class="crit-info">
+                    <div class="crit-subject">Digital Habit</div>
+                    <div class="crit-name">Frequent Social Media</div>
+                    <div class="crit-sub">Constant social media obsession is a no</div>
+                </div>
+                <div class="crit-indicator">
+                    <span class="status-badge badge-no">NO</span>
+                    <div class="emoji-row">⛔⛔⛔</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MUST ACCEPT -->
+        <div class="section-divider"></div>
+        <div class="cat-header reveal">
+            <i class="bi bi-check2-circle"
+                style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;background:rgba(34,197,94,0.15);color:var(--green);flex-shrink:0;"></i>
+            <div>
+                <div class="cat-label">💍 Non-Negotiable Expectations</div>
+                <div class="cat-desc">The foundation of our future together</div>
+            </div>
+        </div>
+
+        <div class="about-card reveal" style="grid-template-columns:1fr; padding: 2rem 2rem;">
+            <div>
+                <p style="font-size:1.05rem; line-height:1.9; color: var(--text-primary);">
+                    💍 <strong>Will accept me and my family</strong> — wholeheartedly, without conditions.<br />
+                    🇧🇩 <strong>Very clear about Bangladeshi marriage</strong> — understanding our roots, traditions,
+                    and culture is essential.<br />
+                    ❤️ Someone who is ready to build a life together, full of love, respect, and shared dreams.
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="page-footer">
+        <p>Made with <span class="heart"></span> by Birat Saha &nbsp;·&nbsp; Hoping to find the one 🌙</p>
+        <p style="margin-top:8px;font-size:0.78rem;opacity:0.5;">Biodata · Private &amp; Personal</p>
+    </footer>
+
+    <script>
+        // ---- PARTICLE SYSTEM ----
+        const bg = document.getElementById('particles-bg');
+        const colors = ['#e85d75', '#f5a623', '#7c3aed', '#22c55e', '#60a5fa'];
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'particle';
+            const size = Math.random() * 14 + 4;
+            el.style.cssText = `
+        width:${size}px; height:${size}px;
+        left:${Math.random() * 100}%;
+        background:${colors[Math.floor(Math.random() * colors.length)]};
+        animation-duration:${Math.random() * 20 + 15}s;
+        animation-delay:${Math.random() * 15}s;
+      `;
+            bg.appendChild(el);
+        }
+
+        // ---- SCROLL REVEAL ----
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('visible'); }
+            });
+        }, { threshold: 0.1 });
+        reveals.forEach(r => observer.observe(r));
+
+        // ---- RATING BARS ANIMATE ----
+        const barObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    const fill = e.target.querySelector('.rating-bar-fill');
+                    if (fill) {
+                        const w = fill.dataset.width || 50;
+                        fill.style.width = w + '%';
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.rating-bar-wrap').forEach(el => barObserver.observe(el));
+
+        // ---- CARD STAGGER ----
+        document.querySelectorAll('.crit-card').forEach((card, i) => {
+            card.style.animationDelay = (i * 0.05 + 0.1) + 's';
+        });
+    </script>
+
+
+    <script>
+        function changeTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('biodata-theme', theme);
+        }
+
+        // Load saved theme on initialization
+        const savedTheme = localStorage.getItem('biodata-theme') || 'light';
+        document.getElementById('themeSelect').value = savedTheme;
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+
+</body>
+
+</html>
