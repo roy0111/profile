@@ -625,6 +625,209 @@
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">Lambda expressions, Stream API optimization, lazy evaluation lifecycle, CompletableFuture pipelines, and modern Java (Java 11-17) features like Records, Sealed Classes, and Pattern Matching.</p>
+                    <div class="qa-card" id="q-java-future-vs-completablefuture">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What is the difference between Future and CompletableFuture in Java? How do you compose them?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Future:</span> Introduced in Java 5, <span class="classname">Future</span> represents the result of an asynchronous computation. However, it has no callback capabilities; you must block the executing thread by calling <span class="keyword">get()</span> or poll in a loop using <span class="keyword">isDone()</span> to retrieve results.</p>
+            <p><span class="bold-white">CompletableFuture:</span> Introduced in Java 8, <span class="classname">CompletableFuture</span> implements <span class="classname">Future</span> and <span class="classname">CompletionStage</span>. It provides a rich set of non-blocking monadic methods, enabling you to build asynchronous pipelines with callbacks and reactive mappings.</p>
+            <p><span class="bold-white">Pipeline Composition:</span> You can chain asynchronous tasks using <span class="keyword">thenApply</span> (transform value), <span class="keyword">thenCompose</span> (flatmap another future), and <span class="keyword">thenCombine</span> (join two independent futures). It also integrates exception handlers like <span class="keyword">exceptionally</span> to resolve pipeline failures gracefully.</p>
+            <p><span class="bold-white">Thread Management:</span> If no custom executor is supplied, actions run in the common ForkJoinPool thread context. CompletableFuture methods ending in "Async" allow offloading tasks to specific thread pools to prevent blocking core app resources.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>CompletableFuturePipeline.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class CompletableFuturePipeline {
+    public static void main(String[] args) throws Exception {
+        ExecutorService customPool = Executors.newFixedThreadPool(4);
+
+        // Chain async operations with exception handling and timeouts
+        CompletableFuture.supplyAsync(() -&gt; {
+            System.out.println(&quot;Fetching user on: &quot; + Thread.currentThread().getName());
+            return &quot;User-99&quot;;
+        }, customPool)
+        .thenApplyAsync(userId -&gt; {
+            System.out.println(&quot;Processing profile on: &quot; + Thread.currentThread().getName());
+            return userId + &quot; (Senior Developer)&quot;;
+        }, customPool)
+        .thenCompose(profile -&gt; CompletableFuture.supplyAsync(() -&gt; profile + &quot; | Score: 98&quot;))
+        .exceptionally(ex -&gt; {
+            System.err.println(&quot;Pipeline failed: &quot; + ex.getMessage());
+            return &quot;Fallback Profile&quot;;
+        })
+        .thenAccept(result -&gt; System.out.println(&quot;Final Result: &quot; + result));
+
+        // Sleep main thread briefly to allow async pipeline execution
+        Thread.sleep(1000);
+        customPool.shutdown();
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-java-javax-vs-jakarta">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain the transition from javax to jakarta package namespace in modern Enterprise Java. What are the key implications?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Migration History:</span> Oracle transferred control of Java EE to the Eclipse Foundation in 2017. As part of this transition, Oracle retained ownership of the "java" and "javax" trademarks, meaning the Eclipse Foundation was forbidden from modifying APIs under the <span class="keyword">javax.*</span> namespace.</p>
+            <p><span class="bold-white">Namespace Change:</span> To evolve the specifications, Eclipse rebranded Java EE to Jakarta EE. Starting with Jakarta EE 9, all enterprise APIs transitioned from the <span class="keyword">javax.*</span> package namespace to the <span class="keyword">jakarta.*</span> namespace (e.g., servlet, JPA, validation).</p>
+            <p><span class="bold-white">Key Implications:</span> Modern frameworks (Spring Boot 3.x, Hibernate 6.x) depend on Jakarta EE 10. Existing applications migrating to these versions must update all imports (e.g., from <span class="classname">javax.persistence.*</span> to <span class="classname">jakarta.persistence.*</span>) or use build tool transformation plugins.</p>
+            <p><span class="bold-white">Compatibility:</span> Legacy libraries using <span class="keyword">javax.*</span> will crash at runtime with <span class="classname">NoClassDefFoundError</span> in modern application servers (like Tomcat 10+ or WildFly 27+) unless an active class bytecode transformation layer is configured.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>NamespaceMigrationDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">// OLD WAY (Java EE / Spring Boot 2.x)
+// import javax.persistence.Entity;
+// import javax.persistence.Id;
+// import javax.persistence.Table;
+// import javax.servlet.http.HttpServletRequest;
+
+// NEW WAY (Jakarta EE / Spring Boot 3.x)
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+
+@Entity
+@Table(name = &quot;users&quot;)
+public class NamespaceMigrationDemo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String username;
+
+    public NamespaceMigrationDemo() {}
+
+    public Long getId() { return id; }
+    public String getUsername() { return username; }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-java-lambda-functional-predicate">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What is a Lambda Expression in Java? Compare general Functional Interfaces with the java.util.function.Predicate interface.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Lambda Expression:</span> A lambda expression is a short block of code that accepts parameters and returns a value. It provides a clean, expressive way to represent a functional interface inline without creating an anonymous class boilerplate, improving readability in stream operations.</p>
+            <p><span class="bold-white">Functional Interface:</span> A functional interface is any interface that contains exactly one abstract method (Single Abstract Method - SAM). It can contain multiple default or static methods, and is marked with the optional <span class="keyword">@FunctionalInterface</span> annotation to enforce compilation checks.</p>
+            <p><span class="bold-white">Predicate Interface:</span> <span class="classname">Predicate&lt;T&gt;</span> is a built-in functional interface defined in <span class="keyword">java.util.function</span>. It declares a single abstract method <span class="keyword">boolean test(T t)</span>, designed to evaluate an input object against a condition and return a boolean.</p>
+            <p><span class="bold-white">Comparison:</span> While a general functional interface can return any type or throw custom checked exceptions, <span class="classname">Predicate</span> is strictly a boolean-valued function. Predicates can also be chained together using default methods like <span class="keyword">and()</span>, <span class="keyword">or()</span>, and <span class="keyword">negate()</span>.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>LambdaPredicateDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+public class LambdaPredicateDemo {
+    public static void main(String[] args) {
+        List&lt;String&gt; frameworkList = List.of(&quot;Spring&quot;, &quot;React&quot;, &quot;Kafka&quot;, &quot;Hibernate&quot;, &quot;Angular&quot;);
+
+        // 1. Defining a Predicate using a Lambda expression
+        Predicate&lt;String&gt; startWithS = str -&gt; str.startsWith(&quot;S&quot;);
+        Predicate&lt;String&gt; longName = str -&gt; str.length() &gt; 5;
+
+        // 2. Chaining Predicates using default methods
+        Predicate&lt;String&gt; combinedCondition = startWithS.or(longName);
+
+        List&lt;String&gt; filteredList = frameworkList.stream()
+            .filter(combinedCondition)
+            .collect(Collectors.toList());
+
+        System.out.println(&quot;Filtered: &quot; + filteredList);
+
+        // 3. Custom Functional Interface usage
+        Formatter uppercaseFormatter = text -&gt; text.toUpperCase();
+        System.out.println(&quot;Custom Format: &quot; + uppercaseFormatter.format(&quot;valorepos&quot;));
+    }
+}
+
+@FunctionalInterface
+interface Formatter {
+    String format(String input);
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-java-static-final-default">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain the usage of static, final, and default keywords in Java. What is the significance of the main method&#x27;s signature?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Static:</span> The <span class="keyword">static</span> keyword indicates that a member (variable, method, or nested class) belongs to the class itself rather than to instances of the class. Static members are initialized once when the class is loaded into memory, shared across all instances, and can be accessed without creating an object.</p>
+            <p><span class="bold-white">Final:</span> The <span class="keyword">final</span> keyword enforces immutability and restricts inheritance. (1) A final variable cannot be reassigned once initialized. (2) A final method cannot be overridden by subclasses. (3) A final class cannot be subclassed, which is crucial for creating immutable classes like <span class="classname">String</span>.</p>
+            <p><span class="bold-white">Default:</span> Introduced in Java 8, <span class="keyword">default</span> methods allow interfaces to declare method implementations. This enables developers to add new methods to existing interfaces without breaking the classes that implement them, maintaining backward compatibility.</p>
+            <p><span class="bold-white">Main Method Signature:</span> The standard entry point <span class="keyword">public static void main(String[] args)</span> is designed for JVM startup: <span class="keyword">public</span> permits the JVM to invoke it from outside the package, <span class="keyword">static</span> allows invocation without instantiating the class, <span class="keyword">void</span> specifies that it returns no value, and <span class="keyword">String[] args</span> accepts runtime command-line arguments.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>StaticFinalDefaultDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">public class StaticFinalDefaultDemo {
+    // Shared class-level constant
+    public static final String PLATFORM_NAME = &quot;Enterprise-Core&quot;;
+    
+    // Instance-level constant
+    private final int instanceId;
+
+    public StaticFinalDefaultDemo(int id) {
+        this.instanceId = id; // Must be initialized in constructor
+    }
+
+    public static void printPlatform() {
+        System.out.println(&quot;Platform: &quot; + PLATFORM_NAME);
+    }
+
+    public static void main(String[] args) {
+        StaticFinalDefaultDemo.printPlatform();
+        StaticFinalDefaultDemo demo = new StaticFinalDefaultDemo(101);
+        System.out.println(&quot;Instance ID: &quot; + demo.instanceId);
+        
+        // Invoke interface default method
+        CustomService service = new CustomServiceImpl();
+        service.executeTask();
+    }
+}
+
+interface CustomService {
+    // Default method providing implementation
+    default void executeTask() {
+        System.out.println(&quot;Default execution log...&quot;);
+    }
+}
+
+class CustomServiceImpl implements CustomService {
+    // Class implements interface, inherits default method
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-java17-features">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What are the major features introduced in Java 17? Explain Records, Sealed Classes, Pattern Matching, and Switch Expressions.</span></h3>
@@ -921,6 +1124,505 @@ public class FunctionalInterfaceAndOptional {
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">Garbage collection (G1GC vs ZGC), JVM memory spaces, deadlocks detection and prevention, thread safety, synchronized vs ReentrantLock, volatile, ThreadLocal, static vs final, and sorting utilities.</p>
+                    <div class="qa-card" id="q-jvm-thread-creation-limits">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How many threads can a JVM create? What configuration parameters and system limits restrict thread allocation?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Thread Allocation Limits:</span> The maximum thread limit is not a fixed JVM setting; it is determined by OS limitations and available hardware resources.</p>
+            <p><span class="bold-white">Operating System Limits:</span> Key constraints include: (1) OS maximum user processes (<span class="keyword">ulimit -u</span>), (2) kernel max threads (<span class="keyword">/proc/sys/kernel/threads-max</span>), and (3) available physical RAM.</p>
+            <p><span class="bold-white">Stack Memory Constraint:</span> Each thread reserves a thread stack size (specified via <span class="keyword">-Xss</span>, usually 1MB). If you allocate too many threads, physical RAM gets depleted.</p>
+            <p><span class="bold-white">Out of Memory:</span> Exhausting these limits throws <span class="classname">java.lang.OutOfMemoryError: unable to create new native thread</span>. Use bounded ThreadPools to prevent crash-on-spike.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>BoundedThreadPoolConfig.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.util.concurrent.*;
+
+public class BoundedThreadPoolConfig {
+    public static void main(String[] args) {
+        // Enforce thread boundaries to prevent native memory exhaustion
+        int corePoolSize = 10;
+        int maxPoolSize = 50;
+        long keepAliveTime = 60L;
+        
+        // Use a bounded queue to prevent Infinite Memory Accumulation (OOM)
+        BlockingQueue&lt;Runnable&gt; queue = new LinkedBlockingQueue&lt;&gt;(500);
+
+        // Custom ThreadFactory to name threads for debugging
+        ThreadFactory threadFactory = new ThreadFactory() {
+            private int count = 1;
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, &quot;AppWorker-&quot; + count++);
+            }
+        };
+
+        // AbortPolicy rejects tasks when thread limits and queue boundaries are saturated
+        RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();
+
+        ExecutorService executor = new ThreadPoolExecutor(
+            corePoolSize,
+            maxPoolSize,
+            keepAliveTime,
+            TimeUnit.SECONDS,
+            queue,
+            threadFactory,
+            handler
+        );
+
+        System.out.println(&quot;Bounded thread pool initialized safely.&quot;);
+        executor.shutdown();
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-gc-g1gc-zgc">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How does Garbage Collection reclaim memory in the JVM? Compare G1GC vs ZGC collectors and their production configuration.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Generational Heap:</span> JVM Garbage Collection organizes the heap into Young (Eden, Survivor spaces) and Old generations. Objects are created in Eden, promoted to survivor spaces, and eventually moved to the Old generation if they persist.</p>
+            <p><span class="bold-white">G1GC (Garbage-First):</span> Designed for multi-gigabyte heaps, G1GC divides the heap into thousands of virtual regions. It prioritizes regions containing the most garbage, compacting space concurrently while tracking a configurable target pause time.</p>
+            <p><span class="bold-white">ZGC (Z Garbage Collector):</span> A low-latency, scalable collector. ZGC performs memory reclamation concurrently with application threads, using colored pointers and load barriers to resolve memory state issues.</p>
+            <p><span class="bold-white">GC Pause Times:</span> ZGC restricts pause times to under a millisecond regardless of heap size, making it suitable for modern enterprise microservices running on huge heaps (GBs to TBs).</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>GcPropertiesConfig.sh</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">#!/bin/bash
+# Production JVM Flags for Garbage Collection tuning
+
+# 1. Enable G1GC (Default in Java 9+) with custom target pause time
+java -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -jar microservice-app.jar
+
+# 2. Enable ZGC (Low-latency concurrent collector available in Java 15+)
+# Suitable for containerized environments requiring predictable, sub-millisecond pauses
+java -XX:+UseZGC -XX:+UnlockDiagnosticVMOptions -XX:+UseNUMA -jar high-throughput-app.jar
+
+# Useful monitoring flags
+# java -Xlog:gc*:file=gc.log:time,uptime:filecount=5,filesize=100M -jar app.jar</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-heap-stack-metaspace">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Compare Heap vs Stack memory in Java. Where are objects and class definitions saved? Discuss primitive vs wrapper classes.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Stack Memory:</span> Stack memory stores thread execution frames, local primitive variables, and references to objects on the heap. It is allocated per thread, operates in LIFO order, is extremely fast, and requires no garbage collection.</p>
+            <p><span class="bold-white">Heap Memory:</span> Heap memory stores all instantiated objects and arrays. It is shared across all application threads, has a dynamic size, and requires Garbage Collection (GC) overhead to reclaim memory.</p>
+            <p><span class="bold-white">Metaspace:</span> Introduced in Java 8 to replace PermGen, Metaspace resides in native off-heap memory. It stores class definitions, method metadata, static variables, and the runtime constant pool.</p>
+            <p><span class="bold-white">Primitives vs Wrappers:</span> Primitive types (e.g. <span class="keyword">int</span>) store values directly on the stack (unless they are fields inside a heap-allocated object). Wrapper types (e.g. <span class="classname">Integer</span>) are full objects allocated on the heap, introducing boxing and unboxing performance overhead.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>MemoryAllocationDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">public class MemoryAllocationDemo {
+    // Stored in Metaspace (metadata and class reference)
+    private static final String APP_NAME = &quot;Memory-Demo&quot;; 
+
+    public static void main(String[] args) {
+        // Primitive variable value (100) is stored directly in the Stack frame
+        int primitiveAge = 35; 
+        
+        // Wrapper object variable ref (on stack) points to an Integer object on the Heap
+        Integer objectAge = Integer.valueOf(35); 
+        
+        // Custom object reference (on stack) points to a User object on the Heap
+        User user = new User(&quot;Birat&quot;); 
+        
+        executeLocalLogic(user);
+    } // Stack frame is popped here, but Heap objects await Garbage Collection
+
+    private static void executeLocalLogic(User u) {
+        String status = &quot;ACTIVE&quot;; // Reference on Stack pointing to Constant Pool
+        System.out.println(&quot;Processing: &quot; + u.getName());
+    }
+}
+
+class User {
+    private final String name; // Reference variable pointing to String on Heap
+    public User(String name) { this.name = name; }
+    public String getName() { return name; }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-hashmap-collisions">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do hash collisions occur in Java HashMaps? How are they resolved internally in Java 8+?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Hash Collisions:</span> A collision occurs when two distinct keys yield the same hash code and map to the exact same bucket index in the underlying node array. The HashMap must store both entries in the same bucket.</p>
+            <p><span class="bold-white">Chaining:</span> Historically, HashMaps resolved collisions using linked lists. Multiple colliding nodes are chained together in a singly linked list structure inside the bucket, degrading lookup performance to O(N).</p>
+            <p><span class="bold-white">Treeification:</span> In Java 8+, if a bucket's node count exceeds the threshold <span class="keyword">TREEIFY_THRESHOLD = 8</span>, and the total table capacity is at least 64, the linked list is converted into a balanced Red-Black Tree.</p>
+            <p><span class="bold-white">Time Complexity:</span> Treeification optimizes lookup performance, changing worst-case time complexity from O(N) to O(log N). This protects applications against Hash Collision Denial of Service (DoS) attacks.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>HashMapCollisionDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapCollisionDemo {
+    
+    // Class designed to intentionally generate collisions
+    static class CollidingKey {
+        private final int id;
+        private final String value;
+
+        public CollidingKey(int id, String value) {
+            this.id = id;
+            this.value = value;
+        }
+
+        @Override
+        public int hashCode() {
+            return 42; // Force every key into the exact same bucket
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof CollidingKey)) return false;
+            return this.id == ((CollidingKey) obj).id;
+        }
+    }
+
+    public static void main(String[] args) {
+        Map&lt;CollidingKey, String&gt; map = new HashMap&lt;&gt;();
+        
+        // Insert multiple items that share the same hashCode bucket
+        for (int i = 0; i &lt; 12; i++) {
+            map.put(new CollidingKey(i, &quot;Value-&quot; + i), &quot;Data-&quot; + i);
+        }
+        
+        // In Java 8+, this bucket transitions from Linked List to Red-Black Tree
+        System.out.println(&quot;Successfully stored colliding keys, size: &quot; + map.size());
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-threadsafe-failfast-failsafe">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What makes a collection thread-safe? Compare Fail-Fast vs Fail-Safe iterators with real-world collection examples.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Thread Safety:</span> A collection is thread-safe if it guarantees structural and data consistency under concurrent modifications by multiple threads. This is achieved via mutual exclusion locks, lock-striping, or copy-on-write mechanisms.</p>
+            <p><span class="bold-white">Fail-Fast Iterators:</span> Iterators from standard collections (like <span class="classname">ArrayList</span> or <span class="classname">HashMap</span>) are fail-fast. If the collection is modified structurally during iteration, the iterator immediately throws a <span class="classname">ConcurrentModificationException</span>.</p>
+            <p><span class="bold-white">ModCount Mechanism:</span> Fail-fast iterators track modification states using a volatile <span class="keyword">modCount</span> counter. At each step, the iterator checks if the counter has changed; if a mismatch is detected, it triggers a fast-fail crash.</p>
+            <p><span class="bold-white">Fail-Safe Iterators:</span> Iterators from concurrent collections (like <span class="classname">CopyOnWriteArrayList</span> or <span class="classname">ConcurrentHashMap</span>) are fail-safe. They operate on a copy or snapshot of the collection, allowing concurrent updates without raising exceptions.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>IteratorComparison.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Iterator;
+
+public class IteratorComparison {
+    public static void main(String[] args) {
+        // Fail-Fast Example
+        List&lt;String&gt; list1 = new ArrayList&lt;&gt;();
+        list1.add(&quot;Java&quot;); list1.add(&quot;Spring&quot;);
+        
+        try {
+            Iterator&lt;String&gt; it = list1.iterator();
+            while(it.hasNext()) {
+                String val = it.next();
+                list1.add(&quot;New-Tech&quot;); // Will trigger ConcurrentModificationException on next iteration
+            }
+        } catch (Exception e) {
+            System.out.println(&quot;Fail-Fast detected: &quot; + e.toString());
+        }
+
+        // Fail-Safe / Fail-Safe Example
+        List&lt;String&gt; list2 = new CopyOnWriteArrayList&lt;&gt;();
+        list2.add(&quot;React&quot;); list2.add(&quot;Node&quot;);
+
+        Iterator&lt;String&gt; it2 = list2.iterator();
+        while(it2.hasNext()) {
+            String val = it2.next();
+            list2.add(&quot;Kubernetes&quot;); // Safe! Modifying copy, iterator holds snapshot
+        }
+        System.out.println(&quot;Fail-Safe final list size: &quot; + list2.size());
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-arraylist-linkedlist-vector">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Compare ArrayList, LinkedList, and Vector in Java. How do they perform under different memory and concurrency workloads?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">ArrayList:</span> Backed by a dynamically resizing array. It provides O(1) time complexity for random access index lookup. However, inserting or deleting elements from arbitrary positions requires O(N) time because subsequent elements must be shifted in memory.</p>
+            <p><span class="bold-white">LinkedList:</span> Structured as a doubly-linked list. It provides O(1) insertions or deletions at endpoints. Random access, however, requires O(N) traversal from the head or tail to find the target index, and it consumes more memory per node to store address pointers.</p>
+            <p><span class="bold-white">Vector:</span> A legacy, thread-safe dynamic array. It synchronizes every operation using monitor locks. This ensures thread safety but introduces significant synchronization overhead, making it inefficient for single-threaded or modern concurrent pipelines.</p>
+            <p><span class="bold-white">Selection Strategy:</span> Use ArrayList as the default list. Switch to LinkedList only if your workload relies heavily on head/tail insertions (like queues or deques). Under concurrent conditions, use a lock-free <span class="classname">CopyOnWriteArrayList</span> or wrap lists using <span class="keyword">Collections.synchronizedList</span>.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>CollectionBenchmarks.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+
+public class CollectionBenchmarks {
+    public static void main(String[] args) {
+        int capacity = 1_000_000;
+        
+        // 1. Benchmark ArrayList Random Access
+        List&lt;Integer&gt; arrayList = new ArrayList&lt;&gt;(capacity);
+        for(int i = 0; i &lt; capacity; i++) arrayList.add(i);
+        long start = System.nanoTime();
+        int val1 = arrayList.get(capacity / 2);
+        long arrayTime = System.nanoTime() - start;
+
+        // 2. Benchmark LinkedList Random Access
+        List&lt;Integer&gt; linkedList = new LinkedList&lt;&gt;();
+        for(int i = 0; i &lt; capacity; i++) linkedList.add(i);
+        start = System.nanoTime();
+        int val2 = linkedList.get(capacity / 2);
+        long linkedTime = System.nanoTime() - start;
+
+        System.out.println(&quot;ArrayList O(1) Get Time: &quot; + arrayTime + &quot; ns&quot;);
+        System.out.println(&quot;LinkedList O(N) Get Time: &quot; + linkedTime + &quot; ns&quot;);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-comparable-vs-comparator">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Compare Comparable vs Comparator interfaces. When should each be used?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Comparable Interface:</span> The <span class="classname">Comparable</span> interface defines the natural ordering of objects. It requires implementing the <span class="keyword">compareTo(T o)</span> method directly within the target class, which can only support a single, default sorting strategy.</p>
+            <p><span class="bold-white">Comparator Interface:</span> The <span class="classname">Comparator</span> interface represents an external, pluggable sorting logic. It implements the <span class="keyword">compare(T o1, T o2)</span> method, allowing you to define multiple independent sorting strategies for the same class.</p>
+            <p><span class="bold-white">Use Cases:</span> Use Comparable to establish a default sorting behavior (e.g. sorting Employee objects by ID). Use Comparator when you need to sort by alternate criteria (e.g. by salary, name, or hire date) or when you cannot modify the source code of the target class.</p>
+            <p><span class="bold-white">Modern API Support:</span> Java 8 enhanced <span class="classname">Comparator</span> with static helper methods like <span class="keyword">comparing()</span> and <span class="keyword">thenComparing()</span>, which integrate cleanly with lambda syntax to build complex sorting chains.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>SortingComparisons.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+class Developer implements Comparable&lt;Developer&gt; {
+    String name;
+    int yoe; // Years of Experience
+
+    public Developer(String name, int yoe) {
+        this.name = name;
+        this.yoe = yoe;
+    }
+
+    // Default Natural Sorting: Sorted by YOE ascending
+    @Override
+    public int compareTo(Developer other) {
+        return Integer.compare(this.yoe, other.yoe);
+    }
+
+    @Override
+    public String toString() {
+        return name + &quot; (&quot; + yoe + &quot; YOE)&quot;;
+    }
+}
+
+public class SortingComparisons {
+    public static void main(String[] args) {
+        List&lt;Developer&gt; team = new ArrayList&lt;&gt;();
+        team.add(new Developer(&quot;Birat&quot;, 8));
+        team.add(new Developer(&quot;Amit&quot;, 5));
+        team.add(new Developer(&quot;Roy&quot;, 12));
+
+        // 1. Natural Sort using Comparable (Ascending YOE)
+        Collections.sort(team);
+        System.out.println(&quot;Natural Sort: &quot; + team);
+
+        // 2. Custom Sort using Comparator Lambda (Sorted by Name)
+        team.sort(Comparator.comparing(dev -&gt; dev.name));
+        System.out.println(&quot;Name Sort: &quot; + team);
+
+        // 3. Reverse Sort using custom Comparator
+        team.sort((d1, d2) -&gt; Integer.compare(d2.yoe, d1.yoe));
+        System.out.println(&quot;Experience Descending: &quot; + team);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-anonymous-thread-creation">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do Anonymous Inner Classes work in Java? Show the different approaches to create and run Threads.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Anonymous Inner Classes:</span> An anonymous inner class is an inline, unnamed local class definition that simultaneously declares and instantiates a class. It is ideal for implementing single-use interfaces or extending base classes without polluting the package namespace.</p>
+            <p><span class="bold-white">Thread Creation Patterns:</span> Threads can be created in several ways: (1) Extending the <span class="classname">Thread</span> class, (2) implementing <span class="classname">Runnable</span>, (3) creating anonymous classes, or (4) using modern Lambda expressions.</p>
+            <p><span class="bold-white">Resource Overhead:</span> Creating threads using raw constructors like <span class="keyword">new Thread().start()</span> consumes massive OS resources, as each thread reserves a default thread stack size (typically 1MB) and incurs context-switching overhead.</p>
+            <p><span class="bold-white">Enterprise Standards:</span> Production code should avoid raw thread creation. Instead, implement <span class="classname">Runnable</span> or <span class="classname">Callable</span> and submit tasks to a managed thread pool like <span class="classname">ExecutorService</span> for thread recycling.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>ThreadInstantiationDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ThreadInstantiationDemo {
+    public static void main(String[] args) {
+        // Approach 1: Anonymous Inner Class implementing Runnable
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(&quot;Anonymous inner class execution&quot;);
+            }
+        });
+        
+        // Approach 2: Lambda Expression (Java 8+)
+        Thread thread2 = new Thread(() -&gt; System.out.println(&quot;Lambda thread execution&quot;));
+
+        thread1.start();
+        thread2.start();
+
+        // Approach 3: ExecutorService Managed Thread Pool (Enterprise Standard)
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        executor.submit(() -&gt; System.out.println(&quot;Task running inside thread pool&quot;));
+        executor.shutdown();
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-marker-serialization">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What are Marker Interfaces in Java? Discuss how Serialization works, including its security and performance pitfalls.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Marker Interfaces:</span> A marker interface (also called tagged interface) is an interface containing no declared methods or constants (e.g. <span class="classname">Serializable</span>, <span class="classname">Cloneable</span>). It acts as a metadata tag, instructing the compiler or JVM to apply specific runtime behavior.</p>
+            <p><span class="bold-white">Serialization Mechanics:</span> Object serialization converts an object's complete instance state into a portable binary byte stream. This stream can be written to disk, stored in memory, or sent over networks. Deserialization reverses this, reconstructing the object state.</p>
+            <p><span class="bold-white">Security Pitfalls:</span> Deserialization is highly vulnerable. If an application deserializes untrusted streams, attackers can inject malicious class states (gadget chains) that trigger remote code execution (RCE) inside the JVM.</p>
+            <p><span class="bold-white">Performance Overhead:</span> Default Java serialization is slow and bloats file sizes because it embeds complete class metadata, graph structures, and fully qualified class path descriptors in the byte stream. Modern systems prefer lighter alternatives like JSON or Protocol Buffers.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>SecureSerializationDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.io.*;
+
+public class SecureSerializationDemo implements Serializable {
+    private static final long serialVersionUID = 78923L; // Explicit Versioning
+
+    private String userEmail;
+    private transient String passwordHash; // Avoid serializing sensitive credentials
+
+    public SecureSerializationDemo(String email, String pwd) {
+        this.userEmail = email;
+        this.passwordHash = pwd;
+    }
+
+    // Custom validation logic during deserialization to mitigate security risks
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject(); // Read standard fields
+        
+        // Enforce validation constraints on incoming data
+        if (this.userEmail == null || !this.userEmail.contains(&quot;@&quot;)) {
+            throw new InvalidObjectException(&quot;Corrupt or invalid state payload received.&quot;);
+        }
+        System.out.println(&quot;Deserialization validated successfully.&quot;);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-jvm-volatile-transient">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What is the volatile keyword in Java? Compare transient vs volatile variables.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Volatile:</span> The <span class="keyword">volatile</span> keyword prevents threads from caching variables in CPU registers, forcing all reads and writes directly to the shared Main Memory. This guarantees instant visibility of variable state updates across multiple active threads.</p>
+            <p><span class="bold-white">Instruction Reordering:</span> Volatile also establishes a happens-before relationship, preventing the JVM compiler and CPU from reordering instructions around reads and writes, which is critical for Double-Checked Locking Singletons.</p>
+            <p><span class="bold-white">Transient:</span> The <span class="keyword">transient</span> keyword is used in the context of object serialization. When an object is serialized, fields marked as transient are ignored, and they assume default null or zero values upon deserialization.</p>
+            <p><span class="bold-white">Comparison:</span> Volatile is a concurrency modifier addressing thread visibility and memory coherency during execution, while transient is a persistence modifier addressing field exclusions during byte-stream transformations. They address completely distinct runtime aspects.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>VolatileTransientDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import java.io.Serializable;
+
+public class VolatileTransientDemo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    // Transient field - will NOT be serialized
+    private transient String temporarySessionToken;
+    
+    private String username;
+
+    // Volatile variable - ensures thread visibility across memory boundaries
+    private transient volatile boolean isWorkerActive = true; 
+
+    public VolatileTransientDemo(String username, String token) {
+        this.username = username;
+        this.temporarySessionToken = token;
+    }
+
+    public void stopWorker() {
+        this.isWorkerActive = false; // Writes immediately flush to main memory
+    }
+
+    public boolean checkWorkerStatus() {
+        return this.isWorkerActive; // Reads directly from main memory
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-concurrency-keywords">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain volatile, ThreadLocal, static, final, transient, and Comparable vs Comparator with complete Java examples.</span></h3>
@@ -1386,6 +2088,168 @@ public class DeadlockPrevention {
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">Four pillars of OOP, SOLID principles (particularly LSP, DIP, ISP), and GoF design patterns (Singleton, Factory, Strategy, Builder, Observer, Proxy, Decorator, Adapter, Template Method, State, Workflow Engine).</p>
+                    <div class="qa-card" id="q-design-factory-singleton">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain the Factory and Singleton design patterns. Write a thread-safe Singleton class in Java.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Factory Pattern:</span> Encapsulates object creation logic, returning objects based on input parameters.</p>
+            <p><span class="bold-white">Singleton Pattern:</span> Ensures a class has only one instance per JVM classloader and provides a global access point.</p>
+            <p><span class="bold-white">Thread Safety:</span> Thread-safe Singleton implementation requires double-checked locking with a <span class="keyword">volatile</span> instance variable or using the Bill Pugh Helper class.</p>
+            <p><span class="bold-white">Bill Pugh Method:</span> Uses a private static inner helper class that is loaded only when <span class="keyword">getInstance()</span> is called, ensuring lazy evaluation and thread-safety.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>SingletonAndFactoryDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">public class SingletonAndFactoryDemo {
+    public static void main(String[] args) {
+        // Singleton Usage
+        ThreadSafeSingleton s1 = ThreadSafeSingleton.getInstance();
+        ThreadSafeSingleton s2 = ThreadSafeSingleton.getInstance();
+        System.out.println(&quot;Same Singleton Instance: &quot; + (s1 == s2));
+
+        // Factory Usage
+        Shape s = ShapeFactory.getShape(&quot;CIRCLE&quot;);
+        s.draw();
+    }
+}
+
+// 1. Thread-safe Singleton using Bill Pugh Inner Helper Class
+class ThreadSafeSingleton {
+    private ThreadSafeSingleton() {} // Prevent direct instantiation
+
+    private static class SingletonHelper {
+        private static final ThreadSafeSingleton INSTANCE = new ThreadSafeSingleton();
+    }
+
+    public static ThreadSafeSingleton getInstance() {
+        return SingletonHelper.INSTANCE; // Lazy loaded and thread-safe
+    }
+}
+
+// 2. Factory Pattern Example
+interface Shape { void draw(); }
+class Circle implements Shape { public void draw() { System.out.println(&quot;Circle drawn.&quot;); } }
+class Square implements Shape { public void draw() { System.out.println(&quot;Square drawn.&quot;); } }
+
+class ShapeFactory {
+    public static Shape getShape(String type) {
+        if (&quot;CIRCLE&quot;.equalsIgnoreCase(type)) return new Circle();
+        if (&quot;SQUARE&quot;.equalsIgnoreCase(type)) return new Square();
+        throw new IllegalArgumentException(&quot;Unknown shape: &quot; + type);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-design-coupling-solid">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain Loose Coupling and the SOLID design principles in software architecture.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Loose Coupling:</span> Minimizes direct dependencies between classes by using interfaces and Dependency Injection.</p>
+            <p><span class="bold-white">Single Responsibility (S) & Open/Closed (O):</span> S: A class should have one reason to change. O: Open for extension, closed for modification.</p>
+            <p><span class="bold-white">Liskov Substitution (L) & Interface Segregation (I):</span> L: Subclasses should be replaceable for parent classes. I: Prefer small, client-specific interfaces.</p>
+            <p><span class="bold-white">Dependency Inversion (D):</span> Depend on abstractions (interfaces) rather than concrete implementations, supporting application maintenance.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>SolidDesignDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">// 1. Dependency Inversion Principle (DIP) - Interface Abstraction
+interface Engine { void start(); }
+
+class CombustionEngine implements Engine {
+    @Override
+    public void start() { System.out.println(&quot;Vroom... Combustion engine started.&quot;); }
+}
+
+class ElectricEngine implements Engine {
+    @Override
+    public void start() { System.out.println(&quot;Silent hum... Electric engine started.&quot;); }
+}
+
+// Car is loosely coupled - depends on Engine interface, not concrete engines
+class Car {
+    private final Engine engine;
+
+    // Dependency injected via constructor
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+
+    public void drive() {
+        engine.start();
+        System.out.println(&quot;Car is moving...&quot;);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-design-idempotence-rest">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What is Idempotence in API design? How do you implement idempotent POST endpoints?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Idempotence:</span> Ensures that making multiple identical requests has the same effect as making a single request.</p>
+            <p><span class="bold-white">HTTP Methods:</span> Safe methods (GET, HEAD) and write methods (PUT, DELETE) are idempotent. `POST` is non-idempotent by default.</p>
+            <p><span class="bold-white">Idempotent POST:</span> Require clients to submit a unique transaction key (<span class="keyword">Idempotency-Key</span> header) with the request.</p>
+            <p><span class="bold-white">Redis Check:</span> The API checks this key in Redis. If found, it returns the cached response; if not, it processes the request and caches the result.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>IdempotencyFilter.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.springframework.stereotype.Component;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Component
+public class IdempotencyFilter implements Filter {
+    
+    // Mock Cache - Use redisTemplate.opsForValue() in production
+    private final java.util.Map&lt;String, String&gt; idempotencyCache = new java.util.concurrent.ConcurrentHashMap&lt;&gt;();
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+        if (&quot;POST&quot;.equalsIgnoreCase(httpRequest.getMethod())) {
+            String key = httpRequest.getHeader(&quot;Idempotency-Key&quot;);
+            
+            if (key != null &amp;&amp; !key.isEmpty()) {
+                if (idempotencyCache.containsKey(key)) {
+                    // Return cached response immediately, bypassing application filters
+                    httpResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+                    httpResponse.getWriter().write(&quot;Duplicate request blocked. Prev Response: &quot; + idempotencyCache.get(key));
+                    return;
+                }
+                
+                // Track request key (In production set TTL like 1 hour)
+                idempotencyCache.put(key, &quot;PROCESSED_SUCCESSFULLY&quot;);
+            }
+        }
+        
+        chain.doFilter(request, response);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-design-pattern-workflow">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Design a pluggable, concurrent workflow execution engine. Combine Strategy, Factory, and State patterns to adhere to SOLID principles.</span></h3>
@@ -1698,6 +2562,198 @@ public class SOLIDRefactoring {
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">ApplicationContext vs BeanFactory, bean lifecycle and scopes (gotchas with prototype in singleton), Dependency Injection patterns, Aspect-Oriented Programming (Aspect, Advice, Weaving), and proxy self-invocation gotchas.</p>
+                    <div class="qa-card" id="q-spring-why-aop">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Why is Spring AOP used in enterprise applications? Show how to create a custom aspect to log method executions.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Aspect-Oriented Programming:</span> Spring AOP decouples cross-cutting concerns (logging, transaction management, security checks) from core business logic, preventing duplicate code.</p>
+            <p><span class="bold-white">Proxy Architecture:</span> AOP wraps target beans in dynamic proxies at runtime (using JDK dynamic proxies or CGLIB). Calls are intercepted to run advice before delegating to the target method.</p>
+            <p><span class="bold-white">Self-Invocation gotcha:</span> When a bean invokes its own method internally, the call bypasses the proxy container, meaning aspects (like <span class="keyword">@Transactional</span> or custom logging aspects) will not execute.</p>
+            <p><span class="bold-white">Aspect Mechanics:</span> Aspects are defined using pointcut expressions that identify execution targets, and advice (like <span class="keyword">@Before</span> or <span class="keyword">@Around</span>) that determines when the aspect logic runs.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>ExecutionTimeAspect.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+public class ExecutionTimeAspect {
+
+    // Aspect intercepts all methods inside services package
+    @Around(&quot;execution(* com.valore.grocery.service..*(..))&quot;)
+    public Object profileMethod(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        
+        try {
+            // Execute actual service method
+            return joinPoint.proceed();
+        } finally {
+            long executionTime = System.currentTimeMillis() - start;
+            System.out.println(joinPoint.getSignature() + &quot; executed in &quot; + executionTime + &quot;ms&quot;);
+        }
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-spring-qualifier-override-constructors">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain the roles of @Qualifier and @Override annotations. Compare @NoArgsConstructor and @AllArgsConstructor in Lombok.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">@Qualifier:</span> Resolves injection ambiguity when multiple beans of the same type exist in the context. By pairing it with <span class="keyword">@Autowired</span>, you specify the exact bean name to inject.</p>
+            <p><span class="bold-white">@Override:</span> A compiler-checked annotation ensuring a subclass method signature matches a method in the superclass or interface, preventing accidental signature modifications.</p>
+            <p><span class="bold-white">@NoArgsConstructor:</span> Generates a zero-argument constructor, which is necessary for JPA entities (Hibernate proxy generation) and JSON serialization.</p>
+            <p><span class="bold-white">@AllArgsConstructor:</span> Generates a constructor containing parameters for all fields, enabling clean constructor-based Dependency Injection in Spring components.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>ConstructorInjectionQualifierDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+interface NotificationSender { void send(String msg); }
+
+@Component(&quot;emailSender&quot;)
+class EmailSender implements NotificationSender {
+    @Override // Forces compilation validation for overrides
+    public void send(String msg) { System.out.println(&quot;Email: &quot; + msg); }
+}
+
+@Component(&quot;smsSender&quot;)
+class SmsSender implements NotificationSender {
+    @Override
+    public void send(String msg) { System.out.println(&quot;SMS: &quot; + msg); }
+}
+
+@Component
+@AllArgsConstructor // Generates constructor for injection (no @Autowired needed on constructor)
+class AlertService {
+    
+    // Disambiguate using @Qualifier
+    @Qualifier(&quot;emailSender&quot;)
+    private final NotificationSender emailNotifier;
+    
+    @Qualifier(&quot;smsSender&quot;)
+    private final NotificationSender smsNotifier;
+
+    public void triggerAlert(String text) {
+        emailNotifier.send(text);
+        smsNotifier.send(text);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-spring-singleton-prototype-scopes">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What is the difference between Spring&#x27;s Singleton and Prototype scopes? How do you resolve the prototype-in-singleton injection gotcha?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Singleton Scope:</span> Spring's default scope. The container creates exactly one bean instance per IoC context. Subsequent requests return the cached instance, which requires stateless implementations to ensure thread safety.</p>
+            <p><span class="bold-white">Prototype Scope:</span> Instructs the container to create a new instance of the bean every time it is requested, making it suitable for stateful business workflows.</p>
+            <p><span class="bold-white">Scoped Bean Gotcha:</span> When a prototype bean is injected into a singleton bean, it is only injected once during the singleton's initialization. The singleton bean continues to reuse that initial instance, preventing updates.</p>
+            <p><span class="bold-white">Resolution Strategies:</span> Resolve this by accessing the prototype bean programmatically using <span class="classname">ObjectProvider&lt;T&gt;</span>, or by annotating a getter method with <span class="keyword">@Lookup</span> to fetch a new instance from the container at runtime.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>PrototypeInjectionSolution.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope(&quot;prototype&quot;)
+class TaskProcessor {
+    private double taskId = Math.random();
+    public void process() {
+        System.out.println(&quot;Processing Task ID: &quot; + taskId);
+    }
+}
+
+@Component
+class SingletonManager {
+    // Injected provider - allows fetching fresh prototype instances on demand
+    @Autowired
+    private ObjectProvider&lt;TaskProcessor&gt; processorProvider;
+
+    public void runTask() {
+        // Fetch a brand new TaskProcessor instance every time this method runs
+        TaskProcessor processor = processorProvider.getObject();
+        processor.process();
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-spring-ioc-di-context">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain Inversion of Control (IoC) vs Dependency Injection (DI). Compare BeanFactory vs ApplicationContext.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Inversion of Control (IoC):</span> IoC is an architectural design principle where control over object creation, configuration, and lifecycle management is transferred from the application code to an external container or framework.</p>
+            <p><span class="bold-white">Dependency Injection (DI):</span> DI is the implementation pattern used to realize IoC. Instead of objects instantiating their dependencies directly, dependencies are injected into them by the Spring container via constructor, setter, or field injection.</p>
+            <p><span class="bold-white">BeanFactory:</span> The foundational IoC interface in Spring. It lazy-loads beans by default, features a small memory footprint, and provides basic configuration support. It is suitable for resource-constrained environments.</p>
+            <p><span class="bold-white">ApplicationContext:</span> Extends BeanFactory, loading all singleton beans eagerly at startup. It adds advanced enterprise features like internationalization (i18n), event publishing, WebApplicationContext bindings, and seamless integration with AOP.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>IocDiDemoConfig.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+class AppConfig {
+    @Bean
+    public PaymentService paymentService() {
+        return new CreditCardPaymentService(); // Dependency Instantiation delegated to Spring
+    }
+}
+
+interface PaymentService { void pay(); }
+class CreditCardPaymentService implements PaymentService {
+    @Override public void pay() { System.out.println(&quot;Processing credit card charge...&quot;); }
+}
+
+public class IocDiDemoConfig {
+    public static void main(String[] args) {
+        // Instantiate Spring ApplicationContext container
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        
+        // Retrieve bean from IoC container (DI resolves dependency)
+        PaymentService service = context.getBean(PaymentService.class);
+        service.pay();
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-aop-self-invocation">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain the self-invocation proxy gotcha in Spring AOP and how to bypass it. Show a custom Aspect for distributed rate limiting.</span></h3>
@@ -2171,6 +3227,162 @@ public class RequestService {
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">Auto-configuration internals, custom Spring Boot starters, profiles, externalized configuration, actuator health monitoring, and global exception handling with @ControllerAdvice and custom error pages.</p>
+                    <div class="qa-card" id="q-spring-boot-handle-bugs-logging">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What is your systematic process to handle bugs in a production microservice environment? Show how to correlate logs using MDC.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Systematic Process:</span> (1) Catch alerts (e.g. Dynatrace, Sentry), (2) Correlate logs via Trace ID using ELK/Splunk, (3) Extract inputs to write a failing integration test, (4) Apply fix, verify via CI/CD, and monitor post-deployment metrics.</p>
+            <p><span class="bold-white">MDC (Mapped Diagnostic Context):</span> MDC allows placing context variables (like <span class="keyword">traceId</span>, <span class="keyword">userId</span>) in a thread-local map, automatically printing them in every log statement.</p>
+            <p><span class="bold-white">Context Propagation:</span> When calling external APIs, propagate this trace context in HTTP headers (e.g. <span class="keyword">X-B3-TraceId</span> or W3C Trace Context) to maintain end-to-end trace visibility.</p>
+            <p><span class="bold-white">Resolution Time:</span> This prevents developers from manually parsing disparate logs, shortening production outage resolution times.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>LoggingFilter.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.MDC;
+import org.springframework.stereotype.Component;
+import java.io.IOException;
+import java.util.UUID;
+
+@Component
+public class LoggingFilter implements Filter {
+    private static final String TRACE_ID_KEY = &quot;traceId&quot;;
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        
+        // Extract traceId from incoming headers, or generate one if absent
+        String traceId = httpRequest.getHeader(&quot;X-Correlation-ID&quot;);
+        if (traceId == null || traceId.isEmpty()) {
+            traceId = UUID.randomUUID().toString();
+        }
+
+        // Bind traceId to thread-local MDC context
+        MDC.put(TRACE_ID_KEY, traceId);
+
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            MDC.remove(TRACE_ID_KEY); // Clean context to prevent thread leak
+        }
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-spring-boot-json-parsing-objectmapper">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How does Spring Boot handle JSON parsing? Show how to customize the ObjectMapper programmatically.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Jackson Integration:</span> Spring Boot auto-configures the Jackson library's <span class="classname">ObjectMapper</span> instance to serialize and deserialize HTTP request/response payloads.</p>
+            <p><span class="bold-white">Programmatic Customization:</span> Customize serialization behavior by defining a <span class="classname">Jackson2ObjectMapperBuilder</span> bean or registering custom serializer modules.</p>
+            <p><span class="bold-white">Common Settings:</span> Common customizations include formatting dates (Java 8 Date/Time API), ignoring null properties, or converting CamelCase keys to SnakeCase.</p>
+            <p><span class="bold-white">Custom Deserializers:</span> Use custom deserializers to validate incoming payload constraints or scrub raw input data before it hits the application layers.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>JacksonCustomizerConfig.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+@Configuration
+public class JacksonCustomizerConfig {
+
+    @Bean
+    @Primary
+    public ObjectMapper customObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        
+        // 1. Support Java 8 Date/Time types
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        
+        // 2. Exclude null fields from JSON output payload to save bandwidth
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        
+        // 3. Prevent failure on unknown properties in JSON payload
+        mapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        
+        return mapper;
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-spring-boot-mock-annotations">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain Mock annotations in Spring Boot: Compare @Mock vs @MockBean, and @Spy vs @SpyBean.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">@Mock:</span> Provided by Mockito. It creates a mock instance of a class for plain unit tests. It does not interact with the Spring context, keeping tests fast.</p>
+            <p><span class="bold-white">@MockBean:</span> Provided by Spring Boot. It creates a mock and registers it inside the Spring <span class="classname">ApplicationContext</span>, replacing any existing bean of that type for integration testing.</p>
+            <p><span class="bold-white">@Spy:</span> Creates a partial mock where real methods are called unless explicitly stubbed, used in standard Mockito test suites.</p>
+            <p><span class="bold-white">@SpyBean:</span> Wraps an existing Spring context bean in a spy wrapper, allowing you to track method invocations or stub selective methods during integration tests.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>SpringIntegrationTest.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(UserController.class)
+public class SpringIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    // Registers mock instance in ApplicationContext, replacing the real bean
+    @MockBean
+    private UserService userService;
+
+    @Test
+    public void testGetUserEndpoint() throws Exception {
+        // Stub mock behavior
+        when(userService.getUserName(1L)).thenReturn(&quot;Birat&quot;);
+
+        mockMvc.perform(get(&quot;/users/1&quot;))
+               .andExpect(status().isOk());
+    }
+}
+
+// Controller under test
+class UserController {
+    private final UserService service;
+    public UserController(UserService service) { this.service = service; }
+}
+interface UserService { String getUserName(Long id); }</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-sb-exception-handling">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain global exception handling in Spring Boot. How do you implement @ControllerAdvice and custom error pages?</span></h3>
@@ -3623,6 +4835,68 @@ public class CustomTracerAutoConfiguration {
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">Reactive programming principles, Mono and Flux, WebClient vs RestTemplate, R2DBC database access, backpressure handling, and Netty event loop non-blocking database scheduler bypass.</p>
+                    <div class="qa-card" id="q-reactive-streams-webclient-future">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do you stream data non-blockingly using WebClient and CompletableFuture in Spring WebFlux?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Reactive Streams:</span> WebFlux handles streaming using reactive types (<span class="classname">Mono</span>, <span class="classname">Flux</span>) mapped to the <span class="keyword">text/event-stream</span> media type.</p>
+            <p><span class="bold-white">Producers:</span> Stream items asynchronously using reactive pipelines, preventing worker thread blocks.</p>
+            <p><span class="bold-white">Receivers:</span> WebClient consumes streams non-blockingly using <span class="keyword">bodyToFlux(Data.class)</span>, processing elements as they arrive.</p>
+            <p><span class="bold-white">CompletableFuture Bridge:</span> To bridge blocking CompletableFuture logic, use <span class="keyword">Mono.fromFuture()</span> or <span class="keyword">Flux.create()</span> to adapt async operations into reactive streams.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>ReactiveStreamController.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
+
+@RestController
+public class ReactiveStreamController {
+
+    // 1. Producer Endpoint - Streams data as Server-Sent Events (SSE)
+    @GetMapping(value = &quot;/stream/events&quot;, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux&lt;String&gt; streamEvents() {
+        return Flux.interval(Duration.ofSeconds(1))
+                   .map(seq -&gt; &quot;Event Sequence: &quot; + seq);
+    }
+
+    // 2. Bridge async Future to Reactive Mono
+    public Mono&lt;String&gt; bridgeFuture() {
+        CompletableFuture&lt;String&gt; future = CompletableFuture.supplyAsync(() -&gt; &quot;Async Data&quot;);
+        return Mono.fromFuture(future); // Safe non-blocking bridge
+    }
+
+    // 3. Receiver Service - Consumes SSE stream using WebClient
+    public void consumeStream() {
+        WebClient client = WebClient.create(&quot;http://localhost:8080&quot;);
+        
+        Flux&lt;String&gt; eventStream = client.get()
+            .uri(&quot;/stream/events&quot;)
+            .accept(MediaType.TEXT_EVENT_STREAM)
+            .retrieve()
+            .bodyToFlux(String.class);
+
+        eventStream.subscribe(
+            data -&gt; System.out.println(&quot;Received: &quot; + data),
+            err -&gt; System.err.println(&quot;Stream error: &quot; + err),
+            () -&gt; System.out.println(&quot;Stream completed.&quot;)
+        );
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-reactive-backpressure">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain Reactive Streams backpressure. How does Spring WebFlux handle it, and what are Mono and Flux?</span></h3>
@@ -4030,6 +5304,220 @@ public class IdempotencyInterceptor implements HandlerInterceptor {
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">Inter-service communication (Feign, gRPC), API Gateways, distributed tracing (Sleuth/OpenTelemetry), Saga pattern (Orchestration vs Choreography), Outbox pattern, eventual consistency, and AWS Lambda with GraalVM.</p>
+                    <div class="qa-card" id="q-ms-dockerfile-keywords">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What are the core Dockerfile keywords used to containerize Spring Boot microservices?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">FROM & WORKDIR:</span> FROM sets the base parent image (e.g., Eclipse Temurin JRE). WORKDIR configures the working directory for subsequent instructions.</p>
+            <p><span class="bold-white">COPY & ENV:</span> COPY transfers local files (like build artifacts) into the container's filesystem. ENV defines system environment variables available at runtime.</p>
+            <p><span class="bold-white">EXPOSE:</span> Expose documents the port the application listens on inside the container.</p>
+            <p><span class="bold-white">ENTRYPOINT & CMD:</span> ENTRYPOINT configures the container to run as an executable. CMD defines default arguments for the entrypoint.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>Dockerfile</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java"># Multistage Build to keep the final image size minimal and secure
+# Stage 1: Build the Maven application
+FROM maven:3.8.5-openjdk-17-slim AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Stage 2: Create lightweight execution container
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /workspace
+COPY --from=build /app/target/*.jar app.jar
+
+ENV PORT=8080
+EXPOSE 8080
+
+ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;app.jar&quot;]</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-ms-logging-mdc-tracing">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do you implement centralized logging in microservices? Show how to trace a request across service boundaries.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Centralized Logs:</span> Aggregate stdout/stderr logs from all containers into a centralized store like ELK (Elasticsearch, Logstash, Kibana) or Splunk.</p>
+            <p><span class="bold-white">Distributed Tracing:</span> Trace IDs track requests across service boundaries. Span IDs represent work within a specific microservice.</p>
+            <p><span class="bold-white">Context Propagation:</span> OpenTelemetry or Micrometer Tracing propagate trace context in HTTP headers (e.g. W3C Trace Context) to maintain end-to-end trace visibility.</p>
+            <p><span class="bold-white">MDC Logs:</span> Mapped Diagnostic Context (MDC) binds trace metadata to the active execution thread log context, printing it automatically in log messages.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>TraceContextLoggingFilter.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpEntity;
+
+@Component
+public class TraceContextLoggingFilter {
+    private static final Logger log = LoggerFactory.getLogger(TraceContextLoggingFilter.class);
+
+    public void processServiceChain(RestTemplate restTemplate) {
+        String activeTraceId = MDC.get(&quot;traceId&quot;);
+        log.info(&quot;Sending request to payment microservice with traceId: {}&quot;, activeTraceId);
+
+        // Propagate the Trace ID downstream in the outgoing request headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(&quot;X-Correlation-ID&quot;, activeTraceId);
+        HttpEntity&lt;String&gt; entity = new HttpEntity&lt;&gt;(headers);
+
+        String response = restTemplate.postForObject(&quot;http://PAYMENT-SERVICE/pay&quot;, entity, String.class);
+        log.info(&quot;Received downstream payment status response: {}&quot;, response);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-ms-scaling-spike-handling">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Compare Vertical vs Horizontal Scaling. How do you scale microservices dynamically to handle sudden spikes in API requests?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Vertical Scaling:</span> Increases the capacity (CPU, RAM, Disk) of a single server. It is simple but limited by hardware limits.</p>
+            <p><span class="bold-white">Horizontal Scaling:</span> Adds more server instances. It supports linear scaling and provides high availability.</p>
+            <p><span class="bold-white">Kubernetes Autoscaling:</span> Microservices scale horizontally using Kubernetes Horizontal Pod Autoscaler (HPA), which monitors CPU/Memory utilization to adjust pod counts.</p>
+            <p><span class="bold-white">Handling Spikes:</span> To handle traffic spikes, pair auto-scaling with ingress rate-limiting (Redis token bucket) and message queuing (Kafka) to buffer traffic.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>KubernetesAutoscalerConfig.yaml</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: order-service-hpa
+  namespace: valore-prod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: order-service
+  minReplicas: 3
+  maxReplicas: 30
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75 # Scale up when average CPU utilization hits 75%
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageValue: 500Mi</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-ms-circuit-breaker-fault-tolerance">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain the Circuit Breaker pattern with a real microservice example. How do you declare fallback methods in Spring Boot?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Circuit Breaker Pattern:</span> Resilience4j intercepts calls to external services. If failures exceed a set threshold, the breaker transitions to the <span class="text-warning-accent">OPEN</span> state.</p>
+            <p><span class="bold-white">Fallback Execution:</span> In the OPEN state, requests fail-fast to local fallback methods, preventing cascading failures across the system.</p>
+            <p><span class="bold-white">Half-Open Testing:</span> The breaker enters HALF-OPEN after a cooldown period, executing test calls to determine if the downstream service has recovered.</p>
+            <p><span class="bold-white">Declarative Policies:</span> Combine `@CircuitBreaker` and `@Retry` to implement transparent, policy-based fault tolerance.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>OrderProcessingService.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+public class OrderProcessingService {
+
+    private final RestTemplate restTemplate;
+    public OrderProcessingService(RestTemplate restTemplate) { this.restTemplate = restTemplate; }
+
+    @CircuitBreaker(name = &quot;paymentService&quot;, fallbackMethod = &quot;paymentFallback&quot;)
+    @Retry(name = &quot;paymentService&quot;)
+    public String executePayment(String orderId, double amount) {
+        String url = &quot;http://PAYMENT-SERVICE/pay?order=&quot; + orderId + &quot;&amp;amount=&quot; + amount;
+        return restTemplate.postForObject(url, null, String.class);
+    }
+
+    // Fallback executes immediately when Circuit Breaker is OPEN or error occurs
+    public String paymentFallback(String orderId, double amount, Throwable t) {
+        System.out.println(&quot;Payment service down! Running fallback for: &quot; + orderId);
+        return &quot;PAYMENT_PENDING_FALLBACK_REASON: &quot; + t.getMessage();
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-ms-gateway-discovery-balancer">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Why do microservice architectures use API Gateways and Service Registries? Compare load balancing types.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">API Gateway:</span> Acts as the single entry point. It manages routing, authentication, SSL termination, and rate limiting.</p>
+            <p><span class="bold-white">Service Registry:</span> (e.g. Eureka) dynamically keeps track of the changing IP addresses and port numbers of active microservice instances.</p>
+            <p><span class="bold-white">Load Balancer:</span> Distributes incoming traffic across healthy service instances, preventing single-node bottlenecks.</p>
+            <p><span class="bold-white">Client-Side Load Balancing:</span> (e.g., Spring Cloud LoadBalancer) allows the client to fetch instance lists and load balance directly, reducing gateway hops.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>GatewayRoutingConfig.yml</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # Fetch route mappings dynamically from Eureka
+      routes:
+        - id: order-service-route
+          uri: lb://ORDER-SERVICE # Load balance across ORDER-SERVICE instances
+          predicates:
+            - Path=/api/orders/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 50
+                redis-rate-limiter.burstCapacity: 100
+                key-resolver: &quot;#{@userKeyResolver}&quot;
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-cloud-graalvm">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do you optimize Spring Boot for serverless (AWS Lambda) using GraalVM? Detail Native Image optimization and Runtime Hints.</span></h3>
@@ -4285,6 +5773,63 @@ public class ProductService {
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">Kafka components, partitions, consumer groups, fault tolerance, message ordering, offset management, exactly-once semantics, ZooKeeper vs KRaft, retry topics, and Dead Letter Topics (DLT).</p>
+                    <div class="qa-card" id="q-kafka-consumer-producer-offset">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain Kafka Producer, Consumer, Offset, and Group Rebalancing. How do you handle message spikes?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Producer & Consumer:</span> Producers write records to partition keys, which determines the target partition log. Consumers subscribe to topics, reading records sequentially.</p>
+            <p><span class="bold-white">Offsets:</span> Offsets record the sequential read progress of each consumer, which is stored in the internal `__consumer_offsets` topic.</p>
+            <p><span class="bold-white">Consumer Groups:</span> Multiple consumers in a consumer group read from separate partitions in parallel, which is managed by a coordinator.</p>
+            <p><span class="bold-white">Handling Spikes:</span> Scale partitions to distribute load. Designing topics: set partitions >= consumer count, use specific partition keys to prevent hot spots, and configure replication factors.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>KafkaProducerConsumerDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Properties;
+
+public class KafkaProducerConsumerDemo {
+    public static void main(String[] args) {
+        Properties config = new Properties();
+        config.put(&quot;bootstrap.servers&quot;, &quot;localhost:9092&quot;);
+        config.put(&quot;key.serializer&quot;, &quot;org.apache.kafka.common.serialization.StringSerializer&quot;);
+        config.put(&quot;value.serializer&quot;, &quot;org.apache.kafka.common.serialization.StringSerializer&quot;);
+
+        // 1. Publishing an event using a partition key
+        KafkaProducer&lt;String, String&gt; producer = new KafkaProducer&lt;&gt;(config);
+        ProducerRecord&lt;String, String&gt; record = new ProducerRecord&lt;&gt;(&quot;orders-topic&quot;, &quot;customer-101&quot;, &quot;OrderPlacedEventData&quot;);
+        producer.send(record);
+        producer.close();
+
+        // 2. Subscribing to consume events
+        Properties consumerConfig = new Properties();
+        consumerConfig.put(&quot;bootstrap.servers&quot;, &quot;localhost:9092&quot;);
+        consumerConfig.put(&quot;group.id&quot;, &quot;order-processing-group&quot;);
+        consumerConfig.put(&quot;key.deserializer&quot;, &quot;org.apache.kafka.common.serialization.StringDeserializer&quot;);
+        consumerConfig.put(&quot;value.deserializer&quot;, &quot;org.apache.kafka.common.serialization.StringDeserializer&quot;);
+
+        KafkaConsumer&lt;String, String&gt; consumer = new KafkaConsumer&lt;&gt;(consumerConfig);
+        consumer.subscribe(Collections.singletonList(&quot;orders-topic&quot;));
+        
+        // Continuous poll loop
+        ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofMillis(100));
+        System.out.println(&quot;Fetched message count: &quot; + records.count());
+        consumer.close();
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-kafka-retry-dlt">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Write a robust, non-blocking Kafka consumer with Spring Boot that handles processing failures using retry topics and routes poison pills to a DLT.</span></h3>
@@ -4567,6 +6112,322 @@ public class KafkaConsumerConfig {
                 </div>
                 <div class="topic-content">
                     <p class="text-secondary mb-4">SQL joins, index types (B-Tree, Clustered/Non-clustered), ACID properties, isolation levels vs database propagation, optimistic vs pessimistic locking, and resolving the JPA N+1 problem using JOIN FETCH.</p>
+                    <div class="qa-card" id="q-db-high-concurrency-connections">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What are the fastest strategies for microservices to communicate with databases under high concurrency?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Connection Pooling:</span> Use HikariCP to reuse database connections, minimizing thread allocation latency.</p>
+            <p><span class="bold-white">Caching:</span> Implement a read-through cache using Redis or Caffeine to prevent redundant select queries from reaching the database.</p>
+            <p><span class="bold-white">Read-Write Splitting:</span> Route write transactions to the primary database node, and balance read requests across read-replicas.</p>
+            <p><span class="bold-white">Reactive Access:</span> Use R2DBC for non-blocking reactive persistence, preventing database driver threads from blocking the Netty event loops.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>HighLoadDbConfiguration.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import javax.sql.DataSource;
+
+@Configuration
+public class HighLoadDbConfiguration {
+
+    @Bean
+    public DataSource hikariDataSource() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(&quot;jdbc:postgresql://localhost:5432/valoredb&quot;);
+        config.setUsername(&quot;dbuser&quot;);
+        config.setPassword(&quot;securepwd&quot;);
+        
+        // Tuning for high concurrency
+        config.setMaximumPoolSize(40);
+        config.setMinimumIdle(10);
+        config.setIdleTimeout(30000);
+        config.setConnectionTimeout(2000);
+        config.setLeakDetectionThreshold(2000); // Detect connection leaks
+        
+        // Cache settings optimization for Postgres
+        config.addDataSourceProperty(&quot;cachePrepStmts&quot;, &quot;true&quot;);
+        config.addDataSourceProperty(&quot;prepStmtCacheSize&quot;, &quot;250&quot;);
+        config.addDataSourceProperty(&quot;prepStmtCacheSqlLimit&quot;, &quot;2048&quot;);
+
+        return new HikariDataSource(config);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-db-jpa-repository-queries">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do you write custom queries in Spring Boot? Compare JpaRepository method derivation, JPQL, and Native SQL Queries.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Method Derivation:</span> Generates SQL automatically from the method signature (e.g. <span class="keyword">findByEmailAndStatus</span>). It is convenient but unsuitable for complex joins.</p>
+            <p><span class="bold-white">JPQL (Java Persistence Query Language):</span> Queries Java entities and properties rather than raw database tables, maintaining database engine independence.</p>
+            <p><span class="bold-white">Native SQL Queries:</span> Execute raw SQL directly against the database engine, bypassing entity mapping rules. This is useful for database-specific optimizations.</p>
+            <p><span class="bold-white">Selection Guide:</span> Use derived queries for basic CRUD operations, JPQL for general entity joins, and native queries for batch statements or using database-specific extensions.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>UserRepository.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;NamespaceMigrationDemo, Long&gt; {
+
+    // 1. Method Derivation (Automatic SQL generation)
+    List&lt;NamespaceMigrationDemo&gt; findByUsername(String username);
+
+    // 2. Custom JPQL Query (Targets Entity classes and properties)
+    @Query(&quot;SELECT u FROM NamespaceMigrationDemo u WHERE u.username LIKE %:suffix%&quot;)
+    List&lt;NamespaceMigrationDemo&gt; searchByUsernameSuffix(@Param(&quot;suffix&quot;) String suffix);
+
+    // 3. Native SQL Query (Executes raw database-specific statements)
+    @Query(value = &quot;SELECT * FROM users WHERE id &gt; :minId LIMIT 10&quot;, nativeQuery = true)
+    List&lt;NamespaceMigrationDemo&gt; fetchUserLimit(@Param(&quot;minId&quot;) Long minId);
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-db-acid-procedures-vs-functions">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What are SQL ACID properties? Compare Stored Procedures vs Functions in relational database design.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">ACID Properties:</span> Atomicity (all operations commit or all rollback), Consistency (data state complies with schema constraints), Isolation (concurrent transactions execute independently), and Durability (committed changes survive system failures).</p>
+            <p><span class="bold-white">Stored Procedures:</span> Precompiled blocks of SQL statements executed on the database server. They can execute transactional commits/rollbacks, return multiple result sets, and perform raw DML operations.</p>
+            <p><span class="bold-white">Functions:</span> Must return exactly one value. They cannot execute transactional commands or modify database state, but can be embedded inside queries.</p>
+            <p><span class="bold-white">Best Practice:</span> Use stored procedures for complex maintenance jobs and batch data operations, and functions for calculated expressions (like custom string formatting).</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>ProcVsFunctionDemo.sql</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-sql">-- 1. Stored Procedure - supports DML and transactions
+CREATE OR REPLACE PROCEDURE transfer_balance(
+    sender_id INT,
+    receiver_id INT,
+    amount DECIMAL
+)
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE accounts SET balance = balance - amount WHERE id = sender_id;
+    UPDATE accounts SET balance = balance + amount WHERE id = receiver_id;
+    
+    COMMIT; -- Commit transaction inside procedure
+END;
+$$;
+
+-- 2. User Defined Function - returns value, no transaction control
+CREATE OR REPLACE FUNCTION get_interest_gain(balance DECIMAL, rate DECIMAL)
+RETURNS DECIMAL AS $$
+BEGIN
+    RETURN balance * (rate / 100);
+END;
+$$ LANGUAGE plpgsql;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-db-sql-queries-indexing-sharding">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Discuss SQL Joins, Order By, Group By, Indexes, and Database Sharding strategies.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">SQL Joins:</span> Combine data rows from multiple tables using matching column keys. Inner Join returns matching rows; Left Join preserves all rows from the left table.</p>
+            <p><span class="bold-white">Order By & Group By:</span> ORDER BY sorts query results. GROUP BY aggregates data rows based on matching columns (e.g. sum sales by product category).</p>
+            <p><span class="bold-white">Indexing:</span> B-Tree indexes speed up query lookups by creating sorted search tables, but add storage overhead and slow down DML write speeds.</p>
+            <p><span class="bold-white">Database Sharding:</span> A horizontal partitioning strategy that distributes a single logical database across multiple physical servers to support high-throughput scaling.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>AdvancedQueriesAndIndex.sql</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-sql">-- 1. Advanced Join with Group By and Order By aggregation
+SELECT c.name, COUNT(e.id) as employee_count, AVG(e.salary) as avg_salary
+FROM Company c
+INNER JOIN Employee e ON c.id = e.company_id
+WHERE e.is_active = true
+GROUP BY c.name
+HAVING COUNT(e.id) &gt; 5
+ORDER BY avg_salary DESC;
+
+-- 2. Create index to speed up join and group by lookup
+CREATE INDEX idx_employee_company_active ON Employee(company_id, is_active);
+
+-- 3. Sharding partition mapping concept (Horizontal division based on key)
+-- CREATE TABLE customer_usa PARTITION OF customer FOR VALUES IN (&#x27;USA&#x27;);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-db-lazy-loading-exception">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>What is Lazy Loading in Hibernate? How do you prevent and resolve LazyInitializationException?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Lazy Loading:</span> Defers database fetching of associated collections or entities until they are explicitly accessed, replacing associations with runtime bytecode proxies.</p>
+            <p><span class="bold-white">LazyInitializationException:</span> Occurs when a transaction has closed (terminating the active Session context), and code subsequently attempts to access an uninitialized lazy property.</p>
+            <p><span class="bold-white">Resolution Strategies:</span> Resolve this by: (1) Using <span class="keyword">@EntityGraph</span> to fetch dependencies selectively, (2) using <span class="keyword">JOIN FETCH</span> inside JPQL, or (3) maintaining the transaction boundary using <span class="keyword">@Transactional</span>.</p>
+            <p><span class="bold-white">Best Practice:</span> Avoid setting FetchType.EAGER globally, as it triggers performance degradation and creates JPA N+1 query execution loops.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>LazyInitializationFix.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import java.util.Optional;
+
+@Repository
+interface CompanyRepository extends JpaRepository&lt;Company, Long&gt; {
+
+    // Resolves LazyInitializationException and N+1 query loops using JOIN FETCH
+    @Query(&quot;SELECT c FROM Company c JOIN FETCH c.employees WHERE c.id = :id&quot;)
+    Optional&lt;Company&gt; findCompanyWithEmployees(@Param(&quot;id&quot;) Long id);
+}
+
+/*
+// Example Usage in Transaction Context:
+@Service
+class CompanyService {
+    private final CompanyRepository repo;
+    public CompanyService(CompanyRepository repo) { this.repo = repo; }
+
+    @Transactional(readOnly = true)
+    public void printEmployees(Long id) {
+        Company c = repo.findCompanyWithEmployees(id)
+            .orElseThrow(() -&gt; new RuntimeException(&quot;Not found&quot;));
+        // Safe: Employees collection is fully populated in a single query
+        c.getEmployees().forEach(System.out::println);
+    }
+}
+*/</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-db-jpa-mappings-session">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do you map @OneToMany and @ManyToOne bidirectional relationships? Compare Hibernate Session vs SessionFactory.</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Relationship Mapping:</span> In bidirectional mappings, define <span class="keyword">@ManyToOne</span> on the child entity (representing the foreign key) and <span class="keyword">@OneToMany(mappedBy = "...")</span> on the parent.</p>
+            <p><span class="bold-white">Owner Side:</span> Always use <span class="keyword">mappedBy</span> to define the relationship owner, preventing Hibernate from generating an unnecessary third join table.</p>
+            <p><span class="bold-white">SessionFactory:</span> A heavyweight, thread-safe factory bean created during startup that caches metadata and handles L2 cache configuration.</p>
+            <p><span class="bold-white">Session:</span> A lightweight, non-thread-safe connection wrapper representing the L1 cache. It is short-lived and tied to a single database transaction.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>BidirectionalMappingDemo.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+class Company {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // mappedBy points to company field in Employee entity
+    @OneToMany(mappedBy = &quot;company&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List&lt;Employee&gt; employees = new ArrayList&lt;&gt;();
+
+    public void addEmployee(Employee emp) {
+        employees.add(emp);
+        emp.setCompany(this); // Sync bidirectional association link
+    }
+}
+
+@Entity
+class Employee {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;company_id&quot;) // Foreign key column
+    private Company company;
+
+    public void setCompany(Company company) { this.company = company; }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-card" id="q-db-soft-delete-jpa">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Explain Soft Delete vs Hard Delete. How do you implement automated soft deletion in Spring Data JPA?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body">
+                            <div class="qa-content-wrapper">
+                                <p><p><span class="bold-white">Hard Delete:</span> Executes a standard <span class="keyword">DELETE FROM</span> query, permanently removing rows from the database storage blocks.</p>
+            <p><span class="bold-white">Soft Delete:</span> Updates a status flag (e.g. <span class="keyword">is_deleted = true</span>), hiding the row from queries while preserving historical data for audits and restores.</p>
+            <p><span class="bold-white">Hibernate Integration:</span> In JPA, soft delete is automated using Hibernate's <span class="keyword">@SQLDelete</span> (replaces delete operations with an update statement) and <span class="keyword">@Where</span> (adds filter clauses automatically to select queries).</p>
+            <p><span class="bold-white">Referential Integrity:</span> Use soft deletes to maintain referential integrity in relational tables while preventing data loss, but note that custom indexes must handle the deleted rows to prevent index bloat.</p></p>
+                                <div class="code-container">
+                                    <div class="code-header">
+                                        <span>SoftDeleteEntity.java</span>
+                                        <button class="btn-copy" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
+                                    </div>
+                                    <pre class="line-numbers"><code class="language-java">import jakarta.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+@Entity
+@Table(name = &quot;products&quot;)
+// Intercept JPA delete entity commands and turn them into Updates
+@SQLDelete(sql = &quot;UPDATE products SET is_deleted = true WHERE id = ?&quot;)
+// Automatically filter out deleted products from select queries
+@Where(clause = &quot;is_deleted = false&quot;)
+public class SoftDeleteEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    
+    private double price;
+
+    private boolean isDeleted = false; // Soft delete tracking flag
+
+    public SoftDeleteEntity() {}
+
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public void setDeleted(boolean deleted) { this.isDeleted = deleted; }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="qa-card" id="q-db-concurrency-locks">
                         <div class="qa-header">
                             <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do you maintain database consistency under high concurrency? Explain Optimistic vs Pessimistic locking.</span></h3>
