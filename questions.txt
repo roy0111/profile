@@ -1,0 +1,841 @@
+🧠 1. Core Java (25 Questions)
+Multithreading & Concurrency
+1. Difference between synchronized and ReentrantLock?
+synchronized is a keyword that offers intrinsic locking with automatic release. ReentrantLock provides more control (e.g., tryLock, fair locking) and must be manually unlocked.
+
+2. What is a deadlock? How do you prevent it?
+Deadlock occurs when two threads wait on each other to release locks. Prevent using lock ordering, timeout mechanisms, or tryLock.
+
+3. What’s the purpose of volatile?
+Ensures visibility of changes to variables across threads. Prevents caching of variables locally.
+
+4. How does ThreadLocal work?
+It maintains a separate value for each thread using a thread-local map internally.
+
+5. When should you use Callable over Runnable?
+Use Callable when you need a return value or want to throw checked exceptions.
+
+Collections
+6. How is HashMap implemented internally?
+Uses an array of buckets (Node[]), where each entry is stored via hashing. Collisions handled using chaining or balanced trees in Java 8+.
+
+7. What’s the difference between ArrayList and LinkedList?
+ArrayList uses dynamic arrays (fast random access). LinkedList uses nodes (efficient inserts/deletes).
+
+8. When to use ConcurrentHashMap vs Collections.synchronizedMap()?
+ConcurrentHashMap offers better concurrency with segment-based locking. synchronizedMap locks the entire map.
+
+9. What is fail-fast vs fail-safe iterator?
+Fail-fast throws ConcurrentModificationException. Fail-safe (e.g., CopyOnWriteArrayList) uses snapshot.
+
+10. How do TreeMap and HashMap differ?
+TreeMap is sorted and uses Red-Black Tree. HashMap is unordered and uses hashing.
+
+OOP & Best Practices
+11. What are the 4 pillars of OOP in Java?
+Encapsulation, Abstraction, Inheritance, Polymorphism.
+
+12. Difference between composition and inheritance?
+Composition uses "has-a" while inheritance uses "is-a" relationship.
+
+13. What is the Liskov Substitution Principle?
+Subtypes must be substitutable for their base types without altering correctness.
+
+14. Can an interface have static methods?
+Yes, from Java 8 onward.
+
+15. What is the diamond problem? How does Java 8 handle it?
+Occurs with multiple inheritance of methods. Java resolves it using explicit override.
+
+Memory Management
+16. What is garbage collection in Java?
+Automatic process of reclaiming memory from unreachable objects.
+
+17. Explain the Java memory model.
+Heap (Young, Old), Stack, Metaspace. Thread-safe reads/writes governed by JMM.
+
+18. What is PermGen vs Metaspace?
+PermGen (pre-Java 8) was fixed-size. Metaspace grows dynamically.
+
+19. How does G1GC differ from CMS?
+G1GC is region-based, parallel, and has predictable pause times.
+
+20. How can you detect and fix memory leaks?
+Using tools like VisualVM, JProfiler. Common causes: static collections, listeners not removed.
+
+Java 8+ Features
+21. What is a functional interface?
+An interface with a single abstract method. Enables lambda expressions.
+
+22. Difference between map() and flatMap() in Streams?
+map() transforms each element. flatMap() flattens nested structures.
+
+23. What are method references?
+A shorthand for calling methods using :: syntax. E.g., System.out::println.
+
+24. What is Optional and how should it be used?
+To avoid null. Use isPresent(), orElse(), map(). Don’t misuse as container.
+
+25. What is the purpose of default methods in interfaces?
+Allows adding methods without breaking implementations.
+
+🔗 2. Spring Boot & Microservices (25 Questions)
+Spring Boot Internals
+26. How does Spring Boot auto-configuration work?
+Via @EnableAutoConfiguration and condition-based beans using classpath detection.
+
+27. Difference between @Component, @Service, @Repository?
+All are stereotypes. @Repository adds DB exception translation. @Service adds business semantics.
+
+28. How does Spring manage bean lifecycle?
+Using scopes, post processors, @PostConstruct, @PreDestroy, lifecycle interfaces.
+
+29. What is the role of @ConditionalOnProperty?
+Conditionally enable beans based on property values.
+
+30. How to handle circular dependencies?
+Avoid via constructor injection. Use @Lazy or setter injection as last resort.
+
+Microservices Integration
+31. How do you implement inter-service communication?
+REST (RestTemplate/WebClient), gRPC, Kafka. Prefer Feign for declarative REST.
+
+32. What is the difference between synchronous and asynchronous calls?
+Sync waits for response; async uses callbacks or messaging (Kafka/RabbitMQ).
+
+33. How do you implement retry, fallback, and circuit breaker?
+Use Resilience4j or Spring Cloud Circuit Breaker with fallback methods.
+
+34. How do you ensure backward compatibility between services?
+Versioned endpoints (/v1/api), contract testing (Pact), schema evolution tools.
+
+35. What’s the role of API Gateway in microservice architecture?
+Routes requests, applies auth, rate limits, transforms payloads.
+
+Security & Resilience
+36. How do you secure REST endpoints?
+JWT with Spring Security, OAuth2 for user-based access.
+
+37. Difference between OAuth2 and JWT?
+OAuth2 is a protocol. JWT is a token format. OAuth2 may use JWT for tokens.
+
+38. How do you implement RBAC in Spring Security?
+Map roles to endpoints using annotations or config DSL.
+
+39. How do you protect microservices against DDOS or abuse?
+Rate limiting, circuit breakers, Web Application Firewall (WAF).
+
+40. What is rate limiting and how do you implement it?
+Restricts request volume. Use Bucket4j, Redis-based counters, API Gateway filters.
+
+Configuration & Observability
+41. What is Spring Cloud Config Server?
+Centralized configuration using Git/FS/DB backends. Refreshable via /actuator/refresh.
+
+42. How do you implement distributed tracing?
+Using Spring Sleuth and Zipkin/Jaeger.
+
+43. How does actuator help in production?
+Exposes health, metrics, beans, mappings. Use /actuator/* endpoints.
+
+44. How to monitor microservices in real time?
+Prometheus + Grafana, Micrometer metrics.
+
+45. What tools do you use for logs and metrics?
+ELK stack (Elastic, Logstash, Kibana), Prometheus, OpenTelemetry.
+
+Deployment & Failures
+46. How do you achieve zero-downtime deployment?
+Blue-green, rolling updates, Kubernetes readiness probes.
+
+47. What is blue-green deployment?
+Deploy to inactive environment, switch traffic after verification.
+
+48. What happens if a service crashes? How do you recover?
+Retry, circuit break, autoscale, use Kubernetes liveness probes.
+
+49. How do you handle data consistency in distributed transactions?
+Sagas (choreography/orchestration), eventual consistency, outbox pattern.
+
+50. What is a Saga pattern and when should you use it?
+Manages long-running distributed transactions via compensation steps.
+
+🧱 3. Design Patterns (20 Questions)
+51. What is the Singleton pattern? How do you implement it in Java?
+Ensures only one instance exists. Implement via private constructor and static method.
+
+52. How is Factory pattern different from Abstract Factory?
+Factory returns one product. Abstract Factory returns related families.
+
+53. What is the Strategy pattern?
+Encapsulates interchangeable algorithms. Promotes composition over inheritance.
+
+54. Where is the Builder pattern commonly used?
+Used in object construction (e.g., StringBuilder, Lombok @Builder).
+
+55. What is the Observer pattern?
+Allows subscribers to react to changes in state (e.g., event listeners).
+
+56. Explain the Proxy pattern with real-world usage.
+Proxy controls access (e.g., AOP, lazy loading in Hibernate).
+
+57. Difference between Adapter and Decorator pattern?
+Adapter changes interface. Decorator adds responsibility.
+
+58. What is the Template Method pattern?
+Defines skeleton of algorithm in superclass, lets subclass override steps.
+
+59. When do you use Command pattern?
+For encapsulating a request as an object (undo/redo systems).
+
+60. What’s the benefit of Chain of Responsibility?
+Decouples sender and receivers. Multiple handlers can process requests.
+
+61. What is Dependency Injection? How does Spring use it?
+A technique to inject dependencies rather than hard-coding. Spring uses constructors/setters/fields.
+
+62. How is MVC implemented in Spring?
+Controllers map requests, services handle logic, models are data objects, views render UI.
+
+63. What is AOP? Common use cases?
+Aspect-Oriented Programming for cross-cutting concerns like logging, transactions.
+
+64. How is Lazy Initialization useful in patterns?
+Delays object creation. Useful in Singleton, Proxy.
+
+65. What’s the difference between Composition and Aggregation?
+Composition: owns lifecycle. Aggregation: just a reference.
+
+66. Can patterns introduce complexity? How do you balance it?
+Yes. Apply only where there's recurring benefit. Avoid over-engineering.
+
+67. What’s the role of the Mediator pattern?
+Centralizes communication between objects to reduce coupling.
+
+68. Example of Flyweight pattern in Java APIs?
+Integer.valueOf(), String.intern() reuse objects to save memory.
+
+69. What pattern does Java’s Enum Singleton use?
+Enum is the safest way to implement Singleton, guards against reflection and serialization.
+
+70. How to test code that uses Factory or Strategy pattern?
+Inject mock strategies/factories using dependency injection or mocking frameworks.
+
+📊 4. Algorithms & Data Structures (15 Questions)
+71. How do you reverse a LinkedList without using extra space?
+Iteratively change next pointers. Keep track of previous/current nodes.
+
+72. Write a function to check if a string is a palindrome.
+Use two-pointer technique or reverse and compare.
+
+73. What is the time complexity of HashMap operations?
+Average case O(1). Worst-case O(n) due to collisions.
+
+74. Explain binary search algorithm.
+Efficient O(log n) algorithm on sorted arrays. Divide and conquer.
+
+75. How does QuickSort work?
+Divide around a pivot. Sort partitions recursively. Average O(n log n).
+
+76. What’s the difference between BFS and DFS?
+BFS uses queue (level order). DFS uses stack/recursion (depth first).
+
+77. When is a heap used in Java?
+PriorityQueue, heapsort. Useful for top-K problems.
+
+78. Implement LRU cache.
+Use LinkedHashMap or a combination of HashMap + Doubly Linked List.
+
+79. What’s a Trie? Use case?
+Tree-like structure for prefix searching (e.g., autocomplete).
+
+80. Difference between Stack and Queue?
+Stack: LIFO. Queue: FIFO. Used for parsing, task scheduling.
+
+81. How do you detect a cycle in a graph?
+DFS with visited set or Union-Find.
+
+82. How do you find the intersection of two arrays?
+Use Set or HashMap to track common elements.
+
+83. What’s the difference between Array and LinkedList?
+Array: fixed size, fast access. LinkedList: dynamic, fast insert/delete.
+
+84. What is dynamic programming?
+Solves problems by combining results of subproblems (e.g., Fibonacci).
+
+85. What is memoization?
+Cache results of expensive function calls.
+
+📄 5. SQL & Database (15 Questions)
+86. Difference between INNER JOIN and LEFT JOIN?
+INNER returns matching rows. LEFT returns all from left + matches.
+
+87. What is normalization?
+Structuring data to reduce redundancy (1NF, 2NF, 3NF).
+
+88. How to prevent SQL Injection in Java?
+Use PreparedStatements. Avoid string concatenation.
+
+89. What is indexing? How does it work?
+Speeds up queries using B-Trees/Hash indexes.
+
+90. Difference between clustered and non-clustered index?
+Clustered: sorts actual data. Non-clustered: separate structure.
+
+91. What is ACID in databases?
+Atomicity, Consistency, Isolation, Durability.
+
+92. Explain isolation levels.
+Read Uncommitted < Read Committed < Repeatable Read < Serializable.
+
+93. What are transactions and how are they managed in Spring?
+Logical units of work. Managed via @Transactional.
+
+94. What’s a deadlock in DB?
+Two transactions waiting on each other’s locks.
+
+95. How to profile slow queries?
+Use EXPLAIN, query logs, monitoring tools.
+
+96. What’s the use of JOIN FETCH in JPQL?
+Prevents N+1 problem by fetching related entities.
+
+97. How do you ensure consistency in distributed DBs?
+Use eventual consistency, quorum-based reads/writes, 2PC.
+
+98. What is optimistic vs pessimistic locking?
+Optimistic: versioning. Pessimistic: lock rows.
+
+99. When to use NoSQL over RDBMS?
+For unstructured data, high scalability (e.g., MongoDB, Cassandra).
+
+100. What’s a primary key vs unique key?
+Primary key: uniquely identifies rows, not null. Unique allows one null.
+
+
+1. How can you create a Spring Boot application using Gradle?
+
+2. How can you customize the default error pages in a Spring Boot application?
+
+
+3. How can you create a Spring Boot application using Maven?
+
+4. How can you implement security in a Spring Boot application?
+
+
+5. What are the different deployment options for a Spring Boot application?
+
+
+
+
+
+6. Describe the process of creating a RESTful API using Spring Boot.
+
+7. How does Spring Boot integrate with messaging systems such as RabbitMQ?
+
+
+8. Explain the concept of Spring Boot Data JPA and provide an example.
+
+
+9. How can you handle large file uploads in a Spring Boot application?
+
+10. What is the purpose of Spring Boot Actuator endpoints?
+
+11. Explain the concept of Spring Boot Actuator metrics and monitoring.
+
+
+12. How can you implement microservices architecture using Spring Boot?
+
+13. Describe the role of the Spring Cloud Netflix stack in a Spring Boot application.
+
+
+14. What is the purpose of Spring Boot DevTools and how does it enhance development productivity?
+
+
+15. How can you implement distributed tracing in a Spring Boot application using Spring Cloud Sleuth?
+
+
+16. Explain the concept of reactive programming in Spring Boot with Spring WebFlux.
+
+
+17. How does Spring Boot integrate with Apache Kafka for event-driven architectures?
+
+
+18. Describe the purpose and usage of Spring Boot's caching abstraction.
+
+
+19. How can you perform database migrations in a Spring Boot application using Flyway or Liquibase?
+
+
+20. Explain the concept of externalized configuration in Spring Boot and its benefits.
+
+
+21. How can you implement distributed session management in a Spring Boot application using Spring Session?
+
+22. How can you implement serverless functions using Spring Boot and AWS Lambda?
+
+
+23. How can you implement method-level security in a Spring Boot application?
+
+24. How can you implement server-sent events (SSE) in a Spring Boot application?
+
+25. How can you integrate Spring Boot with OAuth 2.0 for secure authentication and authorization?
+
+
+26. How can you implement data caching in a Spring Boot application using the Spring Cache Abstraction?
+
+27. How can you configure a custom error page in a Spring Boot application?
+
+28. How can you implement distributed tracing in a Spring Boot application using OpenTelemetry?
+
+
+29. How can you implement asynchronous processing in a Spring Boot application?
+
+30. How can you enable HTTPS in a Spring Boot application?
+
+1. Differentiate between Spring MVC and Spring Boot.
+
+
+2. What is the role of the @RestController annotation in Spring Boot?
+
+3. How can you implement exception handling in a Spring Boot application?
+
+
+4. Explain the concept of dependency injection in Spring Boot.
+
+
+5. How does Spring Boot support database operations?
+
+
+6. Describe the role of the Spring Boot Actuator.
+
+
+7. How can you implement caching in a Spring Boot application?
+
+8. What is the purpose of the @Scheduled annotation in Spring Boot?
+
+9. How can you enable cross-origin resource sharing (CORS) in a Spring Boot application?
+
+10. Explain the concept of profiles in Spring Boot.
+
+
+11. Explain the concept of the Spring Boot Actuator and its major features.
+
+
+12. How can you integrate Spring Security in a Spring Boot application?
+
+
+13. Describe the role of the @Transactional annotation in Spring Boot.
+
+
+14. How does Spring Boot handle internationalization (i18n) and localization (l10n)?
+
+
+15. What is the purpose of the @RestControllerAdvice annotation?
+
+
+16. Explain the concept of Spring Data REST and its advantages.
+
+
+
+
+
+
+17. How can you implement file upload and download functionality in a Spring Boot application?
+
+
+18. Describe the purpose and usage of the @Async annotation in Spring Boot.
+
+
+19. What is the role of the embedded servlet container in Spring Boot?
+
+
+20. How can you implement request and response logging in a Spring Boot application?
+
+
+21. Explain the concept of reactive data access in Spring Boot using Spring Data R2DBC.
+
+
+22. How can you perform asynchronous messaging using Spring Boot and RabbitMQ?
+
+
+23. Describe the purpose and usage of the @Conditional annotation in Spring Boot.
+
+24. What is the purpose of the @SpringBootTest annotation in Spring Boot testing?
+
+
+25. Explain the concept of Spring Boot's actuator health checks and customizing health indicators.
+
+
+26. How can you secure REST APIs in a Spring Boot application using JSON Web Tokens (JWT)?
+
+
+27. Describe the purpose and usage of the @EntityScan annotation in Spring Boot.
+
+
+28. What is the purpose of the @Retryable annotation in Spring Boot?
+
+
+29. Explain the concept of auto-reconfiguration in Spring Boot and its limitations.
+
+
+30. How can you implement distributed caching in a Spring Boot application using Hazelcast or Redis?
+
+1. What is Spring Boot, and how does it differ from Spring Framework?
+
+
+2. Explain the benefits of using Spring Boot for application development.
+
+3. What are the key features of Spring Boot?
+
+
+
+
+
+4. Explain the concept of Spring Boot starters and provide an example.
+
+
+
+
+
+5. What is the purpose of the @SpringBootApplication annotation?
+
+
+6. What is the default port number for a Spring Boot application?
+
+7. How can you enable the auto-configuration feature in Spring Boot?
+
+
+8. Explain the concept of starters in Spring Boot.
+
+
+9. How does Spring Boot handle external configuration?
+
+
+10. What is the purpose of the application.properties (or application.yml) file?
+
+
+11. Describe the Spring Boot auto-configuration mechanism.
+
+
+12. What is the purpose of the @Component annotation in Spring Boot?
+
+
+13. Explain the difference between @Component, @Repository, @Service, and @Controller annotations in Spring Boot.
+
+
+
+
+14. What is the role of the @Autowired annotation in Spring Boot?
+
+
+15. How can you implement logging in a Spring Boot application?
+
+
+16. What is the purpose of the SpringApplication.run() method?
+
+
+17. What is Spring Boot CLI?
+
+
+18. How does Spring Boot handle data validation?
+
+
+19. What is the purpose of the @RequestMapping annotation in Spring Boot?
+
+
+20. How does Spring Boot integrate with containerization platforms like Docker and Kubernetes?
+
+
+21. Explain the concept of message-driven microservices using Spring Boot and Apache Pulsar.
+
+
+22. What is the purpose of the @Value annotation in Spring Boot?
+
+
+23. Describe the role of the CommandLineRunner and ApplicationRunner interfaces in Spring Boot.
+
+
+24. How can you implement pagination in a Spring Boot application?
+
+
+25. Explain the concept of bean scopes in Spring Boot.
+
+
+
+
+
+
+26. What is the purpose of the @Qualifier annotation in Spring Boot?
+
+
+
+27. How does Spring Boot handle exception logging and error handling?
+
+
+
+28. Describe the purpose and usage of the @RestControllerAdvice annotation.
+
+
+29. What is the purpose of the @ConfigurationProperties annotation in Spring Boot?
+
+
+30. Describe the purpose and usage of the @DynamicPropertySource annotation in Spring Boot testing.
+
+
+31. What is the purpose of the @TransactionalEventListener annotation in Spring Boot?
+
+
+32. What is the purpose of the @Scheduled annotation in Spring Boot?
+
+
+33. Describe the role of the @Profile annotation in Spring Boot.
+
+34. What is the purpose of Spring Boot's dynamic reloading and how does it work?
+
+
+35. Explain the concept of externalized logging in Spring Boot using Logback or Log4j2.
+
+
+36. What is the purpose of the @ModelAttribute annotation in Spring Boot?
+
+
+37. Explain the concept of reactive messaging with Spring Boot and Apache Kafka Streams.
+
+
+38. Describe the purpose and usage of the @Transactional(propagation = Propagation.NESTED) annotation.
+
+
+39. What is the purpose of the @DataJpaTest annotation in Spring Boot testing?
+
+
+40. Describe the purpose and usage of the Spring Boot Admin Server for monitoring and managing applications.
+
+
+Kafka Interview Questions
+1. What are the core components of Kafka, and how do they interact?
+2. Explain how Kafka achieves fault tolerance.
+3. How do Kafka producers and consumers work together in a typical use case?
+4. What is a Kafka topic, and how is it structured?
+5. How does Kafka handle message ordering and consistency?
+6. What strategies can be used for Kafka consumer group management?
+7. How does Kafka handle message retention and deletion?
+8. What is Kafka Streams, and how does it differ from traditional message processing?
+9. What is exactly-once semantics in Kafka, and how can it be implemented?
+10. Explain the difference between Kafka’s high-level and low-level consumer APIs.
+11. How does Kafka ensure high throughput and low latency?
+12. How would you monitor and troubleshoot Kafka performance issues in production?
+13. What are Kafka Connectors, and how are they used to integrate with external systems?
+14. Can you explain what ZooKeeper’s role is in Kafka’s architecture, and how Kafka will operate without it in the future?
+15. How would you design a fault-tolerant Kafka architecture for real-time data processing?
+
+
+
+
+
+
+Q1. What Is Spring Framework?
+Q2. What Are the Benefits of Using Spring?
+Q3.What Spring Sub-Projects Do You Know? Describe Them Briefly.
+Q4. What Is Dependency Injection?
+Q5. How Can We Inject Beans in Spring?
+Q6. Which Is the Best Way of Injecting Beans and Why?
+Q7. What Is the Difference Between BeanFactory and ApplicationContext?
+Q8.What Is a Spring Bean?
+Q9. What Is the Default Bean Scope in Spring Framework?
+Q10. How to Define the Scope of a Bean?
+Q11. Are Singleton Beans Thread-Safe?
+Q12. What Does the Spring Bean Life Cycle Look Like?
+Q13. What Is the Spring Java-Based Configuration?
+Q14. Can We Have Multiple Spring Configuration Files in One Project?
+Q15. What Is Spring Security?
+Q16. What Is Spring Boot?
+Q17. Name Some of the Design Patterns Used in the Spring Framework?
+Q18. How Does the Scope Prototype Work?
+ 
+
+3. Spring Web MVC
+Q19. How to Get ServletContext and ServletConfig Objects in a Spring Bean?
+Q20. What Is a Controller in Spring MVC?
+Q21. How Does the @RequestMapping Annotation Work?
+ 
+
+4. Spring Data Access
+Q22. What Is Spring Jdbctemplate Class and How to Use It?
+Q23. How to Enable Transactions in Spring and What Are Their Benefits?
+Q24. What Is Spring DAO?
+ 
+
+5. Spring Aspect-Oriented Programming (AOP)
+Q25. What Is Aspect-Oriented Programming?
+Q26. What Are Aspect, Advice, Pointcut, and JoinPoint in AOP?
+Q27. What Is Weaving?
+ 
+
+
+6. Spring 5
+Q28. What Is Reactive Programming?
+Q29. What Is Spring WebFlux?
+Q30. What Are the Mono and Flux Types?
+Q31. What Is the Use of WebClient and WebTestClient?
+Q32. What Are the Disadvantages of Using Reactive Streams?
+Q33. Is Spring 5 Compatible With Older Versions of Java?
+Q34. How Ow Spring 5 Integrates With JDK 9 Modularity?
+Q35. Can We Use Both Web MVC and WebFlux in the Same Application?
+
+
+
+answer with details example of those question : 
+1. comperable vs compitable
+2. hash map va concurrenthashmap
+3. static vs final vs volatile vs transient
+4. how to maintain db consistency and concueenrency when multiple rest api call same end point. how to microservices handle 
+5.if million of data transection need in rest api , one good practice to that. 
+
+
+
+
+how many question is in questions.txt file. and amoung how many answered in intervire.html file. how many not avaiable
+
+
+ 
+
+7. Production Troubleshooting & Cloud Architecture (Scenario-Based)
+Q36. Our Spring Boot API suddenly returns 503. How do you troubleshoot?
+First, I would identify where the 503 is coming from—whether it is the application, load balancer, API Gateway, or another infrastructure component. I would check the ALB target health, ECS or Kubernetes task/pod status, application logs, and Spring Boot health endpoints such as /actuator/health. Then I would check CPU, memory, database connectivity, and downstream services. I would also look for any recent deployment or configuration changes. If the issue started immediately after a deployment, I would roll back first to restore the service and then investigate the root cause.
+
+Q37. Your API latency increased from 200 ms to 5 seconds. What do you check?
+I would first use application metrics and distributed tracing to determine where the additional four or five seconds are being spent. I would check database query performance, connection pool usage, external API calls, Kafka operations, CPU, memory, garbage collection, thread pool exhaustion, and network latency. I would also compare the current deployment with the previous version to see whether there was a recent code or configuration change. For example, if tracing shows that the application itself takes only 100 milliseconds but a database query takes 3.8 seconds, then I would focus on the database rather than simply increasing the number of application instances.
+
+Q38. Kafka consumer lag is increasing. What could cause it?
+Consumer lag generally means that producers are producing messages faster than consumers can process them. I would first check the producer rate, consumer processing rate, number of partitions, number of active consumers, and lag per partition. Then I would check whether the consumer is spending too much time processing messages, waiting on a database or external API, retrying failed messages, or experiencing frequent rebalancing or garbage collection pauses. If the application has enough partitions, I could increase the number of consumer instances to increase parallelism. I would also optimize the consumer processing logic or move expensive operations to asynchronous processing if necessary.
+
+Q39. Database connection pool is exhausted. Why?
+A connection pool becomes exhausted when all available database connections are being used and new requests have to wait for a connection. I would check whether there are slow queries, long-running transactions, connection leaks, or an increase in application traffic. I would also look at the HikariCP metrics to understand the number of active, idle, and waiting connections. I wouldn't simply increase the connection pool size because that could overload the database. I would first identify why connections are being held for too long and optimize the queries or transaction boundaries.
+
+Q40. ECS task keeps restarting. How do you debug it?
+I would first look at the ECS service events and the stopped-task reason to understand why the task is being terminated. Then I would check the container exit code, CloudWatch logs, CPU and memory usage, health-check configuration, load balancer target health, environment variables, secrets, IAM permissions, and the container image. Common causes are application startup failures, out-of-memory errors, failed health checks, incorrect ports, missing configuration, or permission issues. If the application starts successfully but ECS keeps replacing it, I would pay particular attention to the health-check configuration and whether the application is actually ready to receive traffic.
+
+Q41. Kubernetes pod is running but service cannot reach it. What do you check?
+I would trace the request path from the Kubernetes Service to the pod. First, I would verify that the pod is actually ready and that its readiness probe is passing. Then I would check the Service selector and make sure it matches the labels on the pod. I would also verify the Service targetPort matches the container port and check the Service endpoints or EndpointSlices to make sure the Service actually has healthy pods behind it. After that, I would investigate NetworkPolicies, DNS, Ingress configuration, and namespace issues. A common problem is that the pod is running but the Service selector doesn't match the pod labels, so the Service has no endpoints.
+
+Q42. How do you deploy a zero-downtime Spring Boot application?
+I would deploy multiple instances of the Spring Boot application behind a load balancer and use a rolling deployment strategy. New instances would start while the old instances are still serving traffic, and the load balancer would only send traffic to instances that pass their health and readiness checks. Once the new instances are healthy, traffic would gradually move to them and the old instances would be terminated gracefully. I would also make sure database changes are backward compatible because during a deployment, old and new versions of the application may temporarily run at the same time. In Kubernetes, I would use readiness probes and a RollingUpdate strategy with appropriate maxUnavailable and maxSurge settings.
+
+Q43. How would you scale a service from 100 requests/sec to 10,000 requests/sec?
+I wouldn't immediately start adding servers. First, I would identify the bottleneck by looking at application latency, CPU, memory, database performance, connection pools, external service latency, and Kafka throughput. I would make the application stateless and use horizontal scaling through ECS or Kubernetes autoscaling. For frequently accessed data, I would introduce Redis caching, and for expensive operations that don't need to happen synchronously, I would use Kafka or SQS to process them asynchronously. I would also optimize database queries, add appropriate indexes, and consider read replicas if database reads become the bottleneck. Finally, I would perform load testing and monitor P95 and P99 latency, error rate, throughput, CPU, database connections, and Kafka lag.
+
+Q44. How would you prevent duplicate Kafka message processing?
+Kafka consumers can process the same message more than once, so I would design the consumer to be idempotent. For example, each message could contain a unique event ID, and before processing the event I could check whether that event has already been processed. I could store the event ID in a database table with a unique constraint and skip the processing if it already exists. This way, even if Kafka redelivers the message after a consumer failure, the business operation won't happen twice. I would generally prefer idempotency rather than relying on exactly-once behavior across Kafka and an external database.
+
+Q45. How would you implement retry without creating duplicate orders?
+I would use an idempotency key for the order creation request. For example, the client could send an Idempotency-Key with the request, and I would store that key with the created order in the database with a unique constraint. If the client retries because of a timeout, the application can recognize that the same request was already processed and return the existing order instead of creating another one. For temporary failures, I could use Resilience4j with limited retries and exponential backoff, but I would only retry transient errors. I would not retry validation or business errors because retrying those would not solve the problem.
+
+Q46. How would you secure communication between microservices?
+I would secure service-to-service communication using authentication, authorization, and encryption. For authentication, I could use OAuth2 or JWT-based service credentials, while TLS would encrypt the communication between services. For highly sensitive environments, I could also use mutual TLS so that both services verify each other's identity. I would apply authorization to make sure a service can only access the APIs and resources it actually needs. At the infrastructure level, I would keep services in private networks where possible and use security groups and network policies to restrict unnecessary communication.
+
+Q47. How would you store passwords/secrets in AWS?
+I would use AWS Secrets Manager for sensitive information such as database passwords, API keys, and OAuth credentials. The Spring Boot application would access the secret using an IAM role rather than storing credentials directly in the source code or configuration file. I would follow least-privilege access so that the application can only retrieve the secrets it actually needs. For less-sensitive configuration, AWS Systems Manager Parameter Store could also be used. I would never commit passwords or API keys to Git or hardcode them in the Docker image.
+
+Q48. How would you design an application for multi-AZ failure?
+I would make the application and its major dependencies available across multiple Availability Zones. For example, I could deploy ECS tasks or Kubernetes pods across at least two or three AZs behind an Application Load Balancer. If one AZ becomes unavailable, the load balancer can route traffic to healthy instances in another AZ. The database should also use a Multi-AZ configuration, and services such as Kafka should have replicas distributed across AZs. I would also use autoscaling and health checks so that unhealthy instances are automatically replaced. Finally, I would actually test failure scenarios rather than assuming the architecture is resilient.
+
+Q49. How would you migrate a monolith into microservices?
+I would avoid rewriting the entire monolith at once because that creates significant risk. Instead, I would use the Strangler Fig approach, where I gradually extract individual business capabilities from the monolith into independent services. I would first identify clear business boundaries, such as customer, order, payment, or notification, and start with a relatively isolated and low-risk component. I would expose the new service through an API or event-based communication and gradually move traffic from the monolith to the new service. Over time, I would continue extracting additional services while maintaining backward compatibility and observability. I would also be careful about shared databases because simply creating multiple services while keeping tightly coupled database access doesn't provide the full benefits of microservices.
+
+Q50. How would you design a system where one service is unavailable for 30 minutes?
+I would design the system so that the unavailable service doesn't bring down the entire application. If the operation doesn't fundamentally require that service to complete, I would use asynchronous messaging with Kafka or SQS. For example, when an order is created, the Order Service can save the order and publish a notification event to Kafka. If the Notification Service is unavailable for 30 minutes, the event remains in Kafka and can be processed when the service comes back online. I would also use timeouts, circuit breakers, retries with exponential backoff, dead-letter queues, and idempotent consumers. The key principle is to avoid creating a synchronous dependency on a service when the business operation can continue without it.
+
+Q51. Your Spring Boot application experiences a sudden CPU spike to 100%. How do you identify the thread and code causing it?
+I would first capture a thread dump and CPU usage profiles concurrently. Using a tool like `top -H` on Linux, I would find the native OS thread IDs consuming the highest CPU. Then, I would convert those thread IDs to hexadecimal format and locate the matching `nid` in a thread dump generated via `jstack <pid>`. This maps the CPU-heavy thread directly to a Java stack trace, identifying the precise class and line of code causing the spike (e.g., an infinite loop or heavy serialization). I would also analyze GC logs to verify if the CPU spike is due to GC thread thrashing (stop-the-world overhead).
+
+Q52. A microservice is throwing OutOfMemoryError: Metaspace. What causes this and how do you resolve it?
+OutOfMemoryError in Metaspace indicates that the JVM's metadata storage area for class definitions is exhausted. This is commonly caused by class loading leaks, such as dynamically generating classes via runtime proxies (CGLIB, ByteBuddy, Reflection) without releasing classloaders, or repeated hot deployments without recycling the JVM. I would resolve it by capturing a heap dump and using Eclipse MAT or VisualVM to analyze classloader hierarchies and trace dynamic class creation. Long-term fixes involve configuring `-XX:MaxMetaspaceSize` to prevent unbounded growth and optimizing application code to reuse dynamic proxies rather than generating them repeatedly.
+
+Q53. How do you troubleshoot a slow database query that executes quickly in isolation but slowly under production load?
+A query that is fast in isolation but slow under production load indicates resource contention, lock blocking, or index degradation. I would analyze the execution plan using `EXPLAIN ANALYZE` under simulated concurrent load to check for table scans or temp files. I would check database connection pool metrics (waiting threads, lock wait timeouts) to see if the query is blocked waiting for rows locked by write transactions. I would also monitor database server health metrics (CPU utilization, I/O wait, disk I/O throughput) and check if the database is page-swapping due to buffer pool exhaustion.
+
+Q54. A REST API client is experiencing intermittent connection timeouts. How do you isolate the issue between DNS, network, firewall, and application thread starvation?
+I would isolate the issue systematically along the request path: (1) Check DNS resolution latency using `dig` or `nslookup` on the client side. (2) Analyze network latency and packet loss using `traceroute` or `ping`. (3) Verify firewall/load balancer rules and check access logs to see if dropped packets correspond to firewall rate limits. (4) Monitor application thread pool exhaustion (e.g. Tomcat active threads vs max threads) and thread state (blocked or waiting). If the application server shows high thread utilization and connection wait queues under load, thread starvation is the root cause.
+
+Q55. How do you debug thread pool saturation (e.g. Tomcat/Undertow executor queue build-up) in a reactive vs thread-per-request Spring Boot application?
+In a thread-per-request application (Tomcat/Undertow), thread pool saturation is debugged by capturing consecutive thread dumps (`jstack`) to find threads blocked on I/O, database queries, or downstream API calls. In a reactive application (Netty/WebFlux), Netty uses a small number of event loop threads (usually matching CPU cores). Saturation occurs if an event loop thread is blocked by CPU-heavy tasks or synchronous I/O. I would debug this using BlockHound to detect blocking calls inside reactive threads, or inspect thread dumps to ensure event loops are in RUNNABLE state rather than waiting/blocked.
+
+Q56. Your Redis cache hit rate dropped from 90% to 10%, causing database CPU to lock at 100%. How do you troubleshoot and resolve this cache stampede/penetration issue?
+I would troubleshoot by analyzing Redis keyspace metrics (`INFO stats`) to check if the drop is due to cache eviction (memory limit reached), massive concurrent key expiration (cache stampede), or requests for non-existent keys (cache penetration). I would resolve cache stampede using **Mutual Exclusion (Locking)**: when a key expires, only the first thread acquires a lock to fetch from the DB and rebuild the cache, while other threads wait or serve stale data. For cache penetration, I would store null/empty values with a short TTL or deploy a Bloom filter in front of Redis to reject invalid keys.
+
+Q57. Your Spring Boot application works perfectly locally but fails with Connection refused after deployment to ECS. How would you troubleshoot it?
+A "Connection refused" error after ECS deployment usually indicates that traffic is hitting the container host, but the application is not listening on the expected port or host address. First, I would check if the Spring Boot application is configured to bind to 0.0.0.0 (all interfaces) inside the container, rather than 127.0.0.1 or localhost. Second, I would verify the port mapping in the ECS Task Definition, ensuring the containerPort matches the port Spring Boot is running on (e.g. server.port=8080). Third, I would check security group ingress rules on the ECS instances to ensure they allow traffic on the target port from the Application Load Balancer. Finally, I would check ECS Service logs and task events to confirm if the container is running or crash-looping.
+
+Q58. One microservice is calling another service, but occasionally the request takes 30 seconds and then times out. How would you identify whether the problem is in your application, network, or downstream service?
+To isolate a 30-second connection timeout, I utilize distributed tracing metrics. First, I inspect the span duration in Zipkin or OpenTelemetry: if the parent service's span is 30 seconds but the downstream service's internal span is only 100ms, the latency exists in the network transport layer or connection pool queuing. Second, if there is no span generated by the downstream service, it indicates the request was dropped by a firewall, load balancer, or DNS routing before reaching it. Third, if the downstream service span shows a full 30-second execution time, the bottleneck lies inside the downstream application logic (e.g., database lock or thread starvation). Fourth, I monitor client-side connection pool timeouts (e.g., HTTP client connection wait queues).
+
+Q59. Your Kafka producer is successfully sending messages, but consumers are not receiving them. What would you check?
+If a Kafka producer reports successful sends but consumers receive nothing, I systematically inspect the message delivery chain. First, I verify if the producer is writing to the correct topic name and bootstrap servers. Second, I check the broker configs to ensure acks=all (or acks=1) is set, confirming messages actually committed to partitions. Third, I check the consumer group status using kafka-consumer-groups.sh to see if there is active lag or if consumers are assigned to partitions. Fourth, I inspect if the consumer offset is pointing to the end of the log (e.g., consumer started with auto.offset.reset=latest and missed earlier messages). Fifth, I review consumer application logs for deserialization errors which silently drop poison pills.
+
+Q60. A Kafka consumer processes messages successfully, but after restarting the application, some messages are processed again. Why could this happen, and how would you prevent duplicate processing?
+This happens because the consumer processed the records successfully but failed to commit the offsets back to the Kafka cluster before shutting down. When the consumer restarted, it read from the last committed offset, leading to message reprocessing. By default, Spring Boot uses auto-commit at intervals (e.g., every 5 seconds). If the application terminates abruptly, any offsets processed during that interval are lost. To prevent this, I configure manual offset commit behavior (AckMode.MANUAL_IMMEDIATE) so that offsets are committed immediately after processing. Since network failures can still interrupt offsets commit, I also implement the Idempotent Consumer pattern using an idempotency key database constraint to discard duplicates.
+
+Q61. Your Kafka consumer is processing 10,000 messages per minute, but suddenly traffic increases to 100,000 messages per minute. Consumer lag keeps increasing. How would you scale the consumers?
+To scale consumer throughput to handle a 10x traffic spike, I check topic partition allocation. Since Kafka limits the maximum active consumers in a group to the number of partitions on the topic, I must first increase the topic partition count (e.g., from 3 to 30 partitions). Second, I scale out the consumer instance count (or increase listener concurrency properties) to match the new partition count, allowing multiple consumers to process partitions in parallel. Third, I optimize batch consumption by increasing max.poll.records and tuning fetch.min.bytes to read larger record chunks per poll. Fourth, if processing is database-bound, I offload processing logic to worker thread pools inside the consumer.
+
+Q62. Your Spring Boot application suddenly starts throwing OutOfMemoryError: Java heap space in production. What would you investigate first?
+When a Java heap space OutOfMemoryError occurs, my first priority is collecting diagnostic data before restarting: I configure -XX:+HeapDumpOnOutOfMemoryError to automatically write a memory snapshot (.hprof file) when the error triggers. Then, I load this heap dump into Eclipse Memory Analyzer (MAT) or VisualVM to perform a memory leak suspect analysis. I inspect the largest object trees to locate objects holding millions of references (common leaks include static collections, unclosed streams, or oversized Hibernate session caches). I also review GC metrics (frequency and duration of Full GC pauses) in Grafana to check if memory is climbing linearly. Finally, I check recent changes in traffic volume or bulk API payload sizes.
+
+Q63. An API that normally returns in 300 ms suddenly takes 10 seconds, but CPU and memory look normal. What other areas would you investigate?
+When latency spikes to 10 seconds but system CPU and memory utilization remain low, the application is blocked waiting on external resources (I/O bounds). First, I check database lock metrics to identify if transactions are blocked waiting for database row-level write locks. Second, I check the connection pool metrics for HikariCP to see if threads are waiting for a database connection due to pool saturation. Third, I check downstream REST API call durations, ensuring they are guarded by appropriate connection and read timeouts. Fourth, I inspect application thread states (running a thread dump) to detect if threads are blocked by thread synchronization contentions or waiting in thread executors.
+
+Q64. Your database has enough CPU and memory, but your application is throwing HikariPool - Connection is not available errors. What could be causing this?
+This error indicates that all connections managed by HikariCP are currently active, forcing incoming threads to wait until they time out. The primary causes are: (1) Slow-running database queries that hold connections open for too long. (2) Transaction scope leakage, where methods marked @Transactional perform slow, non-database tasks (e.g. calling an external REST API), keeping the database connection idle but locked. (3) Connection leaks, where database connections are manually acquired but never returned to the pool due to unclosed resources. (4) An insufficient pool size configuration relative to application concurrency. I troubleshoot this by enabling Hikari leak detection properties.
+
+Q65. A REST API occasionally returns duplicate records even though the database contains only one record. How would you investigate the issue?
+This issue typically points to client-side retries combined with non-idempotent server handling, or ORM caching anomalies. First, I check access logs to verify if the client sent duplicate HTTP requests due to transient network read timeouts (client retries request because it didn't get a response in time). Second, I inspect if the endpoint performs multiple writes without checking record existence. Third, I check the database transaction isolation levels; under read-committed or repeatable-read, concurrent transactions can execute dirty read checks that fail to block duplicates. Fourth, I check if the application has a caching layer (e.g., Redis or local memory) that was not invalidated correctly after database updates.
+
+Q66. Two users update the same customer record at almost exactly the same time. One user's update overwrites the other's changes. How would you prevent this?
+This is a classic "Lost Update" concurrency problem. To prevent it, I implement Optimistic Locking or Pessimistic Locking. Optimistic Locking is preferred for high-read, low-write systems: I add a @Version field to the JPA entity; when updating, Spring Data Hibernate checks if the version in the database matches the entity version. If another user updated it first, the version mismatch throws an OptimisticLockingFailureException, which we handle by prompting the user to reload the stale data. For high-write lock contention, I use Pessimistic Locking (LockModeType.PESSIMISTIC_WRITE) which locks the database row until the active transaction commits, blocking concurrent updates.
+
+Q67. Your Spring Boot service starts successfully, but after several hours it becomes increasingly slow. Restarting the service temporarily fixes the problem. What would you investigate?
+This behavior indicates a resource leak that accumulates over time, eventually exhausting JVM capacity. I investigate: (1) Memory Leaks: A leak in the JVM heap causes garbage collection to run continuously (GC thrashing), consuming CPU and slowing the application. I monitor heap memory usage and capture heap dumps to analyze leak paths. (2) Thread Leaks: Unbounded thread creation (e.g. creating thread executors per request instead of reusing beans) exhausts OS thread counts. (3) Connection Leaks: Database or HTTP client connections that are not closed remain open, blocking subsequent requests. I monitor system metrics using Prometheus/Actuator to track memory, thread counts, and connection pools.
+
+Q68. A production deployment introduced a new database query. After deployment, database CPU increased to 90%. How would you identify and fix the problematic query?
+To resolve database CPU spikes, I check SQL diagnostics. First, I query the database system catalog (e.g., pg_stat_statements in PostgreSQL or slow query logs in MySQL) to identify queries with the highest total execution time or row reads. Second, I execute EXPLAIN ANALYZE on the target query to check the query plan. I look for sequential scans (table scans) or temp table sorting, which indicate missing database indexes or poor join logic. Third, I fix the issue by adding appropriate indexes to the filtering (WHERE) and join columns, rewrite the query to avoid cartesian products, or modify the Hibernate mapping to resolve N+1 select loops.
+
+Q69. Your service depends on a third-party payment API. That API suddenly becomes unavailable. How would you design your service so that your entire application does not fail?
+I design the integration using the Circuit Breaker and Graceful Degraded Fallback patterns. Using Resilience4j, I wrap the payment API integration class. When the failure rate of payment requests exceeds a configured threshold (e.g., 50%), the circuit opens, immediately intercepting subsequent requests to fail-fast without hitting the dead API. I implement a fallback method that returns a meaningful response (e.g. queueing the payment request for retry, or returning an "in-progress" status) rather than throwing an exception. For operations that don't need to happen synchronously, I use event-driven queues to store payment requests, processing them asynchronously when the API recovers.
+
+Q70. A downstream microservice is responding slowly, causing your application's request threads to become exhausted. How would you protect your service?
+When a downstream service slows down, request threads on the parent service block waiting for responses. Under heavy traffic, this exhausts the servlet container thread pool (e.g. Tomcat's HTTP executor), causing the service to freeze. To protect the service, I implement the Bulkhead and Timeout patterns. Using Resilience4j Bulkhead, I isolate downstream calls into a separate, bounded thread pool or semaphore. If the downstream pool saturates, incoming requests fail-fast immediately without consuming Tomcat's HTTP threads. I also enforce strict socket and connection timeouts (e.g. connect timeout of 500ms, read timeout of 2 seconds) to prevent threads from blocking indefinitely.
+
+Q71. You configured Resilience4j Circuit Breaker, but the circuit never opens even though the downstream service is failing repeatedly. What would you check?
+I check the following configuration details: (1) Sliding Window Size: The circuit breaker collects statistics over a sliding window (e.g., minimum of 100 calls). If the volume of calls is lower than the configured minimum-number-of-calls, the circuit breaker will not evaluate the failure rate and the circuit remains closed. (2) Failure Exceptions: Verify that the thrown exception matches the record-exceptions list; by default, only unchecked exceptions trigger a failure count. (3) AOP Proxy Bypass: Check if the @CircuitBreaker annotated method is called from inside the same class. Since Spring AOP uses dynamic proxies, self-invocation bypasses the proxy container, preventing the circuit logic from intercepting the calls.
+
+Q72. An ECS task keeps restarting every few minutes. There are no obvious application errors in the logs. How would you determine why ECS is killing the container?
+If an ECS task restarts without throwing application errors, the termination is driven by the AWS orchestration layer. First, I execute the AWS CLI command aws ecs describe-tasks to inspect the StoppedReason and container ExitCode of the terminated task. An exit code of 137 indicates the task was killed by a SIGKILL signal from the Docker daemon because the container exceeded its configured hard memory limit (OOM). Second, I inspect the Application Load Balancer target group health event logs; if the task starts successfully but fails to respond to HTTP health checks within the HealthCheckGracePeriodSeconds window, the load balancer marks the task unhealthy and ECS replaces it.
+
+Q73. Your Docker container works locally but crashes immediately in Kubernetes/EKS. What would you check in the container and Kubernetes configuration?
+When a container crashes during Kubernetes deployment (CrashLoopBackOff), I verify differences in configuration contexts. First, I run kubectl logs <pod-name> and kubectl describe pod <pod-name> to check the exit code and termination events. A common issue is a mismatch in environment variables, missing Kubernetes Secrets, or unauthorized IAM roles (Service Account) required to access external AWS services. Second, I check if the pod's liveness and readiness probes are misconfigured (e.g. the path is incorrect, or the initialDelaySeconds is shorter than Spring Boot startup time). Third, I verify resource limits, ensuring EKS has sufficient memory limits to prevent the Kubernetes Out-Of-Memory (OOMKilled) daemon from terminating the pod.
+
+Q74. Your application needs to upload large files to S3. Uploading through the application server consumes too much memory. How would you redesign the upload process?
+Uploading large files directly through the Spring Boot application server consumes significant CPU, network bandwidth, and JVM memory, causing scalability bottlenecks. I redesign the process using S3 Presigned URLs. Instead of sending the file payload to the backend, the client requests an upload token from the microservice. The microservice uses the AWS SDK to generate a secure presigned upload URL with a short expiration time (e.g. 15 minutes) and returns it to the client. The client then uploads the raw binary file directly to the S3 bucket using an HTTP PUT request. This bypasses the application server completely, reducing memory and network overhead to near zero.
+
+Q75. A user receives 403 Forbidden when accessing an S3 object, even though the IAM role appears to have S3 permissions. What would you investigate?
+An S3 HTTP 403 Forbidden error despite valid IAM role permissions indicates that access is blocked by policy controls or object ownership rules. First, I check the S3 Bucket Policy and verify if it explicitly denies access or lacks matching resource paths. Second, I check the KMS Key Policy: if the S3 object is encrypted using a Customer Managed Key (CMK), the IAM role must have both S3 permissions AND KMS decryption permissions (kms:Decrypt). Third, I inspect the Block Public Access settings on the bucket to confirm they aren't overriding public read actions. Fourth, I verify if the object owner belongs to a different AWS account (Object ACL permissions).
+
+Q76. Your application uses AWS Secrets Manager for database credentials. After rotating the credentials, the application starts failing database connections. What could be wrong?
+This failure occurs because the application is still using the old, cached credentials, or the database server did not import the new credentials during the rotation process. First, check if the application has a caching mechanism that caches database credentials inside the JVM memory, failing to pull the updated secret from AWS Secrets Manager. I resolve this by configuring a short Cache TTL or listening for Secrets Manager rotation events. Second, verify if the Lambda function responsible for rotating the secret failed to execute correctly, leaving the database password unchanged while updating the Secrets Manager key. Third, check database security groups to confirm the rotation Lambda could reach the DB port.
+
+Q77. Your Spring Boot application has hundreds of REST endpoints, and one endpoint suddenly starts returning HTTP 503. Other endpoints work normally. How would you troubleshoot the issue?
+If only one REST endpoint returns HTTP 503 while others function normally, the issue is isolated to a thread pool boundary or a custom health check associated with that specific path. First, I check if the failing endpoint is wrapped in a dedicated thread-pool Bulkhead or Circuit Breaker that has tripped to OPEN state due to downstream timeouts. Second, I check if the endpoint relies on a specific external dependency (like a database or third-party service) that failed, triggering a custom Actuator health check (which is mapped to return a 503 status). Third, I check Tomcat logs for thread-specific execution starvation issues.
+
+Q78. A deployment succeeds in Kubernetes, but users still receive responses from the old version of the application. What Kubernetes configuration would you investigate?
+This issue indicates that Kubernetes has deployed the new pods, but they have not been added to the Service's routing table, or old pods are still active. I investigate: (1) Readiness Probes: If the new version's readiness probes are failing, the new pods are running but are not marked as ready. The Kubernetes Service will continue routing all traffic to the old, healthy pods. (2) Service Selector Labels: Verify the Service selector still matches the new pod template labels. (3) Rolling Update Configuration: Check maxSurge and maxUnavailable settings in the deployment manifest; if configured improperly, the deployment controller may fail to terminate old replica sets.
+
+Q79. Your application uses Redis for caching. Suddenly users are receiving stale data after database updates. How would you identify and fix the caching problem?
+Stale cache data indicates a breakdown in cache invalidation, where data is updated in the database but the matching cache key in Redis is not evicted. I troubleshoot this by: (1) Verifying if transaction boundaries are causing race conditions; if the cache eviction runs BEFORE the database transaction commits, a concurrent request can fetch stale data from the database and write it back to Redis (Cache Write Race). (2) Checking if the @CacheEvict annotation is placed on the database modification methods. To fix this, I implement the Cache-Aside pattern: always evict cache keys AFTER the database transaction commits successfully.
+
+Q80. Your API receives the same request multiple times because a client retries after a timeout. The operation creates duplicate orders. How would you make the API idempotent?
+To make the API idempotent, the client must generate a unique Idempotency-Key (e.g. a UUID) and send it in the request headers. On the server side, I check this key before processing. If the key exists in our idempotency store (e.g., Redis or a database unique constraint table) and the status is "SUCCESS", I return the cached response immediately. If the key is not present, I store it with a status of "PROCESSING" and continue the transaction. If a retried request arrives while the status is "PROCESSING", I return an HTTP 409 Conflict. This ensures that the business logic (order creation) runs exactly once, even if the client retries the HTTP request multiple times.
+
+Q81. Your production system has multiple microservices, Kafka, PostgreSQL, Redis, and AWS services. A customer reports that one transaction failed, but you cannot determine where it failed. How would you trace the transaction across the entire system?
+Tracing transactions across a distributed microservices architecture requires implementing Distributed Tracing and Centralized Log Aggregation. I integrate the OpenTelemetry SDK (or Spring Cloud Sleuth/Micrometer Tracing) into all microservices. Every transaction receives a unique Trace-ID at the gateway layer. This Trace-ID is automatically propagated in HTTP headers (W3C traceparent) for REST calls, and in message metadata headers for Kafka events. All logs from services, databases, and message brokers are sent to a centralized logging platform (ELK or Splunk). By searching for the Trace-ID, I can visualize the entire call span graph, identifying the exact service and line of code that failed.
