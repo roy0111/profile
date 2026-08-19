@@ -447,7 +447,7 @@
                     </svg>
                     <div>
                         <div class="font-weight-bold" style="font-size: 0.95rem;"><span id="progressPercent">0</span>% Mastered</div>
-                        <div class="text-secondary" style="font-size: 0.75rem;"><span id="masteredCount">0</span> of 5 Topics</div>
+                        <div class="text-secondary" style="font-size: 0.75rem;"><span id="masteredCount">0</span> of 6 Topics</div>
                     </div>
                 </div>
             </div>
@@ -458,6 +458,7 @@
                 <a href="#react-architecture" class="nav-topic-link" data-target="react-architecture"><i class="bi bi-hdd-network"></i><span>State Sharing & Cache</span></a>
                 <a href="#react-routing-security" class="nav-topic-link" data-target="react-routing-security"><i class="bi bi-shield-lock"></i><span>Routing, Auth & Security</span></a>
                 <a href="#react-ux-forms" class="nav-topic-link" data-target="react-ux-forms"><i class="bi bi-browser-chrome"></i><span>User Actions, Errors & Deployment</span></a>
+                <a href="#springboot-cloud-scenarios" class="nav-topic-link" data-target="springboot-cloud-scenarios"><i class="bi bi-cloud-lightning-fill" style="color:#f59e0b;"></i><span style="color:#f59e0b;font-weight:600;">Spring Boot & Cloud Scenarios</span></a>
                 <a href="interview.html" class="nav-topic-link" style="border: 1px dashed rgba(99, 102, 241, 0.4); margin-top: 1rem;"><i class="bi bi-arrow-left-circle text-info"></i><span>Core Interview Guide</span></a>
             </nav>
 
@@ -776,6 +777,171 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Spring Boot & Cloud Scenarios -->
+            <section id="springboot-cloud-scenarios" class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-title-wrapper">
+                        <span class="topic-badge" style="background:rgba(245,158,11,0.12);color:#f59e0b;">Production Troubleshooting</span>
+                        <h2 class="topic-title">Spring Boot &amp; Cloud Scenarios</h2>
+                    </div>
+                    <button class="topic-checklist-btn" data-topic="springboot-cloud-scenarios"><i class="bi bi-circle"></i><span>Mark Category Mastered</span></button>
+                </div>
+                <div class="topic-content">
+                    <p class="text-secondary mb-4">Real-world Spring Boot, Kafka, ECS, Kubernetes, and AWS production troubleshooting scenarios for senior engineer interviews.</p>
+
+                    <div class="qa-card" id="q-sb-503">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Our Spring Boot API suddenly returns 503. How do you troubleshoot?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>First, I would identify where the 503 is coming from—whether it is the application, load balancer, API Gateway, or another infrastructure component. I would check the ALB target health, ECS or Kubernetes task/pod status, application logs, and Spring Boot health endpoints such as /actuator/health. Then I would check CPU, memory, database connectivity, and downstream services. I would also look for any recent deployment or configuration changes. If the issue started immediately after a deployment, I would roll back first to restore the service and then investigate the root cause.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-latency">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Your API latency increased from 200 ms to 5 seconds. What do you check?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would first use application metrics and distributed tracing to determine where the additional four or five seconds are being spent. I would check database query performance, connection pool usage, external API calls, Kafka operations, CPU, memory, garbage collection, thread pool exhaustion, and network latency. I would also compare the current deployment with the previous version to see whether there was a recent code or configuration change. For example, if tracing shows that the application itself takes only 100 milliseconds but a database query takes 3.8 seconds, then I would focus on the database rather than simply increasing the number of application instances.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-kafka-lag">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Kafka consumer lag is increasing. What could cause it?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>Consumer lag generally means that producers are producing messages faster than consumers can process them. I would first check the producer rate, consumer processing rate, number of partitions, number of active consumers, and lag per partition. Then I would check whether the consumer is spending too much time processing messages, waiting on a database or external API, retrying failed messages, or experiencing frequent rebalancing or garbage collection pauses. If the application has enough partitions, I could increase the number of consumer instances to increase parallelism. I would also optimize the consumer processing logic or move expensive operations to asynchronous processing if necessary.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-db-pool">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Database connection pool is exhausted. Why?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>A connection pool becomes exhausted when all available database connections are being used and new requests have to wait for a connection. I would check whether there are slow queries, long-running transactions, connection leaks, or an increase in application traffic. I would also look at the HikariCP metrics to understand the number of active, idle, and waiting connections. I wouldn't simply increase the connection pool size because that could overload the database. I would first identify why connections are being held for too long and optimize the queries or transaction boundaries.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-ecs-restart">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>ECS task keeps restarting. How do you debug it?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would first look at the ECS service events and the stopped-task reason to understand why the task is being terminated. Then I would check the container exit code, CloudWatch logs, CPU and memory usage, health-check configuration, load balancer target health, environment variables, secrets, IAM permissions, and the container image. Common causes are application startup failures, out-of-memory errors, failed health checks, incorrect ports, missing configuration, or permission issues. If the application starts successfully but ECS keeps replacing it, I would pay particular attention to the health-check configuration and whether the application is actually ready to receive traffic.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-k8s-pod">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>Kubernetes pod is running but service cannot reach it. What do you check?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would trace the request path from the Kubernetes Service to the pod. First, I would verify that the pod is actually ready and that its readiness probe is passing. Then I would check the Service selector and make sure it matches the labels on the pod. I would also verify the Service targetPort matches the container port and check the Service endpoints or EndpointSlices to make sure the Service actually has healthy pods behind it. After that, I would investigate NetworkPolicies, DNS, Ingress configuration, and namespace issues. A common problem is that the pod is running but the Service selector doesn't match the pod labels, so the Service has no endpoints.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-zero-downtime">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How do you deploy a zero-downtime Spring Boot application?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would deploy multiple instances of the Spring Boot application behind a load balancer and use a rolling deployment strategy. New instances would start while the old instances are still serving traffic, and the load balancer would only send traffic to instances that pass their health and readiness checks. Once the new instances are healthy, traffic would gradually move to them and the old instances would be terminated gracefully. I would also make sure database changes are backward compatible because during a deployment, old and new versions of the application may temporarily run at the same time. In Kubernetes, I would use readiness probes and a RollingUpdate strategy with appropriate maxUnavailable and maxSurge settings.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-scale-10k">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How would you scale a service from 100 requests/sec to 10,000 requests/sec?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I wouldn't immediately start adding servers. First, I would identify the bottleneck by looking at application latency, CPU, memory, database performance, connection pools, external service latency, and Kafka throughput. I would make the application stateless and use horizontal scaling through ECS or Kubernetes autoscaling. For frequently accessed data, I would introduce Redis caching, and for expensive operations that don't need to happen synchronously, I would use Kafka or SQS to process them asynchronously. I would also optimize database queries, add appropriate indexes, and consider read replicas if database reads become the bottleneck. Finally, I would perform load testing and monitor P95 and P99 latency, error rate, throughput, CPU, database connections, and Kafka lag.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-kafka-dedup">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How would you prevent duplicate Kafka message processing?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>Kafka consumers can process the same message more than once, so I would design the consumer to be idempotent. For example, each message could contain a unique event ID, and before processing the event I could check whether that event has already been processed. I could store the event ID in a database table with a unique constraint and skip the processing if it already exists. This way, even if Kafka redelivers the message after a consumer failure, the business operation won't happen twice. I would generally prefer idempotency rather than relying on exactly-once behavior across Kafka and an external database.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-retry-idempotency">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How would you implement retry without creating duplicate orders?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would use an idempotency key for the order creation request. For example, the client could send an Idempotency-Key with the request, and I would store that key with the created order in the database with a unique constraint. If the client retries because of a timeout, the application can recognize that the same request was already processed and return the existing order instead of creating another one. For temporary failures, I could use Resilience4j with limited retries and exponential backoff, but I would only retry transient errors. I would not retry validation or business errors because retrying those would not solve the problem.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-secure-microservices">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How would you secure communication between microservices?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would secure service-to-service communication using authentication, authorization, and encryption. For authentication, I could use OAuth2 or JWT-based service credentials, while TLS would encrypt the communication between services. For highly sensitive environments, I could also use mutual TLS so that both services verify each other's identity. I would apply authorization to make sure a service can only access the APIs and resources it actually needs. At the infrastructure level, I would keep services in private networks where possible and use security groups and network policies to restrict unnecessary communication.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-secrets-aws">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How would you store passwords/secrets in AWS?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would use AWS Secrets Manager for sensitive information such as database passwords, API keys, and OAuth credentials. The Spring Boot application would access the secret using an IAM role rather than storing credentials directly in the source code or configuration file. I would follow least-privilege access so that the application can only retrieve the secrets it actually needs. For less-sensitive configuration, AWS Systems Manager Parameter Store could also be used. I would never commit passwords or API keys to Git or hardcode them in the Docker image.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-multi-az">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How would you design an application for multi-AZ failure?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would make the application and its major dependencies available across multiple Availability Zones. For example, I could deploy ECS tasks or Kubernetes pods across at least two or three AZs behind an Application Load Balancer. If one AZ becomes unavailable, the load balancer can route traffic to healthy instances in another AZ. The database should also use a Multi-AZ configuration, and services such as Kafka should have replicas distributed across AZs. I would also use autoscaling and health checks so that unhealthy instances are automatically replaced. Finally, I would actually test failure scenarios rather than assuming the architecture is resilient.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-monolith">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How would you migrate a monolith into microservices?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would avoid rewriting the entire monolith at once because that creates significant risk. Instead, I would use the Strangler Fig approach, where I gradually extract individual business capabilities from the monolith into independent services. I would first identify clear business boundaries, such as customer, order, payment, or notification, and start with a relatively isolated and low-risk component. I would expose the new service through an API or event-based communication and gradually move traffic from the monolith to the new service. Over time, I would continue extracting additional services while maintaining backward compatibility and observability. I would also be careful about shared databases because simply creating multiple services while keeping tightly coupled database access doesn't provide the full benefits of microservices.</p>
+                        </div></div>
+                    </div>
+
+                    <div class="qa-card" id="q-sb-unavailable-service">
+                        <div class="qa-header">
+                            <h3 class="qa-question"><i class="bi bi-question-circle"></i><span>How would you design a system where one service is unavailable for 30 minutes?</span></h3>
+                            <i class="bi bi-chevron-down qa-toggle-icon"></i>
+                        </div>
+                        <div class="qa-body"><div class="qa-content-wrapper">
+                            <p>I would design the system so that the unavailable service doesn't bring down the entire application. If the operation doesn't fundamentally require that service to complete, I would use asynchronous messaging with Kafka or SQS. For example, when an order is created, the Order Service can save the order and publish a notification event to Kafka. If the Notification Service is unavailable for 30 minutes, the event remains in Kafka and can be processed when the service comes back online. I would also use timeouts, circuit breakers, retries with exponential backoff, dead-letter queues, and idempotent consumers. The key principle is to avoid creating a synchronous dependency on a service when the business operation can continue without it.</p>
+                        </div></div>
+                    </div>
+
                 </div>
             </section>
             </div>
