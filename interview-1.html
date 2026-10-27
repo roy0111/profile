@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tier-1 Banking Microservices & Spring Boot Interview Masterclass | JPMC Payments Engineering</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bankNavy: '#0f274a',
+                        bankAccent: '#1d4ed8',
+                        bankEmerald: '#059669',
+                        bankAmber: '#d97706',
+                        bankRose: '#dc2626',
+                        bankPurple: '#7c3aed',
+                        surfaceLight: '#ffffff',
+                        surfaceMuted: '#f8fafc',
+                        surfaceDark: '#0f172a',
+                        surfaceCardDark: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'Menlo', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Smooth Transitions & Custom Scrollbars */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .light ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .light ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Code blocks */
+        .light .code-block {
+            background-color: #0f172a;
+            border: 1px solid #e2e8f0;
+            color: #f1f5f9;
+        }
+
+        .dark .code-block {
+            background-color: #090d16;
+            border: 1px solid #1e293b;
+            color: #e2e8f0;
+        }
+
+        .light .diagram-container {
+            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+        }
+
+        .dark .diagram-container {
+            background: linear-gradient(180deg, #111827 0%, #0b1120 100%);
+            border: 1px solid #1f2937;
+        }
+
+        .card-transition {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased min-h-screen selection:bg-blue-600 selection:text-white transition-colors duration-200">
+
+    <!-- TOP ENTERPRISE HEADER -->
+    <header
+        class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+
+            <!-- Brand & Position Info -->
+            <div class="flex items-center space-x-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 to-indigo-900 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                            Tier-1 Payments Core Systems Masterclass
+                        </h1>
+                        <span
+                            class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-700">
+                            VP / Principal
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        JPMC / Tier-1 Core Clearing • Spring Boot 3.x • Kafka • AWS EKS • Dynatrace • OpenTelemetry
+                    </p>
+                </div>
+            </div>
+
+            <!-- Controls: Search, Theme Toggle, Actions -->
+            <div class="flex items-center gap-3 w-full lg:w-auto">
+                <!-- Search Input -->
+                <div class="relative flex-1 sm:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                    <input type="text" id="searchInput" placeholder="Search keywords, tech, questions..."
+                        class="w-full bg-slate-50 dark:bg-slate-800 text-xs border border-slate-300 dark:border-slate-700 rounded-lg pl-8 pr-3 py-2 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        onkeyup="filterQuestions()">
+                </div>
+
+                <!-- Expand / Collapse All -->
+                <div class="flex items-center space-x-1">
+                    <button onclick="expandAll()"
+                        class="p-2 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-lg transition"
+                        title="Expand All">
+                        <i class="fa-solid fa-angles-down"></i>
+                    </button>
+                    <button onclick="collapseAll()"
+                        class="p-2 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-lg transition"
+                        title="Collapse All">
+                        <i class="fa-solid fa-angles-up"></i>
+                    </button>
+                </div>
+
+                <!-- Light / Dark Mode Toggle -->
+                <button id="themeToggleBtn" onclick="toggleTheme()"
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-amber-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <i id="themeIcon" class="fa-solid fa-moon text-indigo-600 dark:text-amber-400"></i>
+                    <span id="themeText">Dark Mode</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Category Filter Bar -->
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 overflow-x-auto flex gap-2 text-xs border-t border-slate-200 dark:border-slate-800">
+            <button onclick="filterCategory('all', this)"
+                class="cat-btn px-3 py-1.5 rounded-lg bg-blue-700 text-white font-medium shadow-sm transition">All
+                Topics (9)</button>
+            <button onclick="filterCategory('scale', this)"
+                class="cat-btn px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">High
+                Scale & Payments</button>
+            <button onclick="filterCategory('kafka', this)"
+                class="cat-btn px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">Kafka
+                Resilience & Throughput</button>
+            <button onclick="filterCategory('observability', this)"
+                class="cat-btn px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">Observability
+                (Tracing/Dynatrace/ELK)</button>
+            <button onclick="filterCategory('incident', this)"
+                class="cat-btn px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">P1
+                Incident Triage</button>
+            <button onclick="filterCategory('batch', this)"
+                class="cat-btn px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">Spring
+                Batch Reconciliation</button>
+            <button onclick="filterCategory('copilot', this)"
+                class="cat-btn px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition">GitHub
+                Copilot & AI Ops</button>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- ARCHITECTURE EXECUTIVE OVERVIEW CARD (LIGHT HIGH-CONTRAST) -->
+        <section
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden transition-colors">
+            <div class="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
+                <div class="space-y-3 max-w-3xl">
+                    <div
+                        class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold border border-blue-200 dark:border-blue-700">
+                        <i class="fa-solid fa-shield-halved"></i> Global Payments & Settlement Production Baseline
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                        High-Throughput Financial Systems Architecture
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                        Architected for low-latency (<span class="font-semibold text-slate-900 dark:text-white">&lt;65ms
+                            P99</span>), zero financial data loss (<span
+                            class="font-semibold text-slate-900 dark:text-white">RPO=0, acks=all</span>), strictly
+                        ordered per-account posting, and continuous clearing of <strong
+                            class="text-blue-700 dark:text-blue-400">50,000+ Transactions Per Second (3M+
+                            records/minute)</strong>. Powered by Spring Boot 3 WebFlux, MSK Kafka 128 partitions, Redis
+                        bloom deduplication, and CockroachDB / Oracle RAC ledger.
+                    </p>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full lg:w-auto text-center">
+                    <div
+                        class="bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="text-2xl font-black text-blue-700 dark:text-blue-400">50k+</div>
+                        <div
+                            class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+                            Burst TPS</div>
+                    </div>
+                    <div
+                        class="bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400">&lt;65ms</div>
+                        <div
+                            class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+                            P99 Latency</div>
+                    </div>
+                    <div
+                        class="bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="text-2xl font-black text-purple-600 dark:text-purple-400">99.999%</div>
+                        <div
+                            class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+                            Availability</div>
+                    </div>
+                    <div
+                        class="bg-slate-50 dark:bg-slate-800/80 p-3.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="text-2xl font-black text-amber-600 dark:text-amber-400">Zero Loss</div>
+                        <div
+                            class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+                            acks=all / 2PC</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERVIEW QUESTIONS ACCORDION CONTAINER -->
+        <div id="questionsContainer" class="space-y-5">
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 1: MILLIONS OF DATA IN MINUTES -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="scale">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800 flex items-center justify-center font-bold text-sm">
+                            01
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-700">High
+                                    Scale & Ingestion</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">ISO-20022
+                                    Payments</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                Did you design a microservice handling millions of data in minutes? Give a real banking
+                                production example.
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+
+                    <!-- STAR Answer Narrative -->
+                    <div
+                        class="bg-blue-50/70 dark:bg-slate-800/70 rounded-xl p-4 sm:p-5 border-l-4 border-blue-600 space-y-2">
+                        <h4
+                            class="font-bold text-blue-900 dark:text-blue-300 text-xs uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-bullseye text-blue-600 dark:text-blue-400"></i> Executive Interview
+                            Response (STAR Framework)
+                        </h4>
+                        <p>
+                            <strong>Situation:</strong> At JPMC Core Clearing & Settlement, our inbound Fedwire/CHIPS
+                            ingest engine had to absorb over <strong>6.5 million ISO-20022 wire messages in under 4
+                                minutes</strong> during the morning liquidity window opening, without dropping messages,
+                            exceeding ledger lock limits, or causing duplicate fund transfers.
+                        </p>
+                        <p>
+                            <strong>Action:</strong>
+                            1. <em>Decoupled Edge from Ledger:</em> Built non-blocking ingestion using <strong>Spring
+                                Boot 3 WebFlux (Netty)</strong>. Ingest pods only validate cryptographic signatures and
+                            write to Kafka.
+                            2. <em>Partitioning Strategy:</em> Configured Kafka topics with <strong>128
+                                partitions</strong> keyed deterministically by <code
+                                class="text-blue-600 dark:text-blue-300 font-mono">MurmurHash2(accountNumber)</code> to
+                            guarantee strictly serial processing per account without global locks.
+                            3. <em>Distributed Deduplication:</em> Used Redis Bloom Filter coupled with Redis
+                            sliding-window TTL locks to short-circuit 99.9% of replay attempts before hitting Postgres.
+                            4. <em>Batched Persistence:</em> Consumer workers process in chunks of 500, executing
+                            batched JDBC SQL (<code
+                                class="text-blue-600 dark:text-blue-300 font-mono">rewriteBatchedStatements=true</code>)
+                            with manual asynchronous Kafka offset commits.
+                        </p>
+                        <p>
+                            <strong>Result:</strong> Scaled seamlessly to 48 EKS pods on AWS, processing 6.5M
+                            transactions in 3.4 minutes (peak 52,000 TPS) with zero duplicate postings, 0 dropped
+                            messages, and P99 latency of 42ms.
+                        </p>
+                    </div>
+
+                    <!-- Architecture SVG Diagram -->
+                    <div class="diagram-container p-4 rounded-xl">
+                        <div
+                            class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mb-3 flex items-center justify-between">
+                            <span><i class="fa-solid fa-network-wired text-blue-600 mr-1.5"></i> INGESTION & ZERO-LOSS
+                                CLEARING ARCHITECTURE</span>
+                            <span class="text-emerald-600 dark:text-emerald-400 font-bold">50,000+ TPS Ingestion
+                                Flow</span>
+                        </div>
+                        <div class="w-full overflow-x-auto">
+                            <svg viewBox="0 0 920 220" class="w-full min-w-[750px] text-xs">
+                                <!-- Gateway -->
+                                <rect x="15" y="60" width="130" height="90" rx="8" fill="#1e293b" stroke="#3b82f6"
+                                    stroke-width="2" />
+                                <text x="80" y="95" fill="#ffffff" font-weight="bold" text-anchor="middle">API
+                                    Gateway</text>
+                                <text x="80" y="115" fill="#94a3b8" text-anchor="middle">Spring Cloud Gateway</text>
+                                <text x="80" y="132" fill="#38bdf8" text-anchor="middle">mTLS / Token Auth</text>
+
+                                <!-- Flow Arrow 1 -->
+                                <path d="M 145 105 L 195 105" stroke="#3b82f6" stroke-width="2.5"
+                                    marker-end="url(#arrowBlue)" />
+
+                                <!-- Ingest Edge Pods -->
+                                <rect x="200" y="45" width="165" height="120" rx="8" fill="#0f172a" stroke="#0284c7"
+                                    stroke-width="2" />
+                                <text x="282" y="75" fill="#38bdf8" font-weight="bold" text-anchor="middle">Ingest
+                                    Service (WebFlux)</text>
+                                <text x="282" y="95" fill="#cbd5e1" text-anchor="middle">Netty Non-Blocking IO</text>
+                                <text x="282" y="115" fill="#f59e0b" text-anchor="middle">Redis Bloom Filter
+                                    Check</text>
+                                <text x="282" y="135" fill="#94a3b8" text-anchor="middle">Txn Deduplication</text>
+
+                                <!-- Flow Arrow 2 -->
+                                <path d="M 365 105 L 415 105" stroke="#0284c7" stroke-width="2.5" />
+
+                                <!-- Kafka Cluster -->
+                                <rect x="420" y="30" width="180" height="150" rx="8" fill="#111827" stroke="#10b981"
+                                    stroke-width="2.5" />
+                                <text x="510" y="58" fill="#34d399" font-weight="bold" text-anchor="middle">Kafka MSK
+                                    Cluster</text>
+                                <text x="510" y="78" fill="#94a3b8" text-anchor="middle">128 Partitions | RF=3</text>
+                                <rect x="435" y="90" width="150" height="26" rx="4" fill="#1e293b" />
+                                <text x="510" y="107" fill="#e2e8f0" text-anchor="middle">Key:
+                                    MurmurHash(Account#)</text>
+                                <rect x="435" y="125" width="150" height="26" rx="4" fill="#1e293b" />
+                                <text x="510" y="142" fill="#cbd5e1" text-anchor="middle">acks=all, min.isr=2,
+                                    zstd</text>
+
+                                <!-- Flow Arrow 3 -->
+                                <path d="M 600 105 L 650 105" stroke="#10b981" stroke-width="2.5" />
+
+                                <!-- Consumer Pods -->
+                                <rect x="655" y="45" width="145" height="120" rx="8" fill="#0f172a" stroke="#8b5cf6"
+                                    stroke-width="2" />
+                                <text x="727" y="75" fill="#c084fc" font-weight="bold" text-anchor="middle">Clearing
+                                    Workers</text>
+                                <text x="727" y="95" fill="#cbd5e1" text-anchor="middle">KafkaBatchListener</text>
+                                <text x="727" y="115" fill="#cbd5e1" text-anchor="middle">Chunk Size: 500</text>
+                                <text x="727" y="135" fill="#34d399" text-anchor="middle">Async Manual Ack</text>
+
+                                <!-- Flow Arrow 4 -->
+                                <path d="M 800 105 L 835 105" stroke="#8b5cf6" stroke-width="2.5" />
+
+                                <!-- Relational Database -->
+                                <rect x="840" y="60" width="70" height="90" rx="8" fill="#1e293b" stroke="#f59e0b"
+                                    stroke-width="2" />
+                                <text x="875" y="95" fill="#fbbf24" font-weight="bold"
+                                    text-anchor="middle">Oracle</text>
+                                <text x="875" y="115" fill="#fbbf24" font-weight="bold" text-anchor="middle">RAC /
+                                    DB</text>
+                                <text x="875" y="135" fill="#94a3b8" text-anchor="middle">Ledger</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Code Snippet -->
+                    <div>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1 font-mono">
+                            <span><i class="fa-solid fa-code text-blue-600 mr-1"></i> Spring WebFlux Ingestion
+                                Controller with Reactive Kafka</span>
+                            <button onclick="copyCode(this)"
+                                class="hover:text-blue-600 transition flex items-center gap-1 font-sans text-xs">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre class="code-block p-3.5 rounded-xl overflow-x-auto font-mono text-xs"><code>@RestController
+@RequestMapping("/api/v1/payments")
+@RequiredArgsConstructor
+@Slf4j
+public class PaymentIngestController {
+
+    private final ReactiveKafkaProducerTemplate&lt;String, PaymentWireDto&gt; kafkaTemplate;
+    private final ReactiveRedisTemplate&lt;String, String&gt; redisTemplate;
+
+    @PostMapping(value = "/wire", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Mono&lt;PaymentAck&gt; ingestWirePayment(@Valid @RequestBody PaymentWireDto wire) {
+        String dedupeKey = "dedupe:wire:" + wire.getInstructionIdentification();
+
+        // 1. Non-blocking Redis distributed lock check
+        return redisTemplate.opsForValue()
+            .setIfAbsent(dedupeKey, "QUEUED", Duration.ofHours(24))
+            .flatMap(isNew -> {
+                if (!Boolean.TRUE.equals(isNew)) {
+                    log.warn("Duplicate payment rejection: {}", wire.getInstructionIdentification());
+                    return Mono.error(new DuplicatePaymentException("Wire instruction already received"));
+                }
+
+                // 2. Deterministic partition key based on sender account
+                String partitionKey = wire.getDebtorAccount().getIban();
+
+                // 3. Dispatch to Kafka without waiting for downstream ledger commit
+                return kafkaTemplate.send("payments.fedwire.inbound.v1", partitionKey, wire)
+                    .map(senderResult -> new PaymentAck(
+                        wire.getInstructionIdentification(), 
+                        "QUEUED", 
+                        Instant.now()
+                    ));
+            });
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 2: PRODUCTION INCIDENT / P1 POST-MORTEM -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="incident">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-200 dark:border-rose-800 flex items-center justify-center font-bold text-sm">
+                            02
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-rose-50 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300 border border-rose-200 dark:border-rose-700">P1
+                                    Incident Triage</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">HikariCP
+                                    Pool Depletion</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                Give a scenario where you handled a prod issue. What exact triage steps did you take in
+                                Spring Boot microservices?
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+                    <div
+                        class="bg-rose-50/70 dark:bg-slate-800/70 rounded-xl p-4 sm:p-5 border-l-4 border-rose-600 space-y-2">
+                        <h4
+                            class="font-bold text-rose-900 dark:text-rose-300 text-xs uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-fire-extinguisher text-rose-600"></i> Post-Mortem: Cascading Database
+                            Starvation via Blocked Transaction Boundary
+                        </h4>
+                        <p>
+                            <strong>The Incident:</strong> During peak trading at 11:15 AM EST, all 18 instances of our
+                            Payment Execution microservice started failing health probes (<code
+                                class="text-rose-600 dark:text-rose-400 font-mono">/actuator/health</code>). Ingress
+                            latency spiked from 35ms to 30,000ms, producing HTTP 504 Gateway Timeouts across core
+                            banking consumers.
+                        </p>
+                        <p>
+                            <strong>Root Cause:</strong> A downstream AML/Sanctions REST service experienced internal
+                            deadlocks, causing response times to balloon from 15ms to 25 seconds. In our code, an
+                            engineer had annotated the orchestration method with Spring's <code
+                                class="text-rose-600 dark:text-rose-400 font-mono">@Transactional</code>, placing the
+                            external HTTP REST call <em>inside</em> the active database transaction. HikariCP held
+                            physical DB connections open for 25 seconds waiting on the remote socket, exhausting the
+                            entire pool of 50 connections in &lt;2 seconds across all pods.
+                        </p>
+                    </div>
+
+                    <!-- Structured 4-Step Triage Breakdown -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="font-bold text-rose-700 dark:text-rose-400 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-shield-virus"></i> 1. Triage & Shed Traffic
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400">Inspected Dynatrace Service Flow. Noticed 98%
+                                of Tomcat threads blocked in <code>HikariPool-1.getConnection()</code>. Used API Gateway
+                                rate-limiter to shed 50% non-critical traffic.</p>
+                        </div>
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="font-bold text-amber-700 dark:text-amber-400 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-terminal"></i> 2. Telemetry Capture
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400">Captured thread dumps via
+                                <code>jcmd 1 Thread.print &gt; /tmp/threads.tdump</code> before pods crashed. Verified
+                                200 Tomcat threads in <code>TIMED_WAITING</code> on socket read from the AML host.</p>
+                        </div>
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="font-bold text-blue-700 dark:text-blue-400 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-wrench"></i> 3. Fast Mitigation Hotfix
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400">Refactored code to remove the HTTP call from
+                                <code>@Transactional</code>. Wrapped AML client in a Resilience4j TimeLimiter (800ms)
+                                and Circuit Breaker with fallback queuing.</p>
+                        </div>
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div
+                                class="font-bold text-emerald-700 dark:text-emerald-400 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-lock"></i> 4. Long-Term Hardening
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400">Configured
+                                <code>connection-timeout: 3000ms</code> and
+                                <code>leak-detection-threshold: 2000ms</code> on HikariCP. Added Prometheus alerts on
+                                <code>hikaricp_pending_threads &gt; 5</code>.</p>
+                        </div>
+                    </div>
+
+                    <!-- Defensive Configuration Fix -->
+                    <div>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1 font-mono">
+                            <span><i class="fa-solid fa-code text-rose-600 mr-1"></i> Defensive HikariCP & Resilience4j
+                                Production Configuration</span>
+                            <button onclick="copyCode(this)"
+                                class="hover:text-blue-600 transition flex items-center gap-1 font-sans text-xs">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre class="code-block p-3.5 rounded-xl overflow-x-auto font-mono text-xs"><code># application.yml - Preventing Database Connection Pool Starvation
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 40
+      minimum-idle: 10
+      connection-timeout: 2500       # Fail fast instead of queuing threads indefinitely
+      max-lifetime: 1800000          # 30 minutes
+      leak-detection-threshold: 2000 # Emit stack trace if thread holds connection &gt;2s
+
+resilience4j:
+  timelimiter:
+    instances:
+      amlSanctionsService:
+        timeout-duration: 800ms      # Drop remote HTTP call after 800ms
+        cancel-running-future: true
+  circuitbreaker:
+    instances:
+      amlSanctionsService:
+        sliding-window-size: 20
+        failure-rate-threshold: 50   # Open circuit if &gt;50% calls timeout or fail
+        wait-duration-in-open-state: 5000ms
+        permitted-number-of-calls-in-half-open-state: 5</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 3: DISTRIBUTED TRACING (SLEUTH VS MICROMETER) -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="observability">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 border border-purple-200 dark:border-purple-800 flex items-center justify-center font-bold text-sm">
+                            03
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-purple-50 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 border border-purple-200 dark:border-purple-700">Distributed
+                                    Tracing</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">W3C
+                                    TraceContext • OpenTelemetry</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                How do you trace microservices? Who generates TraceId and SpanId? Explain Sleuth vs.
+                                Micrometer Tracing.
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-blue-700 dark:text-blue-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-fingerprint"></i> ID Generation Lifecycle
+                            </h4>
+                            <ul class="space-y-2 text-xs">
+                                <li>• <strong class="text-slate-900 dark:text-white">Trace ID:</strong> A 128-bit
+                                    globally unique identifier created by the <em>first edge service</em> (API Gateway
+                                    or Ingress controller) upon request arrival. Propagates unchanged across every
+                                    downstream network hop (HTTP, Kafka, gRPC).</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">Span ID:</strong> A 64-bit
+                                    identifier representing a discrete segment of execution (e.g., executing a DB query
+                                    or publishing an event). Created anew by each microservice.</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">Parent Span ID:</strong> Captures
+                                    the caller's Span ID, enabling APM tools (Dynatrace, Zipkin) to construct the
+                                    hierarchical Directed Acyclic Graph (DAG).</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-purple-700 dark:text-purple-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-code-compare"></i> Spring Cloud Sleuth vs Micrometer Tracing
+                            </h4>
+                            <ul class="space-y-2 text-xs">
+                                <li>• <strong class="text-slate-900 dark:text-white">Spring Boot 2.x (Sleuth):</strong>
+                                    Used legacy B3 propagation headers (<code
+                                        class="font-mono text-purple-600 dark:text-purple-300">X-B3-TraceId</code>,
+                                    <code class="font-mono text-purple-600 dark:text-purple-300">X-B3-SpanId</code>).
+                                    Sleuth directly manipulated thread-locals and was tightly bound to Brave.</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">Spring Boot 3.x (Micrometer
+                                        Tracing):</strong> Sleuth is deprecated. Micrometer Tracing is a vendor-neutral
+                                    facade supporting OpenTelemetry (OTel) or Brave tracers. Standardizes on <strong>W3C
+                                        TraceContext</strong> headers (<code
+                                        class="font-mono text-emerald-600 dark:text-emerald-400">traceparent: 00-{traceId}-{spanId}-{flags}</code>).
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Tracing Propagation SVG Diagram -->
+                    <div class="diagram-container p-4 rounded-xl">
+                        <div
+                            class="text-xs font-mono font-semibold text-slate-600 dark:text-slate-400 mb-3 flex items-center justify-between">
+                            <span><i class="fa-solid fa-arrows-split-up-and-left text-purple-600 mr-1.5"></i> W3C TRACE
+                                CONTEXT PROPAGATION OVER HTTP & KAFKA</span>
+                            <span class="text-slate-500 font-mono">traceparent: 00-4bf92f...-00f067...-01</span>
+                        </div>
+                        <div class="w-full overflow-x-auto">
+                            <svg viewBox="0 0 880 150" class="w-full min-w-[700px] text-xs">
+                                <!-- Gateway Box -->
+                                <rect x="15" y="20" width="220" height="110" rx="6" fill="#0f172a" stroke="#3b82f6"
+                                    stroke-width="2" />
+                                <text x="125" y="45" fill="#38bdf8" font-weight="bold" text-anchor="middle">Payment
+                                    Gateway (Edge)</text>
+                                <text x="125" y="65" fill="#e2e8f0" text-anchor="middle">1. Generates TraceId =
+                                    "4bf92f..."</text>
+                                <text x="125" y="85" fill="#e2e8f0" text-anchor="middle">2. Generates SpanId_1 =
+                                    "00f067..."</text>
+                                <text x="125" y="105" fill="#34d399" text-anchor="middle">3. Injects traceparent HTTP
+                                    Header</text>
+
+                                <!-- HTTP Arrow -->
+                                <path d="M 235 75 L 315 75" stroke="#3b82f6" stroke-width="2" />
+                                <text x="275" y="65" fill="#3b82f6" font-size="10" font-weight="bold"
+                                    text-anchor="middle">HTTP POST</text>
+
+                                <!-- Account Service Box -->
+                                <rect x="320" y="20" width="240" height="110" rx="6" fill="#0f172a" stroke="#8b5cf6"
+                                    stroke-width="2" />
+                                <text x="440" y="45" fill="#c084fc" font-weight="bold" text-anchor="middle">Account
+                                    Service</text>
+                                <text x="440" y="65" fill="#e2e8f0" text-anchor="middle">1. Extracts TraceId from
+                                    Header</text>
+                                <text x="440" y="85" fill="#e2e8f0" text-anchor="middle">2. Spawns SpanId_2 =
+                                    "5a3e11..."</text>
+                                <text x="440" y="105" fill="#f59e0b" text-anchor="middle">3. Propagates via Kafka
+                                    Header</text>
+
+                                <!-- Kafka Arrow -->
+                                <path d="M 560 75 L 635 75" stroke="#10b981" stroke-width="2" />
+                                <text x="597" y="65" fill="#10b981" font-size="10" font-weight="bold"
+                                    text-anchor="middle">Kafka Msg</text>
+
+                                <!-- Notification Service Box -->
+                                <rect x="640" y="20" width="225" height="110" rx="6" fill="#0f172a" stroke="#10b981"
+                                    stroke-width="2" />
+                                <text x="752" y="45" fill="#34d399" font-weight="bold" text-anchor="middle">Audit /
+                                    Ledger Service</text>
+                                <text x="752" y="68" fill="#e2e8f0" text-anchor="middle">TraceId retained =
+                                    "4bf92f..."</text>
+                                <text x="752" y="88" fill="#e2e8f0" text-anchor="middle">New SpanId_3 =
+                                    "89ac22..."</text>
+                                <text x="752" y="108" fill="#a78bfa" text-anchor="middle">Logs correlated in ELK &
+                                    Dynatrace</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Spring Boot 3 Micrometer Config -->
+                    <div>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1 font-mono">
+                            <span><i class="fa-solid fa-code text-purple-600 mr-1"></i> Spring Boot 3 OpenTelemetry
+                                Tracing Dependencies & YAML</span>
+                            <button onclick="copyCode(this)"
+                                class="hover:text-blue-600 transition flex items-center gap-1 font-sans text-xs">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre class="code-block p-3.5 rounded-xl overflow-x-auto font-mono text-xs"><code>&lt;!-- pom.xml: Spring Boot 3 Micrometer OTel Bridge --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-tracing-bridge-otel&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.opentelemetry&lt;/groupId&gt;
+    &lt;artifactId&gt;opentelemetry-exporter-zipkin&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+# application.yml
+management:
+  tracing:
+    sampling:
+      probability: 0.10             # Sample 10% in high-volume prod payment pipeline
+    propagation:
+      type: W3C                     # Standard traceparent format (00-traceId-spanId-flags)
+  zipkin:
+    tracing:
+      endpoint: "http://zipkin-collector.internal.bank:9411/api/v2/spans"</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 4: KAFKA HIGH-THROUGHPUT TUNING -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="kafka">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center font-bold text-sm">
+                            04
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700">Kafka
+                                    High Performance</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">OS
+                                    Page Cache • Zero-Copy</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                How do you make sure Kafka achieves maximum throughput while guaranteeing zero data
+                                loss?
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+                    <p>
+                        In financial payment pipelines, maximum throughput must never compromise durability. Throughput
+                        is achieved by optimizing <strong>batching density</strong>, reducing system call context
+                        switches, and utilizing Linux kernel zero-copy network transfer (<code
+                            class="font-mono text-emerald-600 dark:text-emerald-400">sendfile()</code>).
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <!-- Producer Config -->
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-blue-700 dark:text-blue-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-upload"></i> Producer Optimization Matrix
+                            </h4>
+                            <ul class="space-y-1.5">
+                                <li>• <strong class="text-slate-900 dark:text-white">batch.size:</strong> 131072 (128
+                                    KB) vs default 16 KB. Packs multiple payment messages into a single memory record
+                                    batch.</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">linger.ms:</strong> 10ms.
+                                    Introduces a tiny 10ms delay to allow batches to consolidate, increasing throughput
+                                    4x.</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">compression.type=lz4 /
+                                        zstd:</strong> Compresses batches in memory before transmission, minimizing
+                                    network bandwidth and broker disk IO.</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">acks=all (-1) &
+                                        min.insync.replicas=2:</strong> Broker requires acknowledgment from leader and
+                                    at least one follower before succeeding.</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">enable.idempotence=true:</strong>
+                                    Producer assigns monotonic sequence numbers per partition, preventing duplicate
+                                    records on network retry.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Consumer Config -->
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-emerald-700 dark:text-emerald-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-download"></i> Consumer & Kernel Optimization
+                            </h4>
+                            <ul class="space-y-1.5">
+                                <li>• <strong class="text-slate-900 dark:text-white">fetch.min.bytes:</strong> 1048576
+                                    (1 MB) and <code>fetch.max.wait.ms=500</code> prevent brokers from returning
+                                    fractional micro-responses.</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">max.poll.records:</strong> 1000
+                                    items processed per poll, bounded to stay well within
+                                    <code>max.poll.interval.ms (300000ms)</code>.</li>
+                                <li>• <strong class="text-slate-900 dark:text-white">CooperativeStickyAssignor:</strong>
+                                    Eliminates "Stop-The-World" consumer group rebalancing storms during pod rollouts.
+                                </li>
+                                <li>• <strong class="text-slate-900 dark:text-white">Zero-Copy IO:</strong> Kafka
+                                    brokers bypass userspace memory entirely, copying disk page cache directly to NIC
+                                    sockets via <code>sendfile()</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Production Factory Configuration -->
+                    <div>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1 font-mono">
+                            <span><i class="fa-solid fa-code text-emerald-600 mr-1"></i> Spring Kafka Producer
+                                Configuration for Financial Systems</span>
+                            <button onclick="copyCode(this)"
+                                class="hover:text-blue-600 transition flex items-center gap-1 font-sans text-xs">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre class="code-block p-3.5 rounded-xl overflow-x-auto font-mono text-xs"><code>@Configuration
+public class HighThroughputKafkaProducerConfig {
+
+    @Bean
+    public ProducerFactory&lt;String, PaymentWireDto&gt; producerFactory() {
+        Map&lt;String, Object&gt; props = new HashMap&lt;&gt;();
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "b-1.payment-cluster.msk:9092,b-2.payment-cluster.msk:9092");
+        
+        // Zero-Loss Guarantees
+        props.put(ProducerConfig.ACKS_CONFIG, "all");
+        props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+        props.put(ProducerConfig.RETRIES_CONFIG, Integer.MAX_VALUE);
+        props.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 5);
+
+        // Throughput Multipliers
+        props.put(ProducerConfig.BATCH_SIZE_CONFIG, 128 * 1024);         // 128 KB batch size
+        props.put(ProducerConfig.LINGER_MS_CONFIG, 10);                  // 10ms consolidation window
+        props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "lz4");       // Fast compression with low CPU overhead
+        props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 64 * 1024 * 1024L); // 64 MB client memory buffer
+
+        return new DefaultKafkaProducerFactory&lt;&gt;(props, new StringSerializer(), new JsonSerializer&lt;&gt;());
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 5: SPRING BATCH OVERNIGHT SETTLEMENT -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="batch">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-800 flex items-center justify-center font-bold text-sm">
+                            05
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200 dark:border-amber-700">Batch
+                                    Processing</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Remote
+                                    Chunking • State Recovery</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                Did you handle complex batch processing of millions of data in hours? What if it fails
+                                midway?
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+                    <div
+                        class="bg-amber-50/70 dark:bg-slate-800/70 rounded-xl p-4 sm:p-5 border-l-4 border-amber-600 space-y-2">
+                        <h4
+                            class="font-bold text-amber-900 dark:text-amber-300 text-xs uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left text-amber-600"></i> Production Scenario: End-of-Day
+                            (EOD) 20 Million Ledger Reconciliation
+                        </h4>
+                        <p>
+                            <strong>The Challenge:</strong> Reconcile and calculate interest accruals on <strong>20+
+                                million accounts within a 2-hour SLA window</strong> (1:00 AM to 3:00 AM). Single-JVM
+                            execution fails at this volume due to memory overhead, garbage collection pauses, and DB
+                            connection serialization.
+                        </p>
+                    </div>
+
+                    <!-- 3 Architectural Pillars -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="font-bold text-blue-700 dark:text-blue-400 mb-1">1. Master-Worker Partitioning
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400">A master coordinator step queries primary key
+                                ranges (<code>min_id</code> to <code>max_id</code>) and dynamically spawns 64 discrete
+                                partitions transmitted across Kafka to worker pods running in Kubernetes.</p>
+                        </div>
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="font-bold text-emerald-700 dark:text-emerald-400 mb-1">2. Chunking & Commit
+                                Intervals</div>
+                            <p class="text-slate-600 dark:text-slate-400">Workers stream data using
+                                <code>JdbcPagingItemReader</code> in chunks of 5,000 items. Each chunk is committed in
+                                an isolated database transaction, recording offset checkpoints in
+                                <code>BATCH_STEP_EXECUTION_CONTEXT</code>.</p>
+                        </div>
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="font-bold text-rose-700 dark:text-rose-400 mb-1">3. Mid-Flight Crash Recovery
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-400">If a pod terminates at record 42,000 of a
+                                100,000 slice, the job is restarted with the same <code>JobParameters</code>. Spring
+                                Batch skips the 40,000 already committed records and resumes at 40,001.</p>
+                        </div>
+                    </div>
+
+                    <!-- Spring Batch Step Code -->
+                    <div>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1 font-mono">
+                            <span><i class="fa-solid fa-code text-amber-600 mr-1"></i> Resilient Spring Batch
+                                Configuration with Skip & Retry Policies</span>
+                            <button onclick="copyCode(this)"
+                                class="hover:text-blue-600 transition flex items-center gap-1 font-sans text-xs">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre class="code-block p-3.5 rounded-xl overflow-x-auto font-mono text-xs"><code>@Bean
+public Step reconciliationStep(
+        JobRepository jobRepository, 
+        PlatformTransactionManager txManager,
+        ItemReader&lt;SettlementLedger&gt; reader,
+        ItemProcessor&lt;SettlementLedger, InterestPosting&gt; processor,
+        ItemWriter&lt;InterestPosting&gt; writer) {
+
+    return new StepBuilder("reconciliationStep", jobRepository)
+            .&lt;SettlementLedger, InterestPosting&gt;chunk(5000, txManager)
+            .reader(reader)
+            .processor(processor)
+            .writer(writer)
+            .faultTolerant()
+            .skip(CorruptRecordException.class)
+            .skipLimit(100)                     // Route corrupted records to reconciliation quarantine table
+            .retry(OptimisticLockException.class)
+            .retryLimit(3)                      // Auto retry concurrency updates
+            .listener(new ChunkExecutionRecoveryListener())
+            .build();
+}</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 6: CENTRALIZED LOGGING & TRACING CORRELATION -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="observability">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800 flex items-center justify-center font-bold text-sm">
+                            06
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-cyan-50 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-700">Observability
+                                    Stack</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">ELK
+                                    • Dynatrace Deep Links</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                How do you correlate centralized logging (ELK) with distributed tracing (Dynatrace /
+                                Zipkin)?
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+                    <p>
+                        In large-scale banking architectures, logs without distributed trace context are nearly useless.
+                        If an alert fires in Dynatrace, engineers must be able to click directly into the exact Kibana
+                        log lines for that specific customer transaction.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-blue-700 dark:text-blue-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-stream"></i> The Telemetry Pipeline
+                            </h4>
+                            <p>1. <strong>MDC Population:</strong> Micrometer Tracing / Dynatrace OneAgent intercepts
+                                incoming calls and populates SLF4J MDC with <code
+                                    class="font-mono text-purple-600 dark:text-purple-300">trace_id</code> and <code
+                                    class="font-mono text-purple-600 dark:text-purple-300">span_id</code>.</p>
+                            <p>2. <strong>Structured JSON:</strong> Logback formats lines as JSON via <code
+                                    class="font-mono">LogstashLogbackEncoder</code> to stdout.</p>
+                            <p>3. <strong>Logstash / Filebeat:</strong> Kubernetes DaemonSets collect container logs,
+                                parse JSON fields, and stream them to Elasticsearch indexed by daily indices (<code
+                                    class="font-mono">bank-payments-YYYY.MM.DD</code>).</p>
+                        </div>
+
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-cyan-700 dark:text-cyan-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-up-right-from-square"></i> Dynatrace to Kibana URL Deep-Linking
+                            </h4>
+                            <p>Dynatrace PurePath attributes are configured with a custom web URL link to Kibana
+                                Discover using dynamic query templates:</p>
+                            <div class="p-2.5 bg-slate-900 rounded-lg font-mono text-[11px] text-cyan-300 break-all">
+                                https://kibana.bank.internal/app/discover#/?_a=(query:(language:kuery,query:'trace_id:"{traceId}"'))
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400">Clicking the link in Dynatrace immediately
+                                pulls up all distributed microservice logs across the entire cluster for that single
+                                payment.</p>
+                        </div>
+                    </div>
+
+                    <!-- Logback JSON Pattern -->
+                    <div>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1 font-mono">
+                            <span><i class="fa-solid fa-code text-cyan-600 mr-1"></i> logback-spring.xml (Structured
+                                JSON for ELK & Dynatrace Correlation)</span>
+                            <button onclick="copyCode(this)"
+                                class="hover:text-blue-600 transition flex items-center gap-1 font-sans text-xs">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre class="code-block p-3.5 rounded-xl overflow-x-auto font-mono text-xs"><code>&lt;configuration&gt;
+    &lt;appender name="jsonAppender" class="ch.qos.logback.core.ConsoleAppender"&gt;
+        &lt;encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder"&gt;
+            &lt;providers&gt;
+                &lt;timestamp&gt;&lt;timeZone&gt;UTC&lt;/timeZone&gt;&lt;/timestamp&gt;
+                &lt;pattern&gt;
+                    &lt;pattern&gt;
+                        {
+                          "timestamp": "%date{yyyy-MM-dd'T'HH:mm:ss.SSSZ}",
+                          "level": "%level",
+                          "service": "${springAppName:-payment-service}",
+                          "trace_id": "%X{traceId:-}",
+                          "span_id": "%X{spanId:-}",
+                          "thread": "%thread",
+                          "logger": "%logger{40}",
+                          "message": "%message",
+                          "exception": "%exception{10}"
+                        }
+                    &lt;/pattern&gt;
+                &lt;/pattern&gt;
+            &lt;/providers&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+    &lt;root level="INFO"&gt;
+        &lt;appender-ref ref="jsonAppender" /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 7: KAFKA OUTAGE & TRANSACTIONAL OUTBOX -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="kafka">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800 flex items-center justify-center font-bold text-sm">
+                            07
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-700">Disaster
+                                    Recovery</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Transactional
+                                    Outbox • GitOps</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                How do you handle Producer and Consumer behavior if Kafka goes completely down? Who
+                                creates partitions in enterprise prod?
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-rose-700 dark:text-rose-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-radiation"></i> What Happens When Kafka Fails?
+                            </h4>
+                            <p>• <strong>Producer Backpressure & Outbox:</strong> If Kafka brokers are unreachable,
+                                producers block until <code class="font-mono">max.block.ms=3000</code>. A Resilience4j
+                                Circuit Breaker trips and routes all pending messages to an <strong>Outbox Table in
+                                    PostgreSQL</strong> within the local database transaction (Transactional Outbox
+                                Pattern). A Debezium CDC engine or secondary poller streams outbox records to Kafka once
+                                brokers recover.</p>
+                            <p>• <strong>Consumer Backoff:</strong> Consumers initiate exponential backoff retry loops,
+                                pausing partition consumption via <code class="font-mono">pause()</code> without
+                                crashing pods.</p>
+                        </div>
+
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-blue-700 dark:text-blue-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-diagram-project"></i> Who Creates Partitions in Enterprise Prod?
+                            </h4>
+                            <p>• <strong>Strict Governance Rule:</strong> <code
+                                    class="font-mono text-rose-600 dark:text-rose-400">auto.create.topics.enable=false</code>
+                                is permanently disabled across all enterprise clusters.</p>
+                            <p>• Microservices are <strong>strictly forbidden</strong> from creating topics or altering
+                                partitions at runtime.</p>
+                            <p>• Topics are managed as Code via <strong>Terraform or Strimzi KafkaTopic CRDs</strong> in
+                                a GitOps repository. Any partition expansion is planned with partition reassignment
+                                tools to prevent hot brokers.</p>
+                        </div>
+                    </div>
+
+                    <!-- Outbox Pattern Fallback Code -->
+                    <div>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1 font-mono">
+                            <span><i class="fa-solid fa-code text-blue-600 mr-1"></i> Resilient Outbox Fallback
+                                Publisher with Circuit Breaker</span>
+                            <button onclick="copyCode(this)"
+                                class="hover:text-blue-600 transition flex items-center gap-1 font-sans text-xs">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre class="code-block p-3.5 rounded-xl overflow-x-auto font-mono text-xs"><code>@Service
+@Slf4j
+@RequiredArgsConstructor
+public class ResilientPaymentProducer {
+
+    private final KafkaTemplate&lt;String, PaymentPayload&gt; kafkaTemplate;
+    private final OutboxRepository outboxRepository;
+
+    @CircuitBreaker(name = "kafkaBrokerCB", fallbackMethod = "writeToDatabaseOutbox")
+    public void publishPaymentEvent(PaymentPayload payload) {
+        // Normal high-speed streaming path
+        CompletableFuture&lt;SendResult&lt;String, PaymentPayload&gt;&gt; future = 
+            kafkaTemplate.send("payments.settlement.v1", payload.getAccountId(), payload);
+
+        future.whenComplete((result, ex) -&gt; {
+            if (ex != null) {
+                log.error("Async send failed for ID: {}. Routing to Outbox.", payload.getId());
+                writeToDatabaseOutbox(payload, ex);
+            }
+        });
+    }
+
+    // Fallback invoked if Kafka is down or circuit is OPEN
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void writeToDatabaseOutbox(PaymentPayload payload, Throwable ex) {
+        log.warn("KAFKA DOWN. Writing transaction {} to PostgreSQL Outbox Table", payload.getId());
+        outboxRepository.save(new OutboxEntity(
+            payload.getId(),
+            payload.toJson(),
+            OutboxStatus.PENDING_KAFKA_RESTORE,
+            Instant.now()
+        ));
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 8: COPILOT IN ELK & OBSERVABILITY -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="copilot">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-teal-100 text-teal-800 dark:bg-teal-950 dark:text-teal-300 border border-teal-200 dark:border-teal-800 flex items-center justify-center font-bold text-sm">
+                            08
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-teal-50 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 border border-teal-200 dark:border-teal-700">AI
+                                    in Operations</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Grok
+                                    Patterns • KQL Queries</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                How can GitHub Copilot be used in ELK tracing and log analysis during development and
+                                triage?
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+                    <p>
+                        GitHub Copilot accelerates observability workflows by generating complex regex parsers,
+                        formulating Lucene/KQL aggregations, and synthesizing log analysis scripts during critical
+                        outages.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="text-teal-700 dark:text-teal-400 font-bold mb-1"><i
+                                    class="fa-solid fa-filter mr-1"></i> Grok Pattern Generation</div>
+                            <p class="text-slate-600 dark:text-slate-400">Writing regex for unstructured legacy SWIFT
+                                MT103 logs is slow. Copilot generates verified Oniguruma Grok expressions directly from
+                                sample raw log strings.</p>
+                        </div>
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="text-blue-700 dark:text-blue-400 font-bold mb-1"><i
+                                    class="fa-solid fa-magnifying-glass-chart mr-1"></i> Kibana / KQL Querying</div>
+                            <p class="text-slate-600 dark:text-slate-400">Formulates Kibana Query Language (KQL)
+                                expressions to correlate 5xx spikes with specific partner clearing institution headers
+                                during P1 incidents.</p>
+                        </div>
+                        <div
+                            class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="text-purple-700 dark:text-purple-400 font-bold mb-1"><i
+                                    class="fa-solid fa-bug mr-1"></i> Post-Mortem Python Scripts</div>
+                            <p class="text-slate-600 dark:text-slate-400">Helps author Python scripts in minutes to pull
+                                50,000 JSON error traces from Elasticsearch REST APIs and cluster root-cause exceptions.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Prompt & Output Example -->
+                    <div class="p-4 bg-slate-900 rounded-xl font-mono text-xs space-y-2 border border-slate-800">
+                        <span class="text-teal-400 font-bold flex items-center gap-1.5">
+                            <i class="fa-solid fa-robot"></i> Practical Copilot In-Editor Prompt:
+                        </span>
+                        <div class="text-slate-400">
+                            // Prompt: Write a Logstash Grok pattern to parse this banking transaction log:<br>
+                            // 2026-10-27 14:22:01.402 [TXN-884920] [ACC:992019] WARN c.j.p.ClearingEngine - Slow ledger
+                            write: 2450ms
+                        </div>
+                        <div class="text-emerald-400 pt-2 border-t border-slate-800">
+                            <span class="text-slate-400">// Copilot Output:</span><br>
+                            %{TIMESTAMP_ISO8601:log_time} \[%{DATA:txn_id}\] \[ACC:%{NUMBER:account_no}\]
+                            %{LOGLEVEL:log_level} %{JAVACLASS:class} - %{GREEDYDATA:message}:
+                            %{NUMBER:duration_ms:int}ms
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ======================================================== -->
+            <!-- QUESTION 9: COPILOT FOR FASTER & SAFER DEVELOPMENT -->
+            <!-- ======================================================== -->
+            <article
+                class="question-card bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm card-transition"
+                data-category="copilot">
+                <div class="p-5 sm:p-6 cursor-pointer flex items-center justify-between select-none hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                    onclick="toggleCard(this)">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="flex-shrink-0 w-9 h-9 rounded-xl bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center font-bold text-sm">
+                            09
+                        </span>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-700">Engineering
+                                    Velocity</span>
+                                <span
+                                    class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">TDD
+                                    • Cucumber BDD • Mockito</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                                How do you leverage GitHub Copilot for faster and safer enterprise Spring Boot
+                                microservice development?
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="chevron text-slate-400 ml-4 text-base transition-transform duration-200">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="card-content px-5 sm:px-6 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 space-y-5 text-sm text-slate-700 dark:text-slate-300">
+                    <p>
+                        In regulated financial banking, Copilot is utilized with rigorous governance: code is never
+                        committed without human review, but it drastically reduces developer friction on boilerplate
+                        tests, mock datasets, and edge cases.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-indigo-700 dark:text-indigo-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-vial-circle-check"></i> 1. Parameterized Edge-Case Test Generation
+                            </h4>
+                            <p class="text-slate-600 dark:text-slate-400">Senior engineers use Copilot to generate
+                                extensive JUnit 5 <code>@ParameterizedTest</code> suites covering subtle financial edge
+                                cases: negative currency amounts, ISO-4217 currency mismatches, and precision rounding
+                                errors.</p>
+                        </div>
+
+                        <div
+                            class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                            <h4
+                                class="font-bold text-emerald-700 dark:text-emerald-400 text-xs uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-list-check"></i> 2. Cucumber BDD Glue Code
+                            </h4>
+                            <p class="text-slate-600 dark:text-slate-400">Instantly scaffolds step definitions for
+                                Gherkin wire payment specifications, binding complex JSON payloads to Spring MockMvc
+                                assertions with zero manual boilerplate.</p>
+                        </div>
+                    </div>
+
+                    <!-- Parameterized Test Snippet -->
+                    <div>
+                        <div
+                            class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1 font-mono">
+                            <span><i class="fa-solid fa-code text-indigo-600 mr-1"></i> Copilot-Accelerated
+                                Parameterized Validation Test</span>
+                            <button onclick="copyCode(this)"
+                                class="hover:text-blue-600 transition flex items-center gap-1 font-sans text-xs">
+                                <i class="fa-regular fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        <pre class="code-block p-3.5 rounded-xl overflow-x-auto font-mono text-xs"><code>@ParameterizedTest(name = "Payment validation with amount={0} and currency={1} should fail with {2}")
+@CsvSource({
+    "0.00,        USD, ZERO_AMOUNT_NOT_ALLOWED",
+    "-150.50,     USD, NEGATIVE_AMOUNT_NOT_ALLOWED",
+    "10000000.01, USD, EXCEEDS_CLEARING_HOUSE_LIMIT",
+    "50.00,       XYZ, UNSUPPORTED_ISO_CURRENCY"
+})
+void testPaymentInstructionValidationRules(BigDecimal amount, String currency, String expectedErrorCode) {
+    PaymentInstruction wire = PaymentInstruction.builder()
+            .instructionId("WIRE-" + UUID.randomUUID())
+            .amount(amount)
+            .currency(currency)
+            .senderAccount("ACCT-449102")
+            .build();
+
+    PaymentValidationException exception = assertThrows(
+        PaymentValidationException.class, 
+        () -&gt; validationService.validate(wire)
+    );
+    
+    assertEquals(expectedErrorCode, exception.getErrorCode());
+}</code></pre>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- RAPID FIRE PRODUCTION CHEAT SHEET (HIGH CONTRAST) -->
+        <section
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4 transition-colors">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-amber-500"></i> Senior Engineering Production Formulas Cheat Sheet
+                </h3>
+                <span class="text-xs text-slate-500 font-mono">Memory • Kafka • Kubernetes</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+                <div
+                    class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-blue-700 dark:text-blue-400 font-bold block mb-1">KAFKA CONSUMER LAG ALERT</span>
+                    <p class="text-slate-600 dark:text-slate-400">Trigger Alert if:
+                        <code>sum(kafka_consumergroup_lag) by (topic, group) &gt; 50000</code> for &gt; 3 mins. Action:
+                        Scale Kubernetes HPA worker pods.</p>
+                </div>
+                <div
+                    class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-emerald-700 dark:text-emerald-400 font-bold block mb-1">JVM PRODUCTION HEAP
+                        RATIO</span>
+                    <p class="text-slate-600 dark:text-slate-400">EKS Pod: 4 vCPU, 8GB RAM. Flags:
+                        <code>-XX:InitialRAMPercentage=75.0 -XX:MaxRAMPercentage=75.0 -XX:+UseG1GC</code>. 2GB allocated
+                        for Netty direct buffer & OS.</p>
+                </div>
+                <div
+                    class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-purple-700 dark:text-purple-400 font-bold block mb-1">DYNATRACE PUREPATH
+                        CORRELATION</span>
+                    <p class="text-slate-600 dark:text-slate-400">Filter requests by:
+                        <code>tag(Environment:Prod), responseTime &gt; 2000ms</code>. Inspect CPU saturation vs
+                        Synchronized wait time.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer
+        class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 text-center text-xs text-slate-500 dark:text-slate-400 transition-colors">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Tier-1 Banking Systems & Spring Boot Interview Masterclass • Light / Dark High Contrast Architecture
+                Guide</p>
+        </div>
+    </footer>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast"
+        class="fixed bottom-6 right-6 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold text-xs px-4 py-3 rounded-xl shadow-2xl opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 z-50">
+        <i class="fa-solid fa-check text-emerald-400 dark:text-emerald-600"></i>
+        <span id="toastMsg">Code copied to clipboard!</span>
+    </div>
+
+    <!-- INTERACTIVE APPLICATION SCRIPT -->
+    <script>
+        // Theme Management (Defaults to LIGHT mode)
+        function applyTheme(isDark) {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+
+            if (isDark) {
+                html.classList.add('dark');
+                html.classList.remove('light');
+                themeIcon.className = 'fa-solid fa-sun text-amber-400';
+                themeText.innerText = 'Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                themeIcon.className = 'fa-solid fa-moon text-indigo-600';
+                themeText.innerText = 'Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function toggleTheme() {
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            applyTheme(!isCurrentlyDark);
+        }
+
+        // Toggle Individual Question Card
+        function toggleCard(headerElement) {
+            const card = headerElement.closest('.question-card');
+            const content = card.querySelector('.card-content');
+            const chevron = card.querySelector('.chevron');
+
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                content.style.display = 'none';
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Expand All Cards
+        function expandAll() {
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.querySelector('.card-content').style.display = 'block';
+                card.querySelector('.chevron').style.transform = 'rotate(180deg)';
+            });
+        }
+
+        // Collapse All Cards
+        function collapseAll() {
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.querySelector('.card-content').style.display = 'none';
+                card.querySelector('.chevron').style.transform = 'rotate(0deg)';
+            });
+        }
+
+        // Filter by Category Button
+        function filterCategory(category, buttonElement) {
+            // Button states
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-700', 'text-white');
+                btn.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            });
+            buttonElement.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+            buttonElement.classList.add('bg-blue-700', 'text-white');
+
+            // Card visibility
+            const cards = document.querySelectorAll('.question-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Live Search Filter
+        function filterQuestions() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.question-card');
+
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Copy to Clipboard with iFrame Safe Fallback
+        function copyCode(btn) {
+            const pre = btn.closest('div').nextElementSibling;
+            const code = pre.querySelector('code').innerText;
+
+            const textArea = document.createElement('textarea');
+            textArea.value = code;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                showToast('Code copied to clipboard!');
+            } catch (err) {
+                showToast('Failed to copy');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        // Initialize State on Load
+        window.onload = function () {
+            // Default to Light Mode (as requested), respect user preference if already chosen
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                applyTheme(true);
+            } else {
+                applyTheme(false); // Defaults to crisp light background
+            }
+
+            // Keep first 2 cards open, collapse the rest
+            const cards = document.querySelectorAll('.question-card');
+            cards.forEach((card, index) => {
+                const content = card.querySelector('.card-content');
+                const chevron = card.querySelector('.chevron');
+                if (index > 1) {
+                    content.style.display = 'none';
+                    chevron.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.display = 'block';
+                    chevron.style.transform = 'rotate(180deg)';
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>
