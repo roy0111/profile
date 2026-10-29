@@ -329,7 +329,8 @@ public Mono&lt;ResponseEntity&lt;PaymentAck&gt;&gt; ingestWire(@Valid @RequestBo
                             <span class="font-bold text-blue-700 block mb-1">Step 1: Metric Check</span>
                             <p class="text-slate-600">Checked Dynatrace Service Flow & Prometheus
                                 <code>hikaricp_pending_threads=150</code>. Pods were healthy on CPU/RAM but choked on DB
-                                connections.</p>
+                                connections.
+                            </p>
                         </div>
                         <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
                             <span class="font-bold text-blue-700 block mb-1">Step 2: Thread Dump</span>
@@ -972,7 +973,8 @@ export function TransactionList({ items }) {
                                     away 100,000 rows.</li>
                                 <li>• <strong>Remove Correlated Subqueries:</strong> Convert nested subqueries inside
                                     <code class="font-mono">SELECT</code> to <code class="font-mono">INNER JOIN</code>
-                                    or Common Table Expressions (CTE).</li>
+                                    or Common Table Expressions (CTE).
+                                </li>
                             </ul>
                         </div>
                         <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
